@@ -1,0 +1,188 @@
+﻿// Copyright © 2015 Hansoft AB 
+// Distributed under the MIT license, see license text in LICENSE.Malterlib
+
+/**	\namespace NMib::NFunction
+	\brief Function namespace
+	
+	Used to specify function objects
+ */
+
+
+
+
+/** \class NMib::NFunction::DoxyInternal_Function_Default
+	\brief Default constructor
+ 
+	Default-constructing a function object will put it in a state where calling the function operator will throw a CExceptionBadFunctionCall exception.
+*/
+
+
+
+
+/** \class NMib::NFunction::DoxyInternal_Function_Copy
+ 
+	By default the functor you put into a TCFunction needs to support copying. If the functor you want to put into the function object does not support copying you can disable 
+	this by specifying CFunctionNoCopyTag as an option in the tp_COptions template arguments.
+*/
+
+/** \class NMib::NFunction::DoxyInternal_Function_CopyConstruct
+	\brief Copy constructor
+	\copydoc NMib::NFunction::DoxyInternal_Function_Copy
+ */
+
+/** \class NMib::NFunction::DoxyInternal_Function_CopyAssignment
+	\brief Copy assignment
+	\copydoc NMib::NFunction::DoxyInternal_Function_Copy
+ */
+
+
+
+/** \class NMib::NFunction::DoxyInternal_Function_Move
+ 
+	By default the functor you put into a TCFunction needs to support moving. If the functor you want to put into the function object does not support moving you can disable 
+	this by specifying CFunctionNoMoveTag as an option in the tp_COptions template arguments.
+*/
+
+/** \class NMib::NFunction::DoxyInternal_Function_MoveConstruct
+	\brief Move constructor
+	\copydoc NMib::NFunction::DoxyInternal_Function_Move
+ */
+
+/** \class NMib::NFunction::DoxyInternal_Function_MoveAssignment
+	\brief Move assignment
+	\copydoc NMib::NFunction::DoxyInternal_Function_Move
+ */
+
+
+/** \class NMib::NFunction::DoxyInternal_Function_General
+ 
+	Other than move and copy you can construct and assign the function object with anything that supports being called with the prototypes you have specified as template arguments.
+ 
+	You can also construct and assign a nullptr to the function object which is the same as default constructing or calling f_Clear().
+	
+*/
+
+/** \class NMib::NFunction::DoxyInternal_Function_GeneralConstruct
+	\brief General constructor
+	\copydoc NMib::NFunction::DoxyInternal_Function_General
+ */
+
+/** \class NMib::NFunction::DoxyInternal_Function_GeneralAssignment
+	\brief General assignment
+	\copydoc NMib::NFunction::DoxyInternal_Function_General
+ */
+
+
+
+/** \class NMib::NFunction::DoxyInternal_Function
+ 
+	You can specify an arbitrary number of function overloads. This could for example be used
+	to enable differentiation of const and non-const calls to the contained functor. See CThisTag for details about specifying qualifiers.
+
+	If you specify more than one overloaded function the contained functor
+	needs to be callable with all of these overloaded functions.
+
+*/
+
+/**
+	\class NMib::NFunction::TCFunction
+	\headerfile Mib/Function/Function <Mib/Function/Function>
+	\copydoc NMib::NFunction::DoxyInternal_Function
+
+	With the default allocator this function will save the contained functor
+	inline without dynamic memory allocation.
+	 
+	Calling the functor is at most one indirection for the call of the first
+	function type and two indirections when calling any of the other
+	overloads. Data is accessed through at most one indirection. If the
+	functor cannot fit inside the local storage the data is one indirection
+	through a TCIndirection object, otherwise zero indirections.
+
+	Use this function type in all cases where none of the other function
+	types makes sense.
+*/
+		 
+
+/**
+	\class NMib::NFunction::TCFunctionFastCall
+	\headerfile Mib/Function/Function <Mib/Function/Function>
+	\copydoc NMib::NFunction::DoxyInternal_Function
+
+	The difference from TCFunction is that this function always
+	allocates it's memory on the heap, this allows the compiler to deduce
+	the function to call statically, which removes one indirection from the
+	call.
+
+	Calling the functor is at most one indirection for the call of the first
+	function type and two indirections when calling any of the other
+	overloads. Data is accessed through one indirection. If the compiler can
+	see the assignment of the function at the call site the contained
+	function can be called without any indirection, and theoretically be
+	inlined.
+
+	Use this function type if you need to make a lambda function recursive
+	if the complier supports this. Currently MSVC does not support this so
+	you are better off with a normal TCFunction.
+
+*/
+
+/**
+	\class NMib::NFunction::TCFunctionSmall
+	\headerfile Mib/Function/Function <Mib/Function/Function>
+	\copydoc NMib::NFunction::DoxyInternal_Function
+
+	The difference from TCFunction is that this function is only one
+	pointer size by default (with default allocator).
+
+	Calling the functor is at most three indirections. Data is accessed
+	through one indirection. If the compiler is can see the assignment of
+	the function at the call site the contained function can be called without
+	any indirection, and theoretically be inlined.
+
+	Use this function type if you need to save many empty functions.
+
+*/
+
+/**
+	\class NMib::NFunction::TCFunctionNoAlloc
+	\headerfile Mib/Function/Function <Mib/Function/Function>
+	\copydoc NMib::NFunction::DoxyInternal_Function
+
+	The difference from TCFunction is that this function only can
+	contain functors of the maximum size of sizeof(void *)*4 (by default).
+
+	Calling the functor is at most one indirection. Data is accessed
+	with zero indirections.
+
+	Use this function type when you need to save functions locally in tight
+	loops and want to stop allocations at all costs. This is the same as
+	TCFunction, but will generate a compile error instead of doing dynamic
+	allocation to save a functor that is too big. Also the default internal
+	storage is four pointers instead of three pointers as in TCFunction.
+*/
+
+
+/**
+	\fn void f_Clear()
+	\memberof NMib::NFunction::TCFunction
+	\brief Clears the function object and destroys any contained functor. 
+ 
+	After this the object will be in the same state as if the function was default-constructed, and an exception CExceptionBadFunctionCall will be thrown if you try to call the 
+	function operator.
+*/
+/**
+	\fn void f_Clear()
+	\memberof NMib::NFunction::TCFunctionFastCall
+	\copydoc NMib::NFunction::TCFunction::f_Clear
+*/
+/**
+	\fn void f_Clear()
+	\memberof NMib::NFunction::TCFunctionSmall
+	\copydoc NMib::NFunction::TCFunction::f_Clear
+*/
+/**
+	\fn void f_Clear()
+	\memberof NMib::NFunction::TCFunctionNoAlloc
+	\copydoc NMib::NFunction::TCFunction::f_Clear
+*/
+
