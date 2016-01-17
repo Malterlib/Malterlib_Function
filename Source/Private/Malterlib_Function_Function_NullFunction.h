@@ -16,7 +16,7 @@ namespace NMib
 			struct CReturnReference
 			{
 #ifdef DCompiler_MSVC
-				template <typename t_CReturn, typename TCEnableIf<NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&)>::mc_Value>::CType * = nullptr>
+				template <typename t_CReturn, typename TCEnableIf<NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&)>::mc_Value && !NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&&)>::mc_Value>::CType * = nullptr>
 				__declspec(noreturn) operator t_CReturn &() const
 				{
 					throw 1; // Should never get here
