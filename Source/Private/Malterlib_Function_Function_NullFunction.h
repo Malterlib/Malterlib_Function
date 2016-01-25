@@ -12,7 +12,7 @@ namespace NMib
 			struct CReturnReference;
 
 			typedef CReturnReference const &  CReturnReferenceReturn;
-
+			
 			struct CReturnReference
 			{
 #ifdef DCompiler_MSVC
@@ -44,47 +44,39 @@ namespace NMib
 				}
 #else
 				template <typename t_CReturn>
-				operator t_CReturn && () const
+				[[noreturn]] operator t_CReturn && () const
 				{
-					return static_cast<t_CReturn &&>((*((t_CReturn *)nullptr)));
+					fg_NoReturn();
 				}
 #endif
 			};
 
 			class CNullFunctionImpl
 			{
-				static CReturnReferenceReturn fs_GetReference()
-				{
-					return *((CReturnReference const *)nullptr);
-				}
 			public:
 
 				template <typename... tp_CParams>
-				CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) 
+				[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) 
 				{
 					DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-					return fs_GetReference();
 				}
 
 				template <typename... tp_CParams>
-				CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const
+				[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const
 				{
 					DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-					return fs_GetReference();
 				}
 
 				template <typename... tp_CParams>
-				CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) volatile
+				[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) volatile
 				{
 					DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-					return fs_GetReference();
 				}
 				
 				template <typename... tp_CParams>
-				CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const volatile
+				[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const volatile
 				{
 					DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-					return fs_GetReference();
 				}
 
 				bint operator == (CNullFunctionImpl const &_Other) const
@@ -98,6 +90,11 @@ namespace NMib
 			};
 
 		}
+	}
+	template <>
+	constexpr bool fg_ForbiddenType<NFunction::NPrivate::CReturnReference>()
+	{
+		return true;
 	}
 }
 
