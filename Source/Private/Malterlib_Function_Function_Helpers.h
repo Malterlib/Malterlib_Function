@@ -291,7 +291,7 @@ namespace NMib
 			};
 
 			template <typename t_CFirst, typename... tp_CParams>
-			struct TCParseFunctionOptions<typename TCEnableIf<!NTraits::TCIsFunction<t_CFirst>::mc_Value>::CType, t_CFirst, tp_CParams...>
+			struct TCParseFunctionOptions<typename TCEnableIf<NTraits::TCIsBaseOf<t_CFirst, NMem::CAllocator_Base>::mc_Value>::CType, t_CFirst, tp_CParams...>
 			{
 				typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
 				typedef typename CParent::CFunctions CFunctions;
