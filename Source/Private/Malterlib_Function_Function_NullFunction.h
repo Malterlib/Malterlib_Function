@@ -16,6 +16,7 @@ namespace NMib
 			struct CReturnReference
 			{
 #ifdef DCompiler_MSVC
+#if 0
 				template 
 					<
 						typename t_CReturn
@@ -42,6 +43,13 @@ namespace NMib
 				{
 					throw 1; // Should never get here
 				}
+#else
+				template <typename t_CReturn>
+				__declspec(noreturn) operator t_CReturn && () const
+				{
+					fg_NoReturn();
+				}
+#endif
 #else
 				template <typename t_CReturn>
 				[[noreturn]] operator t_CReturn && () const
@@ -91,10 +99,16 @@ namespace NMib
 
 		}
 	}
+	
+#ifndef DCompiler_MSVC
 	template <>
-	constexpr bool fg_ForbiddenType<NFunction::NPrivate::CReturnReference>()
+	struct TCIsForbiddenType<NFunction::NPrivate::CReturnReference>
 	{
-		return true;
-	}
+		enum
+		{
+			mc_Value = true
+		};
+	};
+#endif
 }
 
