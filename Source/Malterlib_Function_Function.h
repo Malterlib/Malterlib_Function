@@ -130,6 +130,13 @@ namespace NMib
 					|| !(NTraits::TCRemoveReference<t_CLeft>::CType::CFunctionOptions::mc_bSupportCompare)
 				};
 			};
+			
+			template <typename t_CType, typename t_CSelf>
+			constexpr inline bool fg_IsSelf()
+			{
+			  using CDecayed = typename NTraits::TCDecay<t_CType>::CType;
+			  return NTraits::TCIsSame<CDecayed, t_CSelf>::mc_Value;
+			}
 		}
 		
 		/// General function template tuned for a mix of fast construction and fast calls.
@@ -138,28 +145,25 @@ namespace NMib
 			typename t_CFunction		/// The function definition to contain
 			, typename... tp_COptions	/// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
 		>
-		class TCFunction : public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, t_CFunction, tp_COptions...>>
+		class TCFunction 
+			: public NPrivate::TCFunctionImplementation
+			<
+				NPrivate::TCFunctionOptions
+				<
+					NPrivate::TCFunctionNoAllocBase
+					, NMem::CAllocator_Heap
+					, TCFunctionNoAllocOptions<true, sizeof(void *)*3>
+					, t_CFunction
+					, tp_COptions...
+				>
+			>
+			, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
 
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunction(TCFunction const &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunction &operator = (TCFunction const &_Other) = delete;
-			
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunction(TCFunction &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunction &operator = (TCFunction &_Other) = delete;
-			
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunction(TCFunction &&_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunction &operator = (TCFunction &&_Other) = delete;
 
 		public:
 			~TCFunction()
@@ -172,50 +176,13 @@ namespace NMib
 			}
 
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-			template <typename tf_CDummy = bool	/**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunction(TCFunction const &_Other)
-				: CSuper
-				(
-					(CSuper const &)_Other
-				)
-			{
-			}
-            
-			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunction &operator = (TCFunction const &_Other)
-			{
-				CSuper::operator = ((CSuper const &)_Other);
-				return *this;
-			}
-			
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunction(TCFunction &_Other)
-				: CSuper((CSuper &)_Other)
-			{
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunction &operator = (TCFunction &_Other)
-			{
-				CSuper::operator = ((CSuper &)_Other);
-				return *this;
-			}
-
+			TCFunction(TCFunction const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunction(TCFunction &&_Other)
-				: CSuper((CSuper &&)_Other)
-			{
-			}
-
+			TCFunction(TCFunction &&_Other) = default;
+			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
+			TCFunction &operator =(TCFunction const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunction &operator = (TCFunction &&_Other)
-			{
-				CSuper::operator = ((CSuper &&)_Other);
-				return *this;
-			}
+			TCFunction &operator =(TCFunction &&_Other) = default;
             
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 			template 
@@ -224,7 +191,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunction>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunction>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -240,7 +207,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunction>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunction>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -257,28 +224,15 @@ namespace NMib
 			typename t_CFunction /// The function definition to contain
 			, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator 
 		>
-		class TCFunctionFastCall : public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+		class TCFunctionFastCall 
+			: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+			, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
 
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;	
-			
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionFastCall(TCFunctionFastCall const &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionFastCall &operator = (TCFunctionFastCall const &_Other) = delete;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionFastCall(TCFunctionFastCall &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionFastCall &operator = (TCFunctionFastCall &_Other) = delete;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunctionFastCall(TCFunctionFastCall &&_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunctionFastCall &operator = (TCFunctionFastCall &&_Other) = delete;
 
 		public:
 			~TCFunctionFastCall()
@@ -291,47 +245,13 @@ namespace NMib
 			}
 
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionFastCall(TCFunctionFastCall const &_Other)
-				: CSuper((CSuper const &)_Other)
-			{
-			}
-
-			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionFastCall &operator = (TCFunctionFastCall const &_Other)
-			{
-				CSuper::operator = ((CSuper const &)_Other);
-				return *this;
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionFastCall(TCFunctionFastCall &_Other)
-				: CSuper((CSuper &)_Other)
-			{
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionFastCall &operator = (TCFunctionFastCall &_Other)
-			{
-				CSuper::operator = ((CSuper &)_Other);
-				return *this;
-			}
-			
+			TCFunctionFastCall(TCFunctionFastCall const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunctionFastCall(TCFunctionFastCall &&_Other)
-				: CSuper((CSuper &&)_Other)
-			{
-			}
-
+			TCFunctionFastCall(TCFunctionFastCall &&_Other) = default;
+			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
+			TCFunctionFastCall &operator =(TCFunctionFastCall const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunctionFastCall &operator = (TCFunctionFastCall &&_Other)
-			{
-				CSuper::operator = ((CSuper &&)_Other);
-				return *this;
-			}
+			TCFunctionFastCall &operator =(TCFunctionFastCall &&_Other) = default;
 
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 			template 
@@ -340,7 +260,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunctionFastCall>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionFastCall>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -356,7 +276,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunctionFastCall>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionFastCall>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -375,7 +295,9 @@ namespace NMib
 			typename t_CFunction /// The function definition to contain
 			, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator 
 		>
-		class TCFunctionSmall : public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionSmallBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+		class TCFunctionSmall 
+			: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionSmallBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+			, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
@@ -383,21 +305,6 @@ namespace NMib
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionSmallBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 			
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionSmall(TCFunctionSmall const &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionSmall &operator = (TCFunctionSmall const &_Other) = delete;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionSmall(TCFunctionSmall &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionSmall &operator = (TCFunctionSmall &_Other) = delete;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunctionSmall(TCFunctionSmall &&_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunctionSmall &operator = (TCFunctionSmall &&_Other) = delete;
-
 		public:
 			~TCFunctionSmall()
 			{
@@ -409,47 +316,13 @@ namespace NMib
 			}
 
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionSmall(TCFunctionSmall const &_Other)
-				: CSuper((CSuper const &)_Other)
-			{
-			}
-
-			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionSmall &operator = (TCFunctionSmall const &_Other)
-			{
-				CSuper::operator = ((CSuper const &)_Other);
-				return *this;
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionSmall(TCFunctionSmall &_Other)
-				: CSuper((CSuper &)_Other)
-			{
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionSmall &operator = (TCFunctionSmall &_Other)
-			{
-				CSuper::operator = ((CSuper &)_Other);
-				return *this;
-			}
-			
+			TCFunctionSmall(TCFunctionSmall const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunctionSmall(TCFunctionSmall &&_Other)
-				: CSuper((CSuper &&)_Other)
-			{
-			}
-
+			TCFunctionSmall(TCFunctionSmall &&_Other) = default;
+			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
+			TCFunctionSmall &operator =(TCFunctionSmall const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunctionSmall &operator = (TCFunctionSmall &&_Other)
-			{
-				CSuper::operator = ((CSuper &&)_Other);
-				return *this;
-			}
+			TCFunctionSmall &operator =(TCFunctionSmall &&_Other) = default;
 			
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 			template 
@@ -458,7 +331,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunctionSmall>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionSmall>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -474,7 +347,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunctionSmall>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionSmall>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -492,7 +365,9 @@ namespace NMib
 			typename t_CFunction /// The function definition to contain
 			, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator 
 		>
-		class TCFunctionNoAlloc : public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Disable, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+		class TCFunctionNoAlloc 
+			: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Disable, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+			, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
@@ -500,21 +375,6 @@ namespace NMib
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Disable, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 			
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionNoAlloc(TCFunctionNoAlloc const &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionNoAlloc &operator = (TCFunctionNoAlloc const &_Other) = delete;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionNoAlloc(TCFunctionNoAlloc &_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true>
-			TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &_Other) = delete;
-
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunctionNoAlloc(TCFunctionNoAlloc &&_Other) = delete;
-			template <typename tf_CDummy = bool, TCEnableIfType<!CFunctionOptions::mc_bSupportMove, tf_CDummy> = true>
-			TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &&_Other) = delete;
-
 		public:
 			~TCFunctionNoAlloc()
 			{
@@ -526,47 +386,13 @@ namespace NMib
 			}
 
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionNoAlloc(TCFunctionNoAlloc const &_Other)
-				: CSuper((CSuper const &)_Other)
-			{
-			}
-
-			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionNoAlloc &operator = (TCFunctionNoAlloc const &_Other)
-			{
-				CSuper::operator = ((CSuper const &)_Other);
-				return *this;
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionNoAlloc(TCFunctionNoAlloc &_Other)
-				: CSuper((CSuper &)_Other)
-			{
-			}
-
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportCopy, tf_CDummy> = true /**@hidden*/>
-			TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &_Other)
-			{
-				CSuper::operator = ((CSuper &)_Other);
-				return *this;
-			}
-			
+			TCFunctionNoAlloc(TCFunctionNoAlloc const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunctionNoAlloc(TCFunctionNoAlloc &&_Other)
-				: CSuper((CSuper &&)_Other)
-			{
-			}
-
+			TCFunctionNoAlloc(TCFunctionNoAlloc &&_Other) = default;
+			/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
+			TCFunctionNoAlloc &operator =(TCFunctionNoAlloc const &_Other) = default;
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-			template <typename tf_CDummy = bool /**@hidden*/, TCEnableIfType<CFunctionOptions::mc_bSupportMove, tf_CDummy> = true /**@hidden*/>
-			TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &&_Other)
-			{
-				CSuper::operator = ((CSuper &&)_Other);
-				return *this;
-			}
+			TCFunctionNoAlloc &operator =(TCFunctionNoAlloc &&_Other) = default;
 			
 			/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 			template 
@@ -575,7 +401,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunctionNoAlloc>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionNoAlloc>()
 					, bool
 				> = true /**@hidden*/
 			>
@@ -591,7 +417,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<tf_CFunction>::CType>::CType, TCFunctionNoAlloc>::mc_Value
+					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionNoAlloc>()
 					, bool
 				> = true /**@hidden*/
 			>
