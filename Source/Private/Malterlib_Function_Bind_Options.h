@@ -33,7 +33,7 @@ namespace NMib
 			{
 				typedef t_CToBind CToBind;
 
-				static const bint mc_bSupportCompare
+				static constexpr bint mc_bSupportCompare
 					= NTraits::TCIsSame<t_C0, CBindSupportCompareTag>::mc_Value 
 					|| NTraits::TCIsSame<t_C1, CBindSupportCompareTag>::mc_Value 
 					|| NTraits::TCIsSame<t_C2, CBindSupportCompareTag>::mc_Value 
@@ -52,7 +52,7 @@ namespace NMib
 #endif
 				;
 
-				static const bint mc_bEnableNesting
+				static constexpr bint mc_bEnableNesting
 					= !NTraits::TCIsSame<t_C0, CBindNoNestTag>::mc_Value 
 					&& !NTraits::TCIsSame<t_C1, CBindNoNestTag>::mc_Value 
 					&& !NTraits::TCIsSame<t_C2, CBindNoNestTag>::mc_Value 
@@ -71,7 +71,7 @@ namespace NMib
 #endif
 				;
 
-				static const bint mc_bForwardExtra
+				static constexpr bint mc_bForwardExtra
 					= TCIsBindForwardExtra<t_C0>::mc_Value
 					+ TCIsBindForwardExtra<t_C1>::mc_Value
 					+ TCIsBindForwardExtra<t_C2>::mc_Value
@@ -90,7 +90,7 @@ namespace NMib
 #endif
 				;
 
-				static const mint mc_ForwardExtraLevel
+				static constexpr mint mc_ForwardExtraLevel
 					= TCIsBindForwardExtra<t_C0>::mc_Value ? TCIsBindForwardExtra<t_C0>::mc_Level
 					: TCIsBindForwardExtra<t_C1>::mc_Value ? TCIsBindForwardExtra<t_C1>::mc_Level
 					: TCIsBindForwardExtra<t_C2>::mc_Value ? TCIsBindForwardExtra<t_C2>::mc_Level
@@ -112,7 +112,7 @@ namespace NMib
 
 				static_assert(mc_bForwardExtra <= 1, "You can only specify one extra forwarding level");
 
-				static const uint32 mc_IgnoredParamsExplicit
+				static constexpr uint32 mc_IgnoredParamsExplicit
 					= TCIsIgnoreParamsTag<t_C0>::mc_IgnoredExplicit
 					| TCIsIgnoreParamsTag<t_C1>::mc_IgnoredExplicit
 					| TCIsIgnoreParamsTag<t_C2>::mc_IgnoredExplicit 
@@ -131,7 +131,7 @@ namespace NMib
 #endif
 				;
 
-				static const uint32 mc_IgnoredParamsImplicit
+				static constexpr uint32 mc_IgnoredParamsImplicit
 					= mc_IgnoredParamsExplicit
 					| TCIsIgnoreParamsTag<t_C0>::mc_IgnoredImplicit
 					| TCIsIgnoreParamsTag<t_C1>::mc_IgnoredImplicit 
@@ -152,7 +152,7 @@ namespace NMib
 				;
 
 				// Contracts
-				static const int mc_NumParams 
+				static constexpr int mc_NumParams 
 					= TCChooseInt
 					<
 						int
@@ -221,9 +221,9 @@ namespace NMib
 				;
 				
 #ifndef DMibRestrictNumberOfBindParams
-				static const mint mc_MaxParams = 10;
+				static constexpr mint mc_MaxParams = 10;
 #else
-				static const mint mc_MaxParams = 5;
+				static constexpr mint mc_MaxParams = 5;
 #endif
 
 				static_assert(mc_NumParams >= 1 || !TCIsBindParam<t_C0>::mc_Value, "All param definitions have to be specified before options");

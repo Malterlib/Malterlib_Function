@@ -35,7 +35,7 @@ namespace NMib
 			private:
 				typedef TCBindExpressionParam<t_CBFOpts, t_iParam, t_CParam, t_bIsEmpty> CParamSuper;
 			public:
-				static const uint32 mc_UsedParams
+				static constexpr uint32 mc_UsedParams
 					= NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 0>::mc_UsedParams
 					| NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 1>::mc_UsedParams
 					| NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 2>::mc_UsedParams
@@ -50,7 +50,7 @@ namespace NMib
 #endif
 				;
 
-				static const bint mc_bOtherLevelParams
+				static constexpr bint mc_bOtherLevelParams
 					= NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 0>::mc_bOtherLevelParams
 					|| NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 1>::mc_bOtherLevelParams
 					|| NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 2>::mc_bOtherLevelParams
@@ -65,7 +65,7 @@ namespace NMib
 #endif
 				;
 
-				static const bint mc_bForwardExtra
+				static constexpr bint mc_bForwardExtra
 					= 
 					(
 						t_CBFOpts::mc_bForwardExtra 
@@ -173,8 +173,8 @@ namespace NMib
 			template <typename t_CImplementation, int32 t_nInParams>
 			struct TCGetFinalParamNumber
 			{
-				static const mint mc_NumParams = t_CImplementation::CBindOptions::mc_NumParams;
-				static const bint mc_bForwardExtra
+				static constexpr mint mc_NumParams = t_CImplementation::CBindOptions::mc_NumParams;
+				static constexpr bint mc_bForwardExtra
 					= 
 					(
 						t_CImplementation::CBindOptions::mc_bForwardExtra
@@ -193,7 +193,7 @@ namespace NMib
 					|| TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 9>::mc_bForwardExtra
 #endif
 				;
-				static const uint32 mc_UsedParams
+				static constexpr uint32 mc_UsedParams
 					= TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 0>::mc_UsedParams
 					| TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 1>::mc_UsedParams
 					| TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 2>::mc_UsedParams
@@ -208,9 +208,9 @@ namespace NMib
 #endif
 				;
 
-				static const int32 mc_HighestUsedParam = NMib::TCHighestBitSet<uint32, mc_UsedParams>::mc_Value;
-				static const int32 mc_WantedValue = mc_NumParams + (mc_bForwardExtra ? ((t_nInParams - mc_HighestUsedParam) > 0 ? (t_nInParams - mc_HighestUsedParam) : 0) : 0);
-				static const int32 mc_Value = mc_WantedValue > (int32)t_CImplementation::CBindOptions::mc_MaxParams ? (int32)t_CImplementation::CBindOptions::mc_MaxParams : mc_WantedValue;
+				static constexpr int32 mc_HighestUsedParam = NMib::TCHighestBitSet<uint32, mc_UsedParams>::mc_Value;
+				static constexpr int32 mc_WantedValue = mc_NumParams + (mc_bForwardExtra ? ((t_nInParams - mc_HighestUsedParam) > 0 ? (t_nInParams - mc_HighestUsedParam) : 0) : 0);
+				static constexpr int32 mc_Value = mc_WantedValue > (int32)t_CImplementation::CBindOptions::mc_MaxParams ? (int32)t_CImplementation::CBindOptions::mc_MaxParams : mc_WantedValue;
 			};
 
 
@@ -286,7 +286,7 @@ namespace NMib
 				typedef typename CBindExpression::CParamSuper CParamSuper;
 			public:
 				//static_assert(t_Level != 0, "Should never be checked at first level");
-				static const uint32 mc_Value
+				static constexpr uint32 mc_Value
 					=
 					(
 						NPrivate::TCGetBindParamResolveProperties<t_Level, t_nInParams, CParamSuper, 0>::mc_UsedParams
@@ -329,8 +329,8 @@ namespace NMib
 			template <typename t_CImplementation, int32 t_nInParams>
 			struct TCCheckBindParams
 			{
-				static const mint mc_NumParams = t_CImplementation::CBindOptions::mc_NumParams;
-				static const bint mc_bForwardExtra 
+				static constexpr mint mc_NumParams = t_CImplementation::CBindOptions::mc_NumParams;
+				static constexpr bint mc_bForwardExtra 
 					= 
 					(
 						t_CImplementation::CBindOptions::mc_bForwardExtra
@@ -350,7 +350,7 @@ namespace NMib
 #endif
 				;
 
-				static const uint32 mc_UsedParams
+				static constexpr uint32 mc_UsedParams
 					= TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 0>::mc_UsedParams
 					| TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 1>::mc_UsedParams
 					| TCGetBindParamResolveProperties<0, t_nInParams, t_CImplementation, 2>::mc_UsedParams
@@ -365,12 +365,12 @@ namespace NMib
 #endif
 				;
 
-				static const uint32 mc_HighestUsedParam = NMib::TCHighestBitSet<uint32, mc_UsedParams>::mc_Value;
+				static constexpr uint32 mc_HighestUsedParam = NMib::TCHighestBitSet<uint32, mc_UsedParams>::mc_Value;
 
 				template <int32 t_iParam>
 				struct TCParamUsed
 				{
-					static const bint mc_Value 
+					static constexpr bint mc_Value 
 						= (t_iParam >= t_nInParams)
 						|| 
 						(
@@ -386,7 +386,7 @@ namespace NMib
 				template <int32 t_iParam>
 				struct TCIgnoredParamUsed
 				{
-					static const bint mc_Value
+					static constexpr bint mc_Value
 						= t_iParam < t_nInParams
 						&& 
 						(
@@ -428,7 +428,7 @@ namespace NMib
 					)
 				;
 
-				static const bint mc_Value = true;
+				static constexpr bint mc_Value = true;
 			};
 
 			/***************************************************************************************************\
@@ -461,7 +461,7 @@ namespace NMib
 			{
 				typedef decltype
 				(
-					NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<t_CParamSuper, t_nInParams>::mc_Value>::fs_Call
+					NPrivate::TCCallBindExpression<TCGetFinalParamNumber<t_CParamSuper, t_nInParams>::mc_Value>::fs_Call
 					(
 						fg_GetReference<t_CToBind>()
 						, NPrivate::TCGetBindParam<t_Level, t_nInParams, t_CParamSuperQualifiers, 0, t_HighestUsedParam>::fs_Param
@@ -650,7 +650,7 @@ namespace NMib
 			{
 				typedef decltype
 				(
-					NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<t_CParamSuper, t_nInParams>::mc_Value>::fs_PartialBind
+					NPrivate::TCCallBindExpression<TCGetFinalParamNumber<t_CParamSuper, t_nInParams>::mc_Value>::fs_PartialBind
 					(
 						fg_GetReference<t_CToBind>()
 						, NPrivate::TCGetBindParam<t_Level, t_nInParams, t_CParamSuperQualifiers, 0, t_HighestUsedParam>::fs_Param

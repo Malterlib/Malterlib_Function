@@ -346,67 +346,9 @@ namespace NMib
 #				define DMibTemp_GenerateFunctionOperator(d_nParams, d_Qualifiers)\
 				template <DMibPreGenerateParams(d_nParams, typename tf_CP)>\
 				auto operator () (DMibPreRepeat(d_nParams, DMibTemp_GenerateArguments, unused)) d_Qualifiers\
-				-> \
-				decltype\
-				(\
-					NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
-					(\
-						fg_GetReference<d_Qualifiers CToBind>()\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 0>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 1>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 2>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 3>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 4>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 5>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 6>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 7>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 8>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 9>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-					)\
-				)\
 				{\
 					static_assert(NPrivate::TCCheckBindParams<CParamSuper, d_nParams>::mc_Value, "");\
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
 						(\
 							fp_BoundObject()\
 							, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 0>::fs_Param\
@@ -468,42 +410,9 @@ namespace NMib
 #				define DMibTemp_GenerateFunctionOperator(d_nParams, d_Qualifiers)\
 				template <DMibPreGenerateParams(d_nParams, typename tf_CP)>\
 				auto operator () (DMibPreRepeat(d_nParams, DMibTemp_GenerateArguments, unused)) d_Qualifiers\
-				-> \
-				decltype\
-				(\
-					NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
-					(\
-						fg_GetReference<d_Qualifiers CToBind>()\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 0>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 1>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 2>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 3>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-						, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 4>::fs_Param\
-						(\
-							fg_GetReference<d_Qualifiers CParamSuper>()\
-							DMibPreRepeat(DMibBindMaxNumParams, DMibTemp_GenerateParam, d_nParams)\
-						)\
-					)\
-				)\
 				{\
 					static_assert(NPrivate::TCCheckBindParams<CParamSuper, d_nParams>::mc_Value, "");\
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
 						(\
 							fp_BoundObject()\
 							, NPrivate::TCGetBindParam<0, d_nParams, d_Qualifiers CParamSuper, 0>::fs_Param\
@@ -641,7 +550,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -746,7 +655,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, const CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -851,7 +760,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, volatile CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -956,7 +865,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_Call
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, const volatile CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -1069,7 +978,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -1174,7 +1083,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, const CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -1280,7 +1189,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, volatile CParamSuper, 0, tf_HighestUsedParam>::fs_Param
@@ -1385,7 +1294,7 @@ namespace NMib
 	#endif
 				>::CType
 				{
-					return NPrivate::TCCallBindExpression<NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
+					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, tf_nInParams>::mc_Value>::fs_PartialBind
 						(
 							fp_BoundObject()
 							, NPrivate::TCGetBindParam<tf_Level, tf_nInParams, const volatile CParamSuper, 0, tf_HighestUsedParam>::fs_Param

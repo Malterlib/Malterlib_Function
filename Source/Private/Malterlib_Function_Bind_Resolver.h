@@ -13,7 +13,7 @@ namespace NMib
 			template <typename t_CType, mint t_Level, mint t_nInParams>
 			struct TCNeedPartialBind
 			{
-				static const uint32 mc_Value = false; 
+				static constexpr uint32 mc_Value = false; 
 			};
 
 			/***************************************************************************************************\
@@ -138,9 +138,9 @@ namespace NMib
 			template <typename t_CType, mint t_Level, mint t_nInParams>
 			struct TCGetBindExpressionUsedParams
 			{
-				static const uint32 mc_UsedParams = 0;
-				static const bint mc_bOtherLevelParams = false;
-				static const bint mc_bForwardExtra = false;
+				static constexpr uint32 mc_UsedParams = 0;
+				static constexpr bint mc_bOtherLevelParams = false;
+				static constexpr bint mc_bForwardExtra = false;
 			};
 
 			/***************************************************************************************************\
@@ -164,7 +164,7 @@ namespace NMib
 				, mint t_nInParams
 				, typename t_CImplementation
 				, int t_iParam
-				, int32 t_HighestUsedParam = NPrivate::TCGetFinalParamNumber<t_CImplementation, t_nInParams>::mc_HighestUsedParam
+				, int32 t_HighestUsedParam = TCGetFinalParamNumber<t_CImplementation, t_nInParams>::mc_HighestUsedParam
 				, int t_nParams = t_CImplementation::CBindOptions::mc_NumParams
 				, bint t_bEnable = (t_iParam < t_nParams)
 			>
@@ -189,9 +189,9 @@ namespace NMib
 			>
 			struct TCGetBindParamResolveProperties
 			{
-				static const uint32 mc_UsedParams = 0;
-				static const bint mc_bOtherLevelParams = false;
-				static const bint mc_bForwardExtra = false;
+				static constexpr uint32 mc_UsedParams = 0;
+				static constexpr bint mc_bOtherLevelParams = false;
+				static constexpr bint mc_bForwardExtra = false;
 			};
 
 		}

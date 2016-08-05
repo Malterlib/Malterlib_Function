@@ -283,10 +283,10 @@ namespace NMib
 			>
 			struct TCEvalCallability
 			{
-				static const bint mc_HasEmptyFunction = false;
-				static const bint mc_HasEmptyFunctionConst = false;
-				static const bint mc_HasEmptyFunctionVolatile = false;
-				static const bint mc_HasEmptyFunctionConstVolatile = false;
+				static constexpr bint mc_HasEmptyFunction = false;
+				static constexpr bint mc_HasEmptyFunctionConst = false;
+				static constexpr bint mc_HasEmptyFunctionVolatile = false;
+				static constexpr bint mc_HasEmptyFunctionConstVolatile = false;
 			};
 			
 			template
@@ -295,10 +295,10 @@ namespace NMib
 			>
 			struct TCEvalCallability<t_CBFOpts, true>
 			{
-				static const bint mc_HasEmptyFunction = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind, typename t_CBFOpts::CBoundParamsFunc>::mc_Value;
-				static const bint mc_HasEmptyFunctionConst = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind const, typename t_CBFOpts::CBoundParamsFuncConst>::mc_Value;
-				static const bint mc_HasEmptyFunctionVolatile = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind volatile, typename t_CBFOpts::CBoundParamsFuncVolatile>::mc_Value;
-				static const bint mc_HasEmptyFunctionConstVolatile = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind const volatile, typename t_CBFOpts::CBoundParamsFuncConstVolatile>::mc_Value;
+				static constexpr bint mc_HasEmptyFunction = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind, typename t_CBFOpts::CBoundParamsFunc>::mc_Value;
+				static constexpr bint mc_HasEmptyFunctionConst = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind const, typename t_CBFOpts::CBoundParamsFuncConst>::mc_Value;
+				static constexpr bint mc_HasEmptyFunctionVolatile = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind volatile, typename t_CBFOpts::CBoundParamsFuncVolatile>::mc_Value;
+				static constexpr bint mc_HasEmptyFunctionConstVolatile = NTraits::TCIsCallableWith<typename t_CBFOpts::CToBind const volatile, typename t_CBFOpts::CBoundParamsFuncConstVolatile>::mc_Value;
 			};
 				
 			template 

@@ -57,15 +57,15 @@ namespace NMib
 			template <typename t_CType>
 			struct TCIsBindForwardExtra
 			{
-				static const bint mc_Value = false;
-				static const mint mc_Level = 0xFFFFFFFF;
+				static constexpr bint mc_Value = false;
+				static constexpr mint mc_Level = 0xFFFFFFFF;
 			};
 
 			template <mint t_Level>
 			struct TCIsBindForwardExtra<TCBindForwardExtraTag<t_Level>>
 			{
-				static const bint mc_Value = true;
-				static const mint mc_Level = t_Level;
+				static constexpr bint mc_Value = true;
+				static constexpr mint mc_Level = t_Level;
 			};
 
 			/***************************************************************************************************\
@@ -77,17 +77,17 @@ namespace NMib
 			template <typename t_CType>
 			struct TCIsBindPlaceholder
 			{
-				static const bint mc_Value = false;
-				static const mint mc_Param = 0;
-				static const mint mc_Level = 0xFFFFFFFF;
+				static constexpr bint mc_Value = false;
+				static constexpr mint mc_Param = 0;
+				static constexpr mint mc_Level = 0xFFFFFFFF;
 			};
 
 			template <mint t_Param, mint t_Level>
 			struct TCIsBindPlaceholder<TCBindPlaceholder<t_Param, t_Level>>
 			{
-				static const bint mc_Value = true;
-				static const mint mc_Param = t_Param;
-				static const mint mc_Level = t_Level;
+				static constexpr bint mc_Value = true;
+				static constexpr mint mc_Param = t_Param;
+				static constexpr mint mc_Level = t_Level;
 			};
 
 			/***************************************************************************************************\
@@ -100,25 +100,25 @@ namespace NMib
 			template <typename t_C0>
 			struct TCIsBindParam
 			{
-				static const bint mc_Value = true;
+				static constexpr bint mc_Value = true;
 			};
 
 			template <>
 			struct TCIsBindParam<void>
 			{
-				static const bint mc_Value = false;
+				static constexpr bint mc_Value = false;
 			};
 
 			template <>
 			struct TCIsBindParam<CBindSupportCompareTag>
 			{
-				static const bint mc_Value = false;
+				static constexpr bint mc_Value = false;
 			};
 
 			template <mint t_Level>
 			struct TCIsBindParam<TCBindForwardExtraTag<t_Level>>
 			{
-				static const bint mc_Value = false;
+				static constexpr bint mc_Value = false;
 			};
 
 			template
@@ -155,7 +155,7 @@ namespace NMib
 				>
 			>
 			{
-				static const bint mc_Value = false;
+				static constexpr bint mc_Value = false;
 			};
 
 			/***************************************************************************************************\
@@ -167,9 +167,9 @@ namespace NMib
 			template <typename t_C0>
 			struct TCIsIgnoreParamsTag
 			{
-				static const bint mc_Value = false;
-				static const uint32 mc_IgnoredImplicit = 0;
-				static const uint32 mc_IgnoredExplicit = 0;
+				static constexpr bint mc_Value = false;
+				static constexpr uint32 mc_IgnoredImplicit = 0;
+				static constexpr uint32 mc_IgnoredExplicit = 0;
 			};
 
 			template
@@ -206,8 +206,8 @@ namespace NMib
 					>
 				>
 			{
-				static const bint mc_Value = false;
-				static const uint32 mc_IgnoredExplicit
+				static constexpr bint mc_Value = false;
+				static constexpr uint32 mc_IgnoredExplicit
 					= (t_iParam0 == -1 ? uint32(0) : DMibBitTyped((t_iParam0 == -1 ? 0 : t_iParam0), uint32))
 					| (t_iParam1 == -1 ? uint32(0) : DMibBitTyped((t_iParam1 == -1 ? 0 : t_iParam1), uint32))
 					| (t_iParam2 == -1 ? uint32(0) : DMibBitTyped((t_iParam2 == -1 ? 0 : t_iParam2), uint32))
@@ -221,7 +221,7 @@ namespace NMib
 					| (t_iParam9 == -1 ? uint32(0) : DMibBitTyped((t_iParam9 == -1 ? 0 : t_iParam9), uint32))
 #endif
 				;
-				static const uint32 mc_IgnoredImplicit = t_iParam0 == -1 ? uint32(0xffffffffu) : 0;
+				static constexpr uint32 mc_IgnoredImplicit = t_iParam0 == -1 ? uint32(0xffffffffu) : 0;
 			};
 
 			/***************************************************************************************************\
@@ -233,9 +233,9 @@ namespace NMib
 			template <typename t_CType, typename t_CStrippedType = typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CType>::CType>::CType>
 			struct TCIsBindExpression
 			{
-				static const bint mc_Value = false;
-				static const bint mc_bEnableNesting = false;
-				static const bint mc_bComparable = false;
+				static constexpr bint mc_Value = false;
+				static constexpr bint mc_bEnableNesting = false;
+				static constexpr bint mc_bComparable = false;
 			};
 
 			template 
@@ -305,9 +305,9 @@ namespace NMib
 #endif
 				>::CBindOptions CBindOptions;
 
-				static const bint mc_Value = true;
-				static const bint mc_bEnableNesting = CBindOptions::mc_bEnableNesting;
-				static const bint mc_bComparable = CBindOptions::mc_bSupportCompare;
+				static constexpr bint mc_Value = true;
+				static constexpr bint mc_bEnableNesting = CBindOptions::mc_bEnableNesting;
+				static constexpr bint mc_bComparable = CBindOptions::mc_bSupportCompare;
 			};
 
 			/***************************************************************************************************\

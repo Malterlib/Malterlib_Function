@@ -12,9 +12,9 @@ namespace NMib
 			template <mint t_Level, mint t_nInParams, typename t_CImplementation, int t_iParam, int t_nParams>
 			struct TCGetBindParamResolveProperties<t_Level, t_nInParams, t_CImplementation, t_iParam, t_nParams, false> 
 			{
-				static const uint32 mc_UsedParams = t_iParam < t_nParams ? DMibBitTyped(t_iParam, uint32) : 0;
-				static const bint mc_bOtherLevelParams = false;
-				static const bint mc_bForwardExtra = false;
+				static constexpr uint32 mc_UsedParams = t_iParam < t_nParams ? DMibBitTyped(t_iParam, uint32) : 0;
+				static constexpr bint mc_bOtherLevelParams = false;
+				static constexpr bint mc_bForwardExtra = false;
 			};
 
 			template <mint t_Level, mint t_nInParams, typename t_CImplementation, int t_iParam, int t_nParams>
@@ -24,7 +24,7 @@ namespace NMib
 				typedef typename NTraits::TCCopyQualifiers<t_CImplementation, typename CStoredParamResolver::CType>::CType CBoundTypeRaw;
 				typedef typename NTraits::TCRemoveReference<CBoundTypeRaw>::CType CBoundType;
 
-				static const uint32 mc_UsedParams 
+				static constexpr uint32 mc_UsedParams 
 					= 
 					(
 						TCIsBindPlaceholder<CBoundType>::mc_Value && TCIsBindPlaceholder<CBoundType>::mc_Level == t_Level
@@ -34,7 +34,7 @@ namespace NMib
 					| TCGetBindExpressionUsedParams<CBoundType, t_Level + 1, t_nInParams>::mc_UsedParams
 				;
 
-				static const bint mc_bOtherLevelParams
+				static constexpr bint mc_bOtherLevelParams
 					=
 					(
 						(
@@ -45,7 +45,7 @@ namespace NMib
 					)
 				;
 
-				static const bint mc_bForwardExtra
+				static constexpr bint mc_bForwardExtra
 					=
 					(
 						TCGetBindExpressionUsedParams<CBoundType, t_Level, t_nInParams>::mc_bForwardExtra

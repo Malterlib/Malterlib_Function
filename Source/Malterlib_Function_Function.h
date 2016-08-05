@@ -132,11 +132,14 @@ namespace NMib
 			};
 			
 			template <typename t_CType, typename t_CSelf>
-			constexpr inline bool fg_IsSelf()
+			struct TCIsSelf
 			{
-			  using CDecayed = typename NTraits::TCDecay<t_CType>::CType;
-			  return NTraits::TCIsSame<CDecayed, t_CSelf>::mc_Value;
-			}
+				using CDecayed = typename NTraits::TCDecay<t_CType>::CType;
+				enum
+				{
+					mc_Value = NTraits::TCIsSame<CDecayed, t_CSelf>::mc_Value
+				};
+			};
 		}
 		
 		/// General function template tuned for a mix of fast construction and fast calls.
@@ -191,7 +194,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunction>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -207,7 +210,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunction>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -260,7 +263,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionFastCall>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -276,7 +279,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionFastCall>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -331,7 +334,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionSmall>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -347,7 +350,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionSmall>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -401,7 +404,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionNoAlloc>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>
@@ -417,7 +420,7 @@ namespace NMib
 				, TCEnableIfType
 				<
 					!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-					&& !NPrivate::fg_IsSelf<tf_CFunction, TCFunctionNoAlloc>()
+					&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 					, bool
 				> = true /**@hidden*/
 			>

@@ -116,8 +116,8 @@ namespace NMib
 		template <mint t_Param, mint t_Level = 0>
 		struct TCBindPlaceholder
 		{
-			static const mint mc_Param = t_Param;
-			static const mint mc_Level = t_Level;
+			static constexpr mint mc_Param = t_Param;
+			static constexpr mint mc_Level = t_Level;
 
 			template <mint tf_Param, mint tf_Level>
 			TCBindPlaceholder<t_Param, tf_Param> operator [] (TCBindPlaceholder<tf_Param, tf_Level>)
