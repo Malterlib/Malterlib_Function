@@ -16,7 +16,7 @@ namespace NMib
 			struct CReturnReference
 			{
 #ifdef DCompiler_MSVC
-#if 0
+#if 1
 				template 
 					<
 						typename t_CReturn
