@@ -141,6 +141,8 @@ namespace NMib
 				};
 			};
 		}
+		template <typename t_CFunction>
+		struct TCFunctionInfo;
 		
 		/// General function template tuned for a mix of fast construction and fast calls.
 		template 
@@ -164,6 +166,10 @@ namespace NMib
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
+			
+			template <typename t_CFunction0>
+			friend struct TCFunctionInfo;
+			
 
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
@@ -233,6 +239,9 @@ namespace NMib
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
+			
+			template <typename t_CFunction0>
+			friend struct TCFunctionInfo;
 
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;	
@@ -304,6 +313,9 @@ namespace NMib
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
+			
+			template <typename t_CFunction0>
+			friend struct TCFunctionInfo;
 
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionSmallBase, NMem::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
@@ -374,6 +386,9 @@ namespace NMib
 		{
 			template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
 			friend struct NPrivate::TCIsTCFunctionCompareInValid;
+			
+			template <typename t_CFunction0>
+			friend struct TCFunctionInfo;
 
 			typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMem::CAllocator_Disable, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
 			typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
@@ -486,10 +501,16 @@ namespace NMib
 				, "Compare not allowed");
 			return true;
 		}
+		
+		template <typename t_CFunction>
+		struct TCFunctionInfo
+		{
+			static constexpr mint mc_nCalls = t_CFunction::CFunctionOptions::mc_NumFunctions;
+			
+			template <mint t_iCall>
+			using TCCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::CType;
+		};
 	}
-
-
-
 }
 
 #ifndef DMibPNoShortCuts
