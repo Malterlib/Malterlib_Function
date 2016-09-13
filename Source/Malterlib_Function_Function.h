@@ -227,6 +227,24 @@ namespace NMib
 			}
 		};
 
+		namespace NPrivate
+		{
+			template <typename t_FSignature, typename t_CTag>
+			struct TCAddThisTag;
+
+			template <typename t_CTag, typename t_CReturn, typename ...tp_CParams>
+			struct TCAddThisTag<t_CReturn (tp_CParams...), t_CTag>
+			{
+				using CType = t_CReturn (t_CTag, tp_CParams...); 
+			};
+		}
+		
+		template <typename t_CSignature>
+		using TCFunctionMutable = TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+
+		template <typename t_CSignature>
+		using TCFunctionMovable = TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
+
 		/// Function template tuned for maximum performance of calls.
 		template 
 		<
