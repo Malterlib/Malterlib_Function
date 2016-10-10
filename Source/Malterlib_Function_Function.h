@@ -319,6 +319,12 @@ namespace NMib
 			/// @}
 		};
 
+		template <typename t_CSignature>
+		using TCFunctionFastCallMutable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+
+		template <typename t_CSignature>
+		using TCFunctionFastCallMovable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
+
 		/// Function template tuned for minimum storage of empty functions.
 		template 
 		<
@@ -391,6 +397,11 @@ namespace NMib
 			}
 		};
 
+		template <typename t_CSignature>
+		using TCFunctionSmallMutable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+
+		template <typename t_CSignature>
+		using TCFunctionSmallMovable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
 
 		//// Function template tuned for maximum call speed and maximum construction speed.
 		template 
@@ -464,6 +475,12 @@ namespace NMib
 			}
 			
 		};
+		
+		template <typename t_CSignature>
+		using TCFunctionNoAllocMutable = TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+
+		template <typename t_CSignature>
+		using TCFunctionNoAllocMovable = TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
 		
 		namespace NPrivate
 		{
