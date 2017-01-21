@@ -9,12 +9,21 @@ namespace NMib
 	{
 		namespace NPrivate
 		{
+			template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
+			struct TCCallImpl;
+			
 			struct CReturnReference;
 
 			typedef CReturnReference const &  CReturnReferenceReturn;
+			class CNullFunctionImpl;
 			
 			struct CReturnReference
 			{
+			private:
+				friend class CNullFunctionImpl;
+				template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
+				friend struct TCCallImpl;
+				
 #ifdef DCompiler_MSVC
 #if 1
 				template 
@@ -99,16 +108,5 @@ namespace NMib
 
 		}
 	}
-	
-#ifndef DCompiler_MSVC
-	template <>
-	struct TCIsForbiddenType<NFunction::NPrivate::CReturnReference>
-	{
-		enum
-		{
-			mc_Value = true
-		};
-	};
-#endif
 }
 
