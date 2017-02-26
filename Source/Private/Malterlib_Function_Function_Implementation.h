@@ -681,7 +681,7 @@ namespace NMib
 					{
 						typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
 						static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
-						static_assert(constenum(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+						static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 						new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 						_This.m_pCall = CImpl::CCallImp0::fs_Call;
@@ -706,7 +706,7 @@ namespace NMib
 						;
 
 						static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
-						static_assert(constenum(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+						static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 						new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 						_This.m_pCall = CImpl::CCallImp0::fs_Call;
@@ -721,7 +721,7 @@ namespace NMib
 					TCConstructInternal
 					<
 						(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize) 
-						|| (constenum(NTraits::TCAlignmentOf<CImpl>::mc_Value) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+						|| (NTraits::TCAlignmentOf<CImpl>::mc_Value > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 						, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 					>::fs_Perform
 					(
@@ -737,7 +737,7 @@ namespace NMib
 					{
 						typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
 						static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
-						static_assert(constenum(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+						static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 						// Start by destroying in case of exception in constructor
 						_This.fp_Destroy();
@@ -766,7 +766,7 @@ namespace NMib
 							>::CType CImpl
 						;
 						static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
-						static_assert(constenum(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+						static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 						// Start by destroying in case of exception in constructor
 						_This.fp_Destroy();
@@ -786,7 +786,7 @@ namespace NMib
 					TCAssignInternal
 					<
 						(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize) 
-						|| (constenum(NTraits::TCAlignmentOf<CImpl>::mc_Value) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+						|| (NTraits::TCAlignmentOf<CImpl>::mc_Value > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 						, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 					>::fs_Perform
 					(

@@ -72,12 +72,9 @@ namespace NMib
 		>
 		struct TCFunctionNoAllocOptions
 		{
-			enum
-			{
-				mc_MaxSize = (t_MaxSize + t_Alignment - 1) & ~mint(t_Alignment - 1)
-				, mc_Alignment = t_Alignment
-				, mc_bAllowAlloc = t_AllowAlloc
-			};
+			static constexpr mint mc_MaxSize = (t_MaxSize + t_Alignment - 1) & ~mint(t_Alignment - 1);
+			static constexpr mint mc_Alignment = t_Alignment;
+			static constexpr mint mc_bAllowAlloc = t_AllowAlloc;
 		};
 		
 		///@}

@@ -439,7 +439,7 @@ namespace NMib
 					mc_NumFunctions = NMeta::TCTypeList_Len<CFunctionList>::mc_Value
 				};
 				
-				static_assert(constenum(mc_NumFunctions) > 0, "You have to specify at least one function definition");
+				static_assert(mint(mc_NumFunctions) > 0, "You have to specify at least one function definition");
 
 				typedef typename TCGetCallInfo<CFunctionList, 0>::CType CCall0;
 

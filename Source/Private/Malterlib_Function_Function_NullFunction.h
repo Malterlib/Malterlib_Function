@@ -19,7 +19,11 @@ namespace NMib
 			
 			struct CReturnReference
 			{
+#if defined(DCompiler_MSVC) && DMibCompilerVersion == 1910
+			public:
+#else
 			private:
+#endif
 				friend class CNullFunctionImpl;
 				template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
 				friend struct TCCallImpl;
