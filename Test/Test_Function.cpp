@@ -1040,9 +1040,7 @@ namespace
 					boost::function<int (int)> Test5;
 
 					TCFunction<void ()> TestGlobal(&CFunction_Tests::fs_Test);
-#if !defined(DCompiler_MSVC) || DMibCompilerVersion >= 1700
 					TCFunction<void ()> TestGlobalRef(CFunction_Tests::fs_Test);
-#endif
 
 					struct CSizedStruct
 					{
