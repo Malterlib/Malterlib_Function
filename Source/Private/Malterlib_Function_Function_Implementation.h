@@ -130,6 +130,11 @@ namespace NMib
 					m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
 					m_Data.m_pVTable = &CImpl::CVTable::ms_VTable;
 				}
+				
+				void const *fp_GetFirstFunctionPointer() const
+				{
+					return reinterpret_cast<void const *>(m_Data.m_pCall); 
+				}
 
 				template <typename t_CFunction>
 				void fp_Assign(t_CFunction &&_Function)
@@ -448,6 +453,11 @@ namespace NMib
 					CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
 					m_Data.m_pImp = pObject - 1;
 					m_Data.m_pImp->m_pVTable = &CImpl::CVTable::ms_VTable;;
+				}
+
+				void const *fp_GetFirstFunctionPointer() const
+				{
+					return reinterpret_cast<void const *>(m_Data.m_pImp->m_pVTable->m_pCalls[0]); 
 				}
 
 				template <typename t_CFunction>
@@ -779,6 +789,11 @@ namespace NMib
 					}
 				};
 
+				void const *fp_GetFirstFunctionPointer() const
+				{
+					return reinterpret_cast<void const *>(m_pCall); 
+				}
+
 				template <typename t_CFunction>
 				void fp_Assign(t_CFunction &&_Function)
 				{
@@ -1050,6 +1065,11 @@ namespace NMib
 				{
 					this->fp_Destroy();
 					this->fp_SetDefault();
+				}
+				
+				void const *f_GetFirstFunctionPointer() const
+				{
+					return this->fp_GetFirstFunctionPointer();
 				}
 
 				TCFunctionImplementation(CNullPtr)
