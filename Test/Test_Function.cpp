@@ -905,7 +905,7 @@ namespace
 					uint32 m_Data[555];
 				};
 				CTestClass TestData;
-				t_CFunction Test6 = [TestData](int const &_Test){};
+				t_CFunction Test6 = [TestData](int const &_Test){(void)TestData;};
 				t_CFunction Test7 = fg_Move(Test6);
 				t_CFunction Test8;
 				Test8 = fg_Move(Test7);
@@ -1052,7 +1052,7 @@ namespace
 						}
 					};
 					CSizedStruct Test00;
-					auto fl_Test = [Test00] (int const &_Test)-> int {return 3;};
+					auto fl_Test = [Test00] (int const &_Test)-> int {(void)Test00; return 3;};
 
 					Test = fl_Test;
 					//Test2 = fl_Test;
