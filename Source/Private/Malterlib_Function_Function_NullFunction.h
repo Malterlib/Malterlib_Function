@@ -19,7 +19,7 @@ namespace NMib
 			
 			struct CReturnReference
 			{
-#if defined(DCompiler_MSVC) && DMibCompilerVersion == 1910
+#if defined(DCompiler_MSVC) && DMibCompilerVersion == 1911
 			public:
 #else
 			private:
@@ -28,8 +28,8 @@ namespace NMib
 				template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
 				friend struct TCCallImpl;
 				
-#ifdef DCompiler_MSVC
-#if 1
+#if defined(DCompiler_MSVC)
+#if 0
 				template 
 					<
 						typename t_CReturn
