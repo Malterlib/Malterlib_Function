@@ -3,6 +3,11 @@
 
 Import "../Core/Lib_Malterlib.MTarget"
 
+Property.MalterlibBoostModules "function;bind;config;@(MalterlibBoostModules)"
+{
+	!!MalterlibEnableInternalTests true
+}
+
 %Group "{Malterlib}/{Lib_Malterlib_Function}"
 {
 	%Group Function
