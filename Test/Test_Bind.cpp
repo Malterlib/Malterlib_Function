@@ -1,6 +1,8 @@
 // Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
+#if _MSC_FULL_VER != 191225830
+
 #include <functional>
 #include <boost/bind.hpp>
 #include <stdio.h>
@@ -573,4 +575,4 @@ namespace
 	DMibTestRegister(CBind_Tests, Malterlib::Function);
 }
 
-
+#endif

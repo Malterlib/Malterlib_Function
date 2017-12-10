@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -19,7 +19,7 @@ namespace NMib
 			
 			struct CReturnReference
 			{
-#if defined(DCompiler_MSVC) && DMibCompilerVersion == 1911
+#if defined(DCompiler_MSVC_Workaround) && DMibCompilerVersion == 1912
 			public:
 #else
 			private:
@@ -28,41 +28,12 @@ namespace NMib
 				template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
 				friend struct TCCallImpl;
 				
-#if defined(DCompiler_MSVC)
-#if 0
-				template 
-					<
-						typename t_CReturn
-						, typename TCEnableIf
-						<
-							NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&&)>::mc_Value
-							&& !NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&)>::mc_Value
-						>::CType * = nullptr
-					>
-				__declspec(noreturn) operator t_CReturn &&() const
-				{
-					throw 1; // Should never get here
-				}
-
-				template 
-					<
-						typename t_CReturn
-						, typename TCEnableIf
-						<
-							NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&)>::mc_Value
-						>::CType * = nullptr
-					>
-				__declspec(noreturn) operator t_CReturn &() const
-				{
-					throw 1; // Should never get here
-				}
-#else
+#if defined(DCompiler_MSVC_Workaround)
 				template <typename t_CReturn>
 				__declspec(noreturn) operator t_CReturn && () const
 				{
 					fg_NoReturn();
 				}
-#endif
 #else
 				template <typename t_CReturn>
 				[[noreturn]] operator t_CReturn && () const

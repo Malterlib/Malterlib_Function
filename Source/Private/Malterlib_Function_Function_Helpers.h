@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -47,109 +47,6 @@ namespace NMib
 				EQualifiers_ConstVolatile,
 			};
 
-#ifdef DCompiler_MSVC
-			// This is a workaround for MSVC complier bug
-
-			template 
-			<
-				typename t_CFunction
-				, typename t_CEnable = void
-			>
-			struct TCDetermineFunctionDefinition
-			{
-				static_assert(NTraits::TCFunctionTraits<t_CFunction>::mc_Arity <= 10, "Unsupported number of function parameters");
-
-				enum
-				{
-					mc_Qualifiers = EQualifiers_Const
-				};
-				typedef t_CFunction CType;
-			};
-
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag &, tp_CParams...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_None
-				};
-				typedef t_CReturn (CType)(tp_CParams...);
-			};
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag &, tp_CParams..., ...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_None
-				};
-				typedef t_CReturn (CType)(tp_CParams..., ...);
-			};
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag const &, tp_CParams...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_Const
-				};
-				typedef t_CReturn (CType)(tp_CParams...);
-			};
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag const &, tp_CParams..., ...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_Const
-				};
-				typedef t_CReturn (CType)(tp_CParams..., ...);
-			};
-			
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag volatile &, tp_CParams...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_Volatile
-				};
-				typedef t_CReturn (CType)(tp_CParams...);
-			};
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag volatile &, tp_CParams..., ...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_Volatile
-				};
-				typedef t_CReturn (CType)(tp_CParams..., ...);
-			};
-			
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag const volatile &, tp_CParams...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_ConstVolatile
-				};
-				typedef t_CReturn (CType)(tp_CParams...);
-			};
-
-			template <typename t_CReturn, typename t_CThisTag, typename... tp_CParams>
-			struct TCDetermineFunctionDefinition<t_CReturn (t_CThisTag const volatile &, tp_CParams..., ...), typename TCEnableIf<NTraits::TCIsSame<t_CThisTag, CThisTag>::mc_Value, void>::CType>
-			{
-				enum
-				{
-					mc_Qualifiers = EQualifiers_ConstVolatile
-				};
-				typedef t_CReturn (CType)(tp_CParams..., ...);
-			};
-#else
-			
 			template 
 			<
 				typename t_CFunction
@@ -248,7 +145,6 @@ namespace NMib
 				typedef t_CReturn (CType)(tp_CParams..., ...);
 			};
 
-#endif
 			template <typename t_CFirst, int _FirstQualifiers, typename t_CSecond, int _SecondQualifiers>
 			struct TCIsSameFunction
 			{

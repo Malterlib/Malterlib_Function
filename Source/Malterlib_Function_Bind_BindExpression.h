@@ -347,7 +347,7 @@ namespace NMib
 				template <DMibPreGenerateParams(d_nParams, typename tf_CP)>\
 				auto operator () (DMibPreRepeat(d_nParams, DMibTemp_GenerateArguments, unused)) d_Qualifiers\
 				{\
-					static_assert(NPrivate::TCCheckBindParams<CParamSuper, d_nParams>::mc_Value, "");\
+					static_assert(NPrivate::TCCheckBindParams<CParamSuper, d_nParams>::mc_Value);\
 					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
 						(\
 							fp_BoundObject()\
@@ -411,7 +411,7 @@ namespace NMib
 				template <DMibPreGenerateParams(d_nParams, typename tf_CP)>\
 				auto operator () (DMibPreRepeat(d_nParams, DMibTemp_GenerateArguments, unused)) d_Qualifiers\
 				{\
-					static_assert(NPrivate::TCCheckBindParams<CParamSuper, d_nParams>::mc_Value, "");\
+					static_assert(NPrivate::TCCheckBindParams<CParamSuper, d_nParams>::mc_Value);\
 					return NPrivate::TCCallBindExpression<NFunction::NPrivate::TCGetFinalParamNumber<CParamSuper, d_nParams>::mc_Value>::fs_Call\
 						(\
 							fp_BoundObject()\
