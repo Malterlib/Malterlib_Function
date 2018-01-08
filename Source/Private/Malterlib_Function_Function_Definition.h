@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -43,7 +43,8 @@ namespace NMib
 				struct CVTable
 				{
 					void *m_pCalls[t_CFOpts::mc_NumFunctions];
-					mint m_Alignment;
+					uint32 m_Alignment;
+					uint32 m_Size;
 					FDelete *m_pDestroy;
 					FDuplicate *m_pDuplicate;
 					FDuplicateMove *m_pDuplicateMove;
@@ -69,7 +70,8 @@ namespace NMib
 				struct CVTable
 				{
 					void *m_pCalls[t_CFOpts::mc_NumFunctions];
-					mint m_Alignment;
+					uint32 m_Alignment;
+					uint32 m_Size;
 					FDelete *m_pDestroy;
 					FDuplicate *m_pDuplicate;
 					FDuplicateMove *m_pDuplicateMove;

@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -310,6 +310,7 @@ namespace NMib
 					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
 				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
@@ -324,6 +325,7 @@ namespace NMib
 					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
 				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove

@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -279,7 +279,8 @@ namespace NMib
 					if (m_Data.m_pImpl)
 					{
 						fp_DestroyCall()(m_Data.m_pImpl);
-						m_Data.f_Free(m_Data.m_pImpl);
+						auto &VTable = *m_Data.m_pVTable;
+						m_Data.f_Free(m_Data.m_pImpl, VTable.m_Size);
 					}
 				}
 
@@ -375,7 +376,10 @@ namespace NMib
 					if (!fp_IsDefault())
 					{
 						fp_DestroyCall()(fp_GetImpl());
-						m_Data.f_Free(fg_AlignDown(m_Data.m_pImp, m_Data.m_pImp->m_pVTable->m_Alignment));
+						auto &VTable = *m_Data.m_pImp->m_pVTable;
+						uint8 *pStart = fg_AlignDown((uint8 *)m_Data.m_pImp, VTable.m_Alignment);
+						uint8 *pEnd = (uint8 *)fp_GetImpl() + fg_AlignUp(VTable.m_Size, NTraits::TCAlignmentOf<CImplementationData>::mc_Value);
+						m_Data.f_Free(pStart, pEnd - pStart);
 					}
 				}
 
