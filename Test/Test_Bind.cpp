@@ -1,7 +1,7 @@
 // Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
-#if _MSC_FULL_VER != 191225830
+#if !defined(DCompiler_MSVC_Workaround) || DMibCompilerVersion != 1912
 
 #include <functional>
 #include <boost/bind.hpp>
