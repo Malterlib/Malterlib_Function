@@ -29,11 +29,40 @@ namespace NMib
 				friend struct TCCallImpl;
 				
 #if defined(DCompiler_MSVC_Workaround)
+#if 1
+				template 
+					<
+						typename t_CReturn
+						, typename TCEnableIf
+						<
+							NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&&)>::mc_Value
+							&& !NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&)>::mc_Value
+						>::CType * = nullptr
+					>
+				__declspec(noreturn) operator t_CReturn &&() const
+				{
+					throw 1; // Should never get here
+				}
+
+				template 
+					<
+						typename t_CReturn
+						, typename TCEnableIf
+						<
+							NTraits::TCIsConstructorCallableWith<t_CReturn, void (t_CReturn&)>::mc_Value
+						>::CType * = nullptr
+					>
+				__declspec(noreturn) operator t_CReturn &() const
+				{
+					throw 1; // Should never get here
+				}
+#else
 				template <typename t_CReturn>
 				__declspec(noreturn) operator t_CReturn && () const
 				{
 					fg_NoReturn();
 				}
+#endif
 #else
 				template <typename t_CReturn>
 				[[noreturn]] operator t_CReturn && () const
