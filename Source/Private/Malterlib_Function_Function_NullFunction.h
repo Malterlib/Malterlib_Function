@@ -19,7 +19,7 @@ namespace NMib
 			
 			struct CReturnReference
 			{
-#if defined(DCompiler_MSVC_Workaround) && DMibCompilerVersion == 1912
+#if defined(DCompiler_MSVC_Workaround)
 			public:
 #else
 			private:
