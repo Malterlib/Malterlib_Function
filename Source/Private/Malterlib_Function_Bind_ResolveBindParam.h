@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -425,7 +425,7 @@ namespace NMib
 #endif
 			)
 			{
-				return _P0;
+				return fg_Forward<tf_CP0>(_P0);
 			}
 
 			template 
@@ -472,7 +472,7 @@ namespace NMib
 				, tf_CP1
 			>::CType
 			{
-				return _P1;
+				return fg_Forward<tf_CP1>(_P1);
 			}
 
 			template 
@@ -519,7 +519,7 @@ namespace NMib
 				, tf_CP2
 			>::CType
 			{
-				return _P2;
+				return fg_Forward<tf_CP2>(_P2);
 			}
 
 			template 
@@ -566,7 +566,7 @@ namespace NMib
 				, tf_CP3
 			>::CType
 			{
-				return _P3;
+				return fg_Forward<tf_CP3>(_P3);
 			}
 
 			template 
@@ -613,7 +613,7 @@ namespace NMib
 				, tf_CP4
 			>::CType
 			{
-				return _P4;
+				return fg_Forward<tf_CP4>(_P4);
 			}
 
 #ifndef DMibRestrictNumberOfBindParams
@@ -658,7 +658,7 @@ namespace NMib
 				, tf_CP5
 			>::CType
 			{
-				return _P5;
+				return fg_Forward<tf_CP5>(_P5);
 			}
 
 			template 
@@ -701,7 +701,7 @@ namespace NMib
 				, tf_CP6
 			>::CType
 			{
-				return _P6;
+				return fg_Forward<tf_CP6>(_P6);
 			}
 
 			template 
@@ -744,7 +744,7 @@ namespace NMib
 				, tf_CP7
 			>::CType
 			{
-				return _P7;
+				return fg_Forward<tf_CP7>(_P7);
 			}
 
 			template 
@@ -787,7 +787,7 @@ namespace NMib
 				, tf_CP8
 			>::CType
 			{
-				return _P8;
+				return fg_Forward<tf_CP8>(_P8);
 			}
 
 			template 
@@ -830,7 +830,7 @@ namespace NMib
 				, tf_CP9
 			>::CType
 			{
-				return _P9;
+				return fg_Forward<tf_CP9>(_P9);
 			}
 #endif
 
@@ -882,7 +882,7 @@ namespace NMib
 				, tf_CParam
 			>::CType
 			{
-				return _Param;
+				return fg_Forward<tf_CParam>(_Param);
 			}
 
 
