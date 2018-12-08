@@ -3,89 +3,81 @@
 
 #pragma once
 
-namespace NMib
+namespace NMib::NFunction::NPrivate
 {
-	namespace NFunction
+	template <typename t_FFunc>
+	struct TCFunctionCallDefinition;
+
+	template <typename t_CReturnType, typename... tp_CParams>
+	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...)>
 	{
-		// Function definition
-		namespace NPrivate
+		typedef t_CReturnType (CType)(void *_pImpl, tp_CParams...);
+	};
+
+	template
+	<
+		typename t_CFOpts
+		, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+	>
+	struct TCFunctionDefinitions;
+
+	template <typename t_CFOpts, mint t_iFunction>
+	struct TCGetFunctionCallDefinition
+	{
+		typedef typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType CType;
+	};
+
+	template <typename t_CFOpts>
+	struct TCFunctionDefinitions<t_CFOpts, false>
+	{
+		typedef t_CFOpts CFunctionOptions;
+
+		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+
+		struct CVTable
 		{
-			template <typename t_FFunc>
-			struct TCFunctionCallDefinition;
+			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			uint32 m_Alignment;
+			uint32 m_Size;
+			FDelete *m_pDestroy;
+			FDuplicate *m_pDuplicate;
+			FDuplicateMove *m_pDuplicateMove;
+			static const uint8 m_pCompareEqual = 0;
+			static const uint8 m_pCompareLess = 0;
 
-			template <typename t_CReturnType, typename... tp_CParams>
-			struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...)>
+			template <mint t_iFunction>
+			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
 			{
-				typedef t_CReturnType (CType)(void *_pImpl, tp_CParams...);
-			};
+				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
+			}
+		};
 
-			template 
-			<
-				typename t_CFOpts
-				, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
-			>
-			struct TCFunctionDefinitions;
+	};
+	template <typename t_CFOpts>
+	struct TCFunctionDefinitions<t_CFOpts, true>
+	{
+		typedef t_CFOpts CFunctionOptions;
 
-			template <typename t_CFOpts, mint t_iFunction>
-			struct TCGetFunctionCallDefinition
+		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+
+		struct CVTable
+		{
+			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			uint32 m_Alignment;
+			uint32 m_Size;
+			FDelete *m_pDestroy;
+			FDuplicate *m_pDuplicate;
+			FDuplicateMove *m_pDuplicateMove;
+			FCompareEqual *m_pCompareEqual;
+			FCompareLess *m_pCompareLess;
+
+			template <mint t_iFunction>
+			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
 			{
-				typedef typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType CType;
-			};
-			
-			template <typename t_CFOpts>
-			struct TCFunctionDefinitions<t_CFOpts, false>
-			{
-				typedef t_CFOpts CFunctionOptions;
-
-				typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-				typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-
-				struct CVTable
-				{
-					void *m_pCalls[t_CFOpts::mc_NumFunctions];
-					uint32 m_Alignment;
-					uint32 m_Size;
-					FDelete *m_pDestroy;
-					FDuplicate *m_pDuplicate;
-					FDuplicateMove *m_pDuplicateMove;
-					static const uint8 m_pCompareEqual = 0;
-					static const uint8 m_pCompareLess = 0;
-					
-					template <mint t_iFunction>
-					inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
-					{
-						return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
-					}
-				};
-				
-			};
-			template <typename t_CFOpts>
-			struct TCFunctionDefinitions<t_CFOpts, true>
-			{
-				typedef t_CFOpts CFunctionOptions;
-
-				typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-				typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-
-				struct CVTable
-				{
-					void *m_pCalls[t_CFOpts::mc_NumFunctions];
-					uint32 m_Alignment;
-					uint32 m_Size;
-					FDelete *m_pDestroy;
-					FDuplicate *m_pDuplicate;
-					FDuplicateMove *m_pDuplicateMove;
-					FCompareEqual *m_pCompareEqual;
-					FCompareLess *m_pCompareLess;
-					
-					template <mint t_iFunction>
-					inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
-					{
-						return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
-					}
-				};
-			};
-		}
-	}
+				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
+			}
+		};
+	};
 }
-

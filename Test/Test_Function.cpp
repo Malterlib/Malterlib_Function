@@ -27,7 +27,7 @@ namespace
 			{
 				double m_AlignOn8;
 				uint8 m_BigData[128];
-				NContainer::TCVector<uint8> m_Data;
+				NContainer::CByteVector m_Data;
 				CMoveFunctorBig()
 				{
 					m_Data.f_SetLen(16);
@@ -297,7 +297,7 @@ namespace
 
 			struct CMoveFunctor
 			{
-				NContainer::TCVector<uint8> m_Data;
+				NContainer::CByteVector m_Data;
 				CMoveFunctor()
 				{
 					m_Data.f_SetLen(512);
@@ -362,7 +362,7 @@ namespace
 			{
 				double m_AlignOn8;
 				uint8 m_BigData[128];
-				NContainer::TCVector<uint8> m_Data;
+				NContainer::CByteVector m_Data;
 				CMoveFunctorBigMove()
 				{
 					m_Data.f_SetLen(512);
@@ -425,7 +425,7 @@ namespace
 
 			struct CValidCallTest
 			{
-				NContainer::TCVector<uint8> m_Data;
+				NContainer::CByteVector m_Data;
 				CValidCallTest()
 				{
 					m_Data.f_Insert(33);
@@ -474,7 +474,7 @@ namespace
 			{
 				double m_AlignOn8;
 				uint8 m_BigData[128];
-				NContainer::TCVector<uint8> m_Data;
+				NContainer::CByteVector m_Data;
 				CValidCallTestBig()
 				{
 					m_Data.f_Insert(33);
@@ -910,7 +910,7 @@ namespace
 				t_CFunction Test8;
 				Test8 = fg_Move(Test7);
 
-				NContainer::TCVector<uint8> Vector;
+				NContainer::CByteVector Vector;
 				Vector.f_SetLen(100);
 				t_CFunction Test9 = [Vector](int const &_Test){};
 				t_CFunction Test10 = fg_Move(Test9);
@@ -1034,7 +1034,7 @@ namespace
 				{
 					TCFunction<int (int)> Test;
 					TCFunctionNoAlloc<int (int)> Test2;
-					TCFunctionSmall<int (int), NMem::TCAllocator_Static<sizeof(void *) * 3>> Test3;
+					TCFunctionSmall<int (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>> Test3;
 
 					std::function<int (int)> Test4;
 					boost::function<int (int)> Test5;
@@ -1449,7 +1449,7 @@ namespace
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionNoAlloc<uint8 ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestValidCall<TCFunction<uint8 ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionSmall<uint8 ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestValidCall<TCFunctionSmall<uint8 (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestValidCall<TCFunctionSmall<uint8 (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionFastCall<uint8 ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestValidCall<std::function<uint8 ()>>("std::function");
 					CFunction_Tests::fs_DoTestValidCall<boost::function<uint8 ()>>("boost::function");
@@ -1460,7 +1460,7 @@ namespace
 					//CFunction_Tests::fs_DoTestValidCallBig<TCFunctionNoAlloc<uint8 ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunction<uint8 ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionSmall<uint8 ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionSmall<uint8 (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionSmall<uint8 (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionFastCall<uint8 ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestValidCallBig<std::function<uint8 ()>>("std::function");
 					CFunction_Tests::fs_DoTestValidCallBig<boost::function<uint8 ()>>("boost::function");
@@ -1471,7 +1471,7 @@ namespace
 					CFunction_Tests::fs_DoTestCreate<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestCreate<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestCreate<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestCreate<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestCreate<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestCreate<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestCreate<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestCreate<boost::function<void ()>>("boost::function");
@@ -1482,7 +1482,7 @@ namespace
 					CFunction_Tests::fs_DoTestCopy<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestCopy<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestCopy<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestCopy<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestCopy<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestCopy<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestCopy<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestCopy<boost::function<void ()>>("boost::function");
@@ -1492,7 +1492,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestCopyBig<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestCopyBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestCopyBig<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestCopyBig<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestCopyBig<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestCopyBig<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestCopyBig<boost::function<void ()>>("boost::function");
@@ -1503,7 +1503,7 @@ namespace
 					CFunction_Tests::fs_DoTestAssign<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestAssign<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestAssign<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestAssign<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestAssign<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestAssign<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestAssign<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestAssign<boost::function<void ()>>("boost::function");
@@ -1513,7 +1513,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestAssignBig<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestAssignBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestAssignBig<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestAssignBig<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestAssignBig<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestAssignBig<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestAssignBig<boost::function<void ()>>("boost::function");
@@ -1524,7 +1524,7 @@ namespace
 					CFunction_Tests::fs_DoTestMove<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestMove<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestMove<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestMove<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestMove<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestMove<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestMove<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestMove<boost::function<void ()>>("boost::function");
@@ -1534,7 +1534,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestMoveBig<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestMoveBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestMoveBig<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestMoveBig<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestMoveBig<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestMoveBig<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTestMoveBig<boost::function<void ()>>("boost::function");
@@ -1545,7 +1545,7 @@ namespace
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestRecursive<TCFunction<void (int)>>("TCFunction");
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionFastCall<void (int)>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTestRecursive<std::function<void (int)>>("std::function");
 					CFunction_Tests::fs_DoTestRecursive<boost::function<void (int)>>("boost::function");
@@ -1557,7 +1557,7 @@ namespace
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void ()>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
@@ -1569,7 +1569,7 @@ namespace
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoCopyTag>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void (), CFunctionNoCopyTag>>("TCFunction");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoCopyTag>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoCopyTag, NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoCopyTag, NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void (), CFunctionNoCopyTag>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
@@ -1581,7 +1581,7 @@ namespace
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoMoveTag>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void (), CFunctionNoMoveTag>>("TCFunction");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void (), CFunctionNoMoveTag>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
@@ -1593,7 +1593,7 @@ namespace
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunction");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag, NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag, NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
@@ -1604,7 +1604,7 @@ namespace
 					CFunction_Tests::fs_DoTest1<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest1<TCFunction<void (int)>>("TCFunction");
 					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest1<TCFunctionFastCall<void (int)>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest1<std::function<void (int)>>("std::function");
 					CFunction_Tests::fs_DoTest1<boost::function<void (int)>>("boost::function");
@@ -1616,7 +1616,7 @@ namespace
 					CFunction_Tests::fs_DoTest2<TCFunctionNoAlloc<void (int, int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest2<TCFunction<void (int, int)>>("TCFunction");
 					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest2<TCFunctionFastCall<void (int, int)>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest2<std::function<void (int, int)>>("std::function");
 					CFunction_Tests::fs_DoTest2<boost::function<void (int, int)>>("boost::function");
@@ -1628,7 +1628,7 @@ namespace
 					CFunction_Tests::fs_DoTest10<TCFunctionNoAlloc<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest10<TCFunction<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunction");
 					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int), NMem::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest10<TCFunctionFastCall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest10<std::function<void (int, int, int, int, int, int, int, int, int, int)>>("std::function");
 					CFunction_Tests::fs_DoTest10<boost::function<void (int, int, int, int, int, int, int, int, int, int)>>("boost::function");
