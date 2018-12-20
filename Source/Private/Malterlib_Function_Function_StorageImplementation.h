@@ -296,6 +296,31 @@ namespace NMib::NFunction::NPrivate
 		> CType;
 	};
 
+#ifdef DMibDebuggerHelpers
+	template <typename t_CFunctor>
+	struct TCFunctionObjectTypeHelperName
+	{
+		static constexpr auto mc_FunctorName = fg_GetTypeNameConstExprArray<TCFunctionObjectTypeHelperName>();
+		static t_CFunctor *fs_Debug_GetFunctorType()
+		{
+			return nullptr;
+		}
+		static_assert(TCInstantiateValue<&fs_Debug_GetFunctorType>::mc_Value);
+	};
+
+	template <typename t_CReturn, typename ...tfp_CParams>
+	struct TCFunctionObjectTypeHelperName<t_CReturn (&)(tfp_CParams...)>
+	{
+		using FFunctor = t_CReturn (*)(tfp_CParams...);
+		static constexpr auto mc_FunctorName = fg_GetTypeNameConstExprArray<TCFunctionObjectTypeHelperName>();
+		static FFunctor fs_Debug_GetFunctorType()
+		{
+			return nullptr;
+		}
+		static_assert(TCInstantiateValue<&fs_Debug_GetFunctorType>::mc_Value);
+	};
+#endif
+
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
 	typename TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>::CVTable
 	TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>::ms_VTable
@@ -309,6 +334,9 @@ namespace NMib::NFunction::NPrivate
 		, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 		, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
 		, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
+#ifdef DMibDebuggerHelpers
+		, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
+#endif
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
@@ -326,5 +354,8 @@ namespace NMib::NFunction::NPrivate
 		, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
 		, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareEqual
 		, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareLess
+#ifdef DMibDebuggerHelpers
+		, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
+#endif
 	};
 }
