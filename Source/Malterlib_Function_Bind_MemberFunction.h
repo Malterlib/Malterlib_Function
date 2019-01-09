@@ -70,12 +70,12 @@ namespace NMib::NFunction
 			return *this;
 		}
 		template <typename tf_C0>
-		TCMemberFunctionFunctor(tf_C0 &&_P0)
+		[[gnu::artificial]] inline_always TCMemberFunctionFunctor(tf_C0 &&_P0)
 			: mp_pFunction(fg_Forward<tf_C0>(_P0))
 		{
 		}
 		template <typename tf_C0>
-		TCMemberFunctionFunctor &operator =(tf_C0 &&_P0)
+		[[gnu::artificial]] inline_always TCMemberFunctionFunctor &operator =(tf_C0 &&_P0)
 		{
 			mp_pFunction = fg_Forward<tf_C0>(_P0);
 			return *this;
@@ -83,28 +83,28 @@ namespace NMib::NFunction
 
 	public:
 		template <typename... tfp_CParams>
-		CReturn operator ()(CClass &_Reference, tfp_CParams &&...p_Params) const volatile
+		[[gnu::artificial]] inline_always CReturn operator ()(CClass &_Reference, tfp_CParams &&...p_Params) const volatile
 		{
 			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 		template <typename... tfp_CParams>
-		CReturn operator ()(CClass const &_Reference, tfp_CParams &&...p_Params) const volatile
+		[[gnu::artificial]] inline_always CReturn operator ()(CClass const &_Reference, tfp_CParams &&...p_Params) const volatile
 		{
 			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 		template <typename... tfp_CParams>
-		CReturn operator ()(CClass volatile &_Reference, tfp_CParams &&...p_Params) const volatile
+		[[gnu::artificial]] inline_always CReturn operator ()(CClass volatile &_Reference, tfp_CParams &&...p_Params) const volatile
 		{
 			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 		template <typename... tfp_CParams>
-		CReturn operator ()(CClass const volatile &_Reference, tfp_CParams &&...p_Params) const volatile
+		[[gnu::artificial]] inline_always CReturn operator ()(CClass const volatile &_Reference, tfp_CParams &&...p_Params) const volatile
 		{
 			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 
 		template <typename tf_CPtr, typename... tfp_CParams>
-		CReturn operator ()(tf_CPtr &&_pPtr, tfp_CParams &&...p_Params) const volatile
+		[[gnu::artificial]] inline_always CReturn operator ()(tf_CPtr &&_pPtr, tfp_CParams &&...p_Params) const volatile
 		{
 			return (_pPtr->*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
@@ -187,7 +187,7 @@ namespace NMib::NFunction
 			return *this;
 		}
 		template <typename tf_C0, typename tf_C1>
-		TCMemberFunctionBoundFunctor(tf_C0 &&_P0, tf_C1 &&_P1)
+		[[gnu::artificial]] inline_always TCMemberFunctionBoundFunctor(tf_C0 &&_P0, tf_C1 &&_P1)
 			: mp_pFunction(fg_Forward<tf_C0>(_P0))
 			, mp_pThis(fg_Forward<tf_C1>(_P1))
 		{
@@ -195,17 +195,17 @@ namespace NMib::NFunction
 
 	public:
 		template <typename... tfp_CParams>
-		CReturn operator ()(tfp_CParams &&...p_Params) const volatile
+		[[gnu::artificial]] inline_always CReturn operator ()(tfp_CParams &&...p_Params) const volatile
 		{
 			return (const_cast<t_CThis>(mp_pThis)->*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 		template <typename... tfp_CParams>
-		CReturn operator ()(tfp_CParams &&...p_Params) const
+		[[gnu::artificial]] inline_always CReturn operator ()(tfp_CParams &&...p_Params) const
 		{
 			return (const_cast<t_CThis>(mp_pThis)->*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 		template <typename... tfp_CParams>
-		CReturn operator ()(tfp_CParams &&...p_Params)
+		[[gnu::artificial]] inline_always CReturn operator ()(tfp_CParams &&...p_Params)
 		{
 			return (mp_pThis->*mp_pFunction)(fg_Forward<tfp_CParams>(p_Params)...);
 		}
@@ -228,7 +228,7 @@ namespace NMib::NFunction
 	|	Index:				!name																		|
 	\*_________________________________________________________________________________________________*/
 	template <typename t_CFunctionPtr>
-	auto fg_MemberFunctionFunctor(t_CFunctionPtr _pPtr)
+	[[gnu::artificial]] inline_always auto fg_MemberFunctionFunctor(t_CFunctionPtr _pPtr)
 	->
 	typename TCEnableIf
 	<
@@ -253,7 +253,7 @@ namespace NMib::NFunction
 	|	Index:				!name																		|
 	\*_________________________________________________________________________________________________*/
 	template <typename t_CFunctionPtr, typename t_CClass>
-	auto fg_MemberFunctionFunctor(t_CFunctionPtr _pPtr, t_CClass _pClassPtr)
+	[[gnu::artificial]] inline_always auto fg_MemberFunctionFunctor(t_CFunctionPtr _pPtr, t_CClass _pClassPtr)
 	->
 	typename TCEnableIf
 	<
