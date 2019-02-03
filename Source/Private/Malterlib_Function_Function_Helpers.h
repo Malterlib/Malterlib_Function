@@ -314,12 +314,11 @@ namespace NMib::NFunction::NPrivate
 
 	template
 	<
-		template <typename t_CFOpts> class t_TImpBase
-		, typename t_CDefaultAllocator //  = NMemory::CAllocator_Heap
+		typename t_CDefaultAllocator //  = NMemory::CAllocator_Heap
 		, typename t_CDefaultAllocOptions //  = TCFunctionNoAllocOptions<>
 		, typename... tp_COptions
 	>
-	struct TCFunctionOptions
+	struct TCFunctionOptionsShared
 	{
 		//typedef NMeta::TCTypeList<tp_COptions...> COptionList;
 		typedef TCParseFunctionOptions<void, tp_COptions...> CParsedOptions;
@@ -355,7 +354,5 @@ namespace NMib::NFunction::NPrivate
 		<
 			NTraits::TCIsVoid<typename CParsedOptions::CFunctionAllocOptions>::mc_Value, t_CDefaultAllocOptions, typename CParsedOptions::CFunctionAllocOptions
 		>::CType CFunctionAllocOptions;
-
-		typedef t_TImpBase<TCFunctionOptions> CImpBase;
 	};
 }

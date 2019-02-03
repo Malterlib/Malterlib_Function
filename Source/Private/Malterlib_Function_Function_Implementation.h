@@ -8,6 +8,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	class TCFunctionBase
 	{
+	public:
+		using CFunctionOptions = t_CFOpts;
+
+	private:
 		template <typename t_CFunctor2, typename t_CFOpts2, bint t_bSupportCompare2, bint t_bSupportCopy2, bint t_bSupportMove2>
 		friend class TCImpl;
 
@@ -288,6 +292,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	class TCFunctionSmallBase
 	{
+	public:
+		using CFunctionOptions = t_CFOpts;
+
+	private:
 		template <typename t_CFunctor2, typename t_CFOpts2, bint t_bSupportCompare2, bint t_bSupportCopy2, bint t_bSupportMove2>
 		friend class TCImpl;
 
@@ -581,6 +589,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	class TCFunctionNoAllocBase
 	{
+	public:
+		using CFunctionOptions = t_CFOpts;
+
+	private:
 		template <typename t_CFunctor2, typename t_CFOpts2, bint t_bSupportCompare2, bint t_bSupportCopy2, bint t_bSupportMove2>
 		friend class TCImpl;
 
@@ -877,12 +889,11 @@ namespace NMib::NFunction::NPrivate
 	public:
 	};
 
-	template <mint t_iFunction, typename t_CBase, typename t_CFOpts, typename t_FFunc = typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, int _Qualifiers = TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>
+	template <mint t_iFunction, typename t_CBase, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::CType, int _Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers>
 	class TCFunctionImplementation0;
 
-
-	template <typename t_CBase, typename t_CFOpts, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<0, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_Const>
+	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Const>
 		: public t_CBase
 	{
 	public:
@@ -891,8 +902,8 @@ namespace NMib::NFunction::NPrivate
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CFOpts, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<0, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_None>
+	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
 		: public t_CBase
 	{
 	public:
@@ -901,8 +912,8 @@ namespace NMib::NFunction::NPrivate
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CFOpts, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<0, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_Volatile>
+	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Volatile>
 		: public t_CBase
 	{
 	public:
@@ -911,8 +922,8 @@ namespace NMib::NFunction::NPrivate
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CFOpts, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<0, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_ConstVolatile>
+	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_ConstVolatile>
 		: public t_CBase
 	{
 	public:
@@ -922,59 +933,49 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template <typename t_CBase, typename t_CFOpts, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_Const>
-		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>
+	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Const>
+		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
-		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CFOpts, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_None>
-		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>
+	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
+		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
-		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CFOpts, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_Volatile>
-		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>
+	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Volatile>
+		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
-		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) volatile
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CFOpts, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
-	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CFOpts, t_CReturn (tp_CParams...), EQualifiers_ConstVolatile>
-		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>
+	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_ConstVolatile>
+		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
-		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const volatile
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
-	};
-
-	template
-	<
-		typename t_CBase
-		, typename t_CFunctionOptions
-	>
-	struct TCDetermineFunctionImplementation
-	{
-		typedef TCFunctionImplementation0<t_CFunctionOptions::mc_NumFunctions-1, t_CBase, t_CFunctionOptions> CType;
 	};
 
 	template
@@ -982,10 +983,10 @@ namespace NMib::NFunction::NPrivate
 		typename t_CFOpts
 		, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
 	>
-	class TCFunctionImplementation : public TCDetermineFunctionImplementation<typename t_CFOpts::CImpBase, t_CFOpts>::CType
+	class TCFunctionImplementation : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
 		//
-		typedef typename TCDetermineFunctionImplementation<typename t_CFOpts::CImpBase, t_CFOpts>::CType CSuper;
+		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
 
 		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
@@ -1102,10 +1103,10 @@ namespace NMib::NFunction::NPrivate
 	<
 		typename t_CFOpts
 	>
-	class TCFunctionImplementation<t_CFOpts, true> : public TCDetermineFunctionImplementation<typename t_CFOpts::CImpBase, t_CFOpts>::CType
+	class TCFunctionImplementation<t_CFOpts, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
 		//
-		typedef typename TCDetermineFunctionImplementation<typename t_CFOpts::CImpBase, t_CFOpts>::CType CSuper;
+		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
 
 		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;

@@ -134,6 +134,15 @@ namespace NMib::NFunction
 	template <typename t_CFunction>
 	struct TCFunctionInfo;
 
+	namespace NPrivate
+	{
+		template <typename... tp_COptions>
+		struct TCFunctionOptions : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>
+		{
+			typedef NPrivate::TCFunctionNoAllocBase<TCFunctionOptions> CImpBase;
+		};
+	}
+
 	/// General function template tuned for a mix of fast construction and fast calls.
 	template
 	<
@@ -145,10 +154,7 @@ namespace NMib::NFunction
 		<
 			NPrivate::TCFunctionOptions
 			<
-				NPrivate::TCFunctionNoAllocBase
-				, NMemory::CAllocator_Heap
-				, TCFunctionNoAllocOptions<true, sizeof(void *)*3>
-				, t_CFunction
+				t_CFunction
 				, tp_COptions...
 			>
 		>
@@ -161,9 +167,7 @@ namespace NMib::NFunction
 		friend struct TCFunctionInfo;
 
 
-		using CFunctionOptions
-			= NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, t_CFunction, tp_COptions...>
-		;
+		using CFunctionOptions = NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
@@ -237,6 +241,15 @@ namespace NMib::NFunction
 	template <typename t_CSignature>
 	using TCFunctionMovable = TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
 
+	namespace NPrivate
+	{
+		template <typename... tp_COptions>
+		struct TCFunctionOptionsFastCall : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, tp_COptions...>
+		{
+			typedef NPrivate::TCFunctionBase<TCFunctionOptionsFastCall> CImpBase;
+		};
+	}
+
 	/// Function template tuned for maximum performance of calls.
 	template
 	<
@@ -244,7 +257,7 @@ namespace NMib::NFunction
 		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
 	>
 	class TCFunctionFastCall
-		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<NPrivate::TCFunctionBase, NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>>
+		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
 		template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
@@ -253,7 +266,7 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionBase, NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
+		typedef NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...> CFunctionOptions;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
@@ -317,6 +330,15 @@ namespace NMib::NFunction
 	template <typename t_CSignature>
 	using TCFunctionFastCallMovable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
 
+	namespace NPrivate
+	{
+		template <typename... tp_COptions>
+		struct TCFunctionOptionsSmall : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, tp_COptions...>
+		{
+			typedef NPrivate::TCFunctionSmallBase<TCFunctionOptionsSmall> CImpBase;
+		};
+	}
+
 	/// Function template tuned for minimum storage of empty functions.
 	template
 	<
@@ -324,10 +346,7 @@ namespace NMib::NFunction
 		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
 	>
 	class TCFunctionSmall
-		: public NPrivate::TCFunctionImplementation
-		<
-			NPrivate::TCFunctionOptions<NPrivate::TCFunctionSmallBase, NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>
-		>
+		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
 		template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
@@ -336,7 +355,7 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionSmallBase, NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
+		typedef NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...> CFunctionOptions;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
@@ -398,6 +417,15 @@ namespace NMib::NFunction
 	template <typename t_CSignature>
 	using TCFunctionSmallMovable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
 
+	namespace NPrivate
+	{
+		template <typename... tp_COptions>
+		struct TCFunctionOptionsNoAlloc : public TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>
+		{
+			typedef NPrivate::TCFunctionNoAllocBase<TCFunctionOptionsNoAlloc> CImpBase;
+		};
+	}
+
 	//// Function template tuned for maximum call speed and maximum construction speed.
 	template
 	<
@@ -407,7 +435,7 @@ namespace NMib::NFunction
 	class TCFunctionNoAlloc
 		: public NPrivate::TCFunctionImplementation
 		<
-			NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...>
+			NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
@@ -417,7 +445,7 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionOptions<NPrivate::TCFunctionNoAllocBase, NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, t_CFunction, tp_COptions...> CFunctionOptions;
+		typedef NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...> CFunctionOptions;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
