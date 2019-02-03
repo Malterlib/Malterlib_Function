@@ -245,13 +245,13 @@ namespace NMib::NFunction::NPrivate
 		template <mint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase volatile const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase volatile const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionBase volatile const *_pThis) { return _pThis->m_Data.m_pCall; }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionBase volatile const *_pThis) { return _pThis->m_Data.m_pCall; }
 		};
 
 		template <mint t_iCall>
@@ -548,11 +548,11 @@ namespace NMib::NFunction::NPrivate
 		template <mint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionSmallBase volatile const *_pThis) { return _pThis->m_Data.m_pImp->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionSmallBase volatile const *_pThis) { return _pThis->m_Data.m_pImp->m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
 		template <mint t_iCall>
-		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const volatile
+		mark_artificial inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const volatile
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
@@ -850,17 +850,17 @@ namespace NMib::NFunction::NPrivate
 		template <mint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase volatile const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase volatile const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBase volatile const *_pThis) { return _pThis->m_pCall; }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBase volatile const *_pThis) { return _pThis->m_pCall; }
 		};
 
 		template <mint t_iCall>
-		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const volatile
+		mark_artificial inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const volatile
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
@@ -886,7 +886,7 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -896,7 +896,7 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -906,7 +906,7 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) volatile
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) volatile
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -916,7 +916,7 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const volatile
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const volatile
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -928,7 +928,7 @@ namespace NMib::NFunction::NPrivate
 	{
 	public:
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -939,7 +939,7 @@ namespace NMib::NFunction::NPrivate
 	{
 	public:
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -950,7 +950,7 @@ namespace NMib::NFunction::NPrivate
 	{
 	public:
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) volatile
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) volatile
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
@@ -961,7 +961,7 @@ namespace NMib::NFunction::NPrivate
 	{
 	public:
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase, t_CFOpts>::operator ();
-		inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const volatile
+		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const volatile
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
