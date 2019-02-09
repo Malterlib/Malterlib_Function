@@ -6,7 +6,7 @@
 /// \file	Malterlib_Function_Function.h
 ///			File for the function templates
 
-#include <Mib/Storage/Indirection>
+#include <Mib/Storage/UniquePointer>
 
 namespace NMib::NFunction
 {

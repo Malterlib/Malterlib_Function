@@ -719,7 +719,7 @@ namespace NMib::NFunction::NPrivate
 			{
 				typedef typename TCDetermineImpl
 					<
-						NStorage::TCIndirection
+						NStorage::TCUniquePointer
 						<
 							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
 							, CAllocator
@@ -780,11 +780,12 @@ namespace NMib::NFunction::NPrivate
 			{
 				typedef typename TCDetermineImpl
 					<
-						NStorage::TCIndirection
+						NStorage::TCUniquePointer
 						<
 							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
 							, CAllocator
-						>, CFunctionDefinition
+						>
+						, CFunctionDefinition
 					>::CType CImpl
 				;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");

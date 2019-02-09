@@ -1,4 +1,4 @@
-﻿// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB 
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 /**	\namespace NMib::NFunction
@@ -96,7 +96,7 @@
 	function type and two indirections when calling any of the other
 	overloads. Data is accessed through at most one indirection. If the
 	functor cannot fit inside the local storage the data is one indirection
-	through a TCIndirection object, otherwise zero indirections.
+	through a TCUniquePointer object, otherwise zero indirections.
 
 	Use this function type in all cases where none of the other function
 	types makes sense.

@@ -71,11 +71,17 @@ namespace NMib::NFunction::NPrivate
 		}
 		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
@@ -139,11 +145,17 @@ namespace NMib::NFunction::NPrivate
 		}
 		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
@@ -207,11 +219,17 @@ namespace NMib::NFunction::NPrivate
 		}
 		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
@@ -278,11 +296,17 @@ namespace NMib::NFunction::NPrivate
 		}
 		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
-			return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
