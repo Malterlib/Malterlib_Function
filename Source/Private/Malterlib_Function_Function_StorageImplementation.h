@@ -346,40 +346,47 @@ namespace NMib::NFunction::NPrivate
 #endif
 
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
-	typename TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>::CVTable
-	TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>::ms_VTable
-	=
+	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>
 	{
-		{
-			(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
-		}
-		, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
-		, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
-#ifdef DMibDebuggerHelpers
-		, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
-#endif
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+		typedef typename CFunctionDefinition::CVTable CVTable;
+		static constexpr CVTable mc_VTable =
+			{
+				{
+					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+				}
+				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
+	#ifdef DMibDebuggerHelpers
+				, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
+	#endif
+			}
+		;
 	};
-
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
-	typename TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true>::CVTable
-	TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true>::ms_VTable
-	=
+	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true>
 	{
-		{
-			(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
-		}
-		, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
-		, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareEqual
-		, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareLess
-#ifdef DMibDebuggerHelpers
-		, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
-#endif
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+		typedef typename CFunctionDefinition::CVTable CVTable;
+		static constexpr CVTable mc_VTable =
+			{
+				{
+					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+				}
+				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareEqual
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareLess
+	#ifdef DMibDebuggerHelpers
+				, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
+	#endif
+			}
+		;
 	};
 }

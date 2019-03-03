@@ -13,19 +13,4 @@ namespace NMib::NFunction::NPrivate
 		, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
 	>
 	struct TCImplVTable;
-
-	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
-	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>
-	{
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
-		static CVTable ms_VTable;
-	};
-	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
-	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true>
-	{
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
-		static CVTable ms_VTable;
-	};
 }

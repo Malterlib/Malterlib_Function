@@ -28,7 +28,7 @@ namespace NMib::NFunction::NPrivate
 		{
 		public:
 			CData()
-				: m_pVTable(&CNullFunction::CVTable::ms_VTable)
+				: m_pVTable(&CNullFunction::CVTable::mc_VTable)
 				, m_pImpl(nullptr)
 				, m_pCall(&CNullFunction::CCallImp0::fs_Call)
 			{
@@ -62,7 +62,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			m_Data.m_pImpl = nullptr;
 			m_Data.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-			m_Data.m_pVTable = &CNullFunction::CVTable::ms_VTable;
+			m_Data.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 		}
 
 		void fp_Move(TCFunctionBase &&_Other)
@@ -128,7 +128,7 @@ namespace NMib::NFunction::NPrivate
 			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
 			m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<t_CFunction>(_Function));
 			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
-			m_Data.m_pVTable = &CImpl::CVTable::ms_VTable;
+			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
 
 		void const *fp_GetFirstFunctionPointer() const
@@ -153,7 +153,7 @@ namespace NMib::NFunction::NPrivate
 				m_Data.m_pImpl = pNew;
 			}
 			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
-			m_Data.m_pVTable = &CImpl::CVTable::ms_VTable;
+			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
 
 
@@ -313,12 +313,16 @@ namespace NMib::NFunction::NPrivate
 		{
 			CVTable const * m_pVTable;
 		};
-		static CImplementationData ms_NullImplementation;
+		constexpr static CImplementationData mc_NullImplementation =
+			{
+				&TCFunctionSmallBase<t_CFOpts>::CNullFunction::CVTable::mc_VTable
+			}
+		;
 		class CData : public CAllocator
 		{
 		public:
 			CData()
-				: m_pImp(&ms_NullImplementation)
+				: m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
 			{
 			}
 			CImplementationData *m_pImp;
@@ -342,12 +346,12 @@ namespace NMib::NFunction::NPrivate
 
 		bint fp_IsDefault() const
 		{
-			return m_Data.m_pImp == &ms_NullImplementation;
+			return m_Data.m_pImp == &mc_NullImplementation;
 		}
 
 		void fp_SetDefault()
 		{
-			m_Data.m_pImp = &ms_NullImplementation;
+			m_Data.m_pImp = const_cast<CImplementationData *>(&mc_NullImplementation);
 		}
 
 		only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl()
@@ -460,7 +464,7 @@ namespace NMib::NFunction::NPrivate
 			typedef TCConstructObject<typename CImpl::CImplBase> CConstructObject;
 			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
 			m_Data.m_pImp = pObject - 1;
-			m_Data.m_pImp->m_pVTable = &CImpl::CVTable::ms_VTable;;
+			m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
 
 		void const *fp_GetFirstFunctionPointer() const
@@ -479,14 +483,14 @@ namespace NMib::NFunction::NPrivate
 				fp_SetDefault();
 				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
 				m_Data.m_pImp = pObject - 1;
-				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::ms_VTable;;
+				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 			else
 			{
 				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
 				fp_Destroy();
 				m_Data.m_pImp = pObject - 1;
-				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::ms_VTable;;
+				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		}
 
@@ -580,13 +584,6 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFOpts>
-	typename TCFunctionSmallBase<t_CFOpts>::CImplementationData TCFunctionSmallBase<t_CFOpts>::ms_NullImplementation =
-	{
-		&TCFunctionSmallBase<t_CFOpts>::CNullFunction::CVTable::ms_VTable
-	};
-
-
-	template <typename t_CFOpts>
 	class TCFunctionNoAllocBase
 	{
 	public:
@@ -613,7 +610,7 @@ namespace NMib::NFunction::NPrivate
 
 		TCFunctionNoAllocBase()
 			: m_pCall(&CNullFunction::CCallImp0::fs_Call)
-			, m_pVTable(&CNullFunction::CVTable::ms_VTable)
+			, m_pVTable(&CNullFunction::CVTable::mc_VTable)
 		{
 		}
 
@@ -630,7 +627,7 @@ namespace NMib::NFunction::NPrivate
 		void fp_SetDefault()
 		{
 			m_pCall = &CNullFunction::CCallImp0::fs_Call;
-			m_pVTable = &CNullFunction::CVTable::ms_VTable;
+			m_pVTable = &CNullFunction::CVTable::mc_VTable;
 		}
 
 		void fp_Destroy()
@@ -707,7 +704,7 @@ namespace NMib::NFunction::NPrivate
 
 				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::ms_VTable;
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
 
@@ -732,7 +729,7 @@ namespace NMib::NFunction::NPrivate
 
 				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::ms_VTable;
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
 
@@ -764,11 +761,11 @@ namespace NMib::NFunction::NPrivate
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
 				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-				_This.m_pVTable = &CNullFunction::CVTable::ms_VTable;
+				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 
 				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::ms_VTable;
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
 
@@ -794,11 +791,11 @@ namespace NMib::NFunction::NPrivate
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
 				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-				_This.m_pVTable = &CNullFunction::CVTable::ms_VTable;
+				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 
 				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::ms_VTable;
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
 
