@@ -236,10 +236,18 @@ namespace NMib::NFunction
 	}
 
 	template <typename t_CSignature>
-	using TCFunctionMutable = TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+	struct TCFunctionMutable : public TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>
+	{
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>::TCFunction;
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>::operator =;
+	};
 
 	template <typename t_CSignature>
-	using TCFunctionMovable = TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
+	struct TCFunctionMovable : public TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>
+	{
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>::TCFunction;
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>::operator =;
+	};
 
 	namespace NPrivate
 	{
@@ -512,6 +520,24 @@ namespace NMib::NFunction
 	{
 		template <typename t_CFunction, typename... tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunction<t_CFunction, tp_COptions...>>
+		{
+			enum
+			{
+				mc_Value = true
+			};
+		};
+
+		template <typename t_CFunction>
+		struct TCIsTCFunctionImpl<TCFunctionMovable<t_CFunction>>
+		{
+			enum
+			{
+				mc_Value = true
+			};
+		};
+
+		template <typename t_CFunction>
+		struct TCIsTCFunctionImpl<TCFunctionMutable<t_CFunction>>
 		{
 			enum
 			{

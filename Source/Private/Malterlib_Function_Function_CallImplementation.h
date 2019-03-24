@@ -96,8 +96,8 @@ namespace NMib::NFunction::NPrivate
 		t_CFunctor m_Functor;
 	};
 
-	template <typename t_CFunctor>
-	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor>, true, true>
+	template <typename t_CFunctor, typename ...tp_COptions>
+	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor, tp_COptions...>, true, true>
 	{
 		enum
 		{
@@ -119,11 +119,11 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
-		NStorage::TCUniquePointer<t_CFunctor> m_pFunctor;
+		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
 
-	template <typename t_CFunctor>
-	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor>, false, true>
+	template <typename t_CFunctor, typename ...tp_COptions>
+	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor, tp_COptions...>, false, true>
 	{
 		enum
 		{
@@ -142,11 +142,11 @@ namespace NMib::NFunction::NPrivate
 
 		TCImplBase(TCImplBase const &_Other) = delete;
 
-		NStorage::TCUniquePointer<t_CFunctor> m_pFunctor;
+		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
 
-	template <typename t_CFunctor>
-	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor>, true, false>
+	template <typename t_CFunctor, typename ...tp_COptions>
+	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor, tp_COptions...>, true, false>
 	{
 		enum
 		{
@@ -165,11 +165,11 @@ namespace NMib::NFunction::NPrivate
 
 		TCImplBase(TCImplBase &&_Other) = delete;
 
-		NStorage::TCUniquePointer<t_CFunctor> m_pFunctor;
+		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
 
-	template <typename t_CFunctor>
-	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor>, false, false>
+	template <typename t_CFunctor, typename ...tp_COptions>
+	struct TCImplBase<NStorage::TCUniquePointer<t_CFunctor, tp_COptions...>, false, false>
 	{
 		enum
 		{
@@ -185,7 +185,7 @@ namespace NMib::NFunction::NPrivate
 		TCImplBase(TCImplBase &&_Other) = delete;
 		TCImplBase(TCImplBase const &_Other) = delete;
 
-		NStorage::TCUniquePointer<t_CFunctor> m_pFunctor;
+		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
 
 

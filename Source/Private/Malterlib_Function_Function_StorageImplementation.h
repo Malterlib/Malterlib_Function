@@ -104,11 +104,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -134,11 +130,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -178,15 +170,8 @@ namespace NMib::NFunction::NPrivate
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -212,11 +197,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -253,16 +234,8 @@ namespace NMib::NFunction::NPrivate
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -284,16 +257,8 @@ namespace NMib::NFunction::NPrivate
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			DMibFastCheck(0);
-			return nullptr;
-		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)

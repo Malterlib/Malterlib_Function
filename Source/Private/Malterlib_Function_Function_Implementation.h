@@ -714,15 +714,18 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl
+				using CUniquePointer = typename TCChooseType
 					<
-						NStorage::TCUniquePointer
+						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
+						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						, NStorage::TCUniquePointer
 						<
 							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
 							, CAllocator
-						>, CFunctionDefinition
-					>::CType CImpl
+						>
+					>::CType
 				;
+				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
 
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
@@ -775,16 +778,19 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl
+				using CUniquePointer = typename TCChooseType
 					<
-						NStorage::TCUniquePointer
+						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
+						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						, NStorage::TCUniquePointer
 						<
 							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
 							, CAllocator
 						>
-						, CFunctionDefinition
-					>::CType CImpl
+					>::CType
 				;
+				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+				
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
