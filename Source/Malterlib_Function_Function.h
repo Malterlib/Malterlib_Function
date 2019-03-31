@@ -1,4 +1,4 @@
-// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -573,22 +573,6 @@ namespace NMib::NFunction
 		};
 	}
 
-	template <typename tf_CLeft, typename tf_CRight>
-	TCEnableIfType<NPrivate::TCIsTCFunctionCompareInValid<tf_CLeft, tf_CRight>::mc_Value, bint> operator == (tf_CLeft &&_Left, tf_CRight &&_Right)
-	{
-		static_assert(!NPrivate::TCIsTCFunctionCompareInValid<tf_CLeft, tf_CRight>::mc_Value
-			, "Compare not allowed");
-		return true;
-	}
-
-	template <typename tf_CLeft, typename tf_CRight>
-	TCEnableIfType<NPrivate::TCIsTCFunctionCompareInValid<tf_CLeft, tf_CRight>::mc_Value, bint> operator < (tf_CLeft &&_Left, tf_CRight &&_Right)
-	{
-		static_assert(!NPrivate::TCIsTCFunctionCompareInValid<tf_CLeft, tf_CRight>::mc_Value
-			, "Compare not allowed");
-		return true;
-	}
-
 	template <typename t_CFunction>
 	struct TCFunctionInfo
 	{
@@ -600,5 +584,5 @@ namespace NMib::NFunction
 }
 
 #ifndef DMibPNoShortCuts
-	using namespace NMib::NFunction;	
+	using namespace NMib::NFunction;
 #endif
