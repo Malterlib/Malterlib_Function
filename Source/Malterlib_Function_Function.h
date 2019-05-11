@@ -581,6 +581,18 @@ namespace NMib::NFunction
 		template <mint t_iCall>
 		using TCCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::CType;
 	};
+
+	extern template class TCFunction<void ()>;
+	extern template struct TCFunctionMutable<void ()>;
+	extern template struct TCFunctionMovable<void ()>;
+
+	extern template class TCFunctionFastCall<void ()>;
+	extern template class TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
+	extern template class TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+
+	extern template class TCFunctionNoAlloc<void ()>;
+	extern template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
+	extern template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
 }
 
 #ifndef DMibPNoShortCuts
