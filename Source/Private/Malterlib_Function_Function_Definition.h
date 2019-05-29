@@ -17,7 +17,7 @@ namespace NMib::NFunction::NPrivate
 	template
 	<
 		typename t_CFOpts
-		, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+		, bool t_bSupportCompare = t_CFOpts::mc_bSupportCompare
 	>
 	struct TCFunctionDefinitions;
 

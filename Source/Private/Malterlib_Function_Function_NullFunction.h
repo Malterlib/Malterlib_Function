@@ -96,11 +96,11 @@ namespace NMib::NFunction::NPrivate
 			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
 		}
 
-		bint operator == (CNullFunctionImpl const &_Other) const
+		bool operator == (CNullFunctionImpl const &_Other) const
 		{
 			return true;
 		}
-		bint operator < (CNullFunctionImpl const &_Other) const
+		bool operator < (CNullFunctionImpl const &_Other) const
 		{
 			return false;
 		}

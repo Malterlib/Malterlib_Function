@@ -5,12 +5,12 @@
 
 namespace NMib::NFunction::NPrivate
 {
-	template <typename t_CLeft, typename t_CRight, bint t_bBothFunction>
+	template <typename t_CLeft, typename t_CRight, bool t_bBothFunction>
 	struct TCIsTCFunctionCompareInValid;
 
 	typedef void (FDelete)(void *_pImpl);
-	typedef bint (FCompareEqual)(void const *_pImpl0, void const *_pImp1);
-	typedef bint (FCompareLess)(void const *_pImpl0, void const *_pImp1);
+	typedef bool (FCompareEqual)(void const *_pImpl0, void const *_pImp1);
+	typedef bool (FCompareLess)(void const *_pImpl0, void const *_pImp1);
 
 	template <typename t_CParamType>
 	struct TCGetReferenceType
@@ -197,7 +197,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <bint t_bAllowAlloc, mint t_MaxSize, mint t_Alignment, typename... tp_CParams>
+	template <bool t_bAllowAlloc, mint t_MaxSize, mint t_Alignment, typename... tp_CParams>
 	struct TCParseFunctionOptions<void, TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment>, tp_CParams...>
 	{
 		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;

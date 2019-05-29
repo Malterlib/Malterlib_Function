@@ -60,7 +60,7 @@ namespace NMib::NFunction
 	*/
 	template
 	<
-		bint t_AllowAlloc = false
+		bool t_AllowAlloc = false
 		/// Set to true to allow the function to allocate memory dynamically
 		, uint32 t_MaxSize = sizeof(void *)*4
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
@@ -98,7 +98,7 @@ namespace NMib::NFunction
 			};
 		};
 
-		template <typename t_CLeft, typename t_CRight, bint t_bBothFunction = TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CLeft>::CType>::CType>::mc_Value && TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CRight>::CType>::CType>::mc_Value>
+		template <typename t_CLeft, typename t_CRight, bool t_bBothFunction = TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CLeft>::CType>::CType>::mc_Value && TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CRight>::CType>::CType>::mc_Value>
 		struct TCIsTCFunctionCompareInValid
 		{
 			enum
@@ -160,7 +160,7 @@ namespace NMib::NFunction
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
+		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
 		friend struct NPrivate::TCIsTCFunctionCompareInValid;
 
 		template <typename t_CFunction0>
@@ -268,7 +268,7 @@ namespace NMib::NFunction
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
+		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
 		friend struct NPrivate::TCIsTCFunctionCompareInValid;
 
 		template <typename t_CFunction0>
@@ -357,7 +357,7 @@ namespace NMib::NFunction
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
+		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
 		friend struct NPrivate::TCIsTCFunctionCompareInValid;
 
 		template <typename t_CFunction0>
@@ -447,7 +447,7 @@ namespace NMib::NFunction
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bint t_bBothFunction0>
+		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
 		friend struct NPrivate::TCIsTCFunctionCompareInValid;
 
 		template <typename t_CFunction0>

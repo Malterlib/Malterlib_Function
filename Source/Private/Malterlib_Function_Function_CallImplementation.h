@@ -5,7 +5,7 @@
 
 namespace NMib::NFunction::NPrivate
 {
-	template <typename t_CFunctor, bint t_bSupportCopy, bint t_bSupportMove>
+	template <typename t_CFunctor, bool t_bSupportCopy, bool t_bSupportMove>
 	struct TCImplBase
 	{
 		enum

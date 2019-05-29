@@ -12,7 +12,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bint t_bSupportCompare2, bint t_bSupportCopy2, bint t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
@@ -54,7 +54,7 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
-		bint fp_IsDefault() const
+		bool fp_IsDefault() const
 		{
 			return m_Data.m_pImpl == nullptr;
 		}
@@ -157,7 +157,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 
-		template <bint t_bMove, typename t_CDummy = void>
+		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
 			typedef TCFunctionBase const & CType;
@@ -169,7 +169,7 @@ namespace NMib::NFunction::NPrivate
 			typedef TCFunctionBase && CType;
 		};
 
-		template <bint t_bMove>
+		template <bool t_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
 		{
 			if (_Other.m_Data.m_pImpl)
@@ -296,7 +296,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bint t_bSupportCompare2, bint t_bSupportCopy2, bint t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 	public:
@@ -344,7 +344,7 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
-		bint fp_IsDefault() const
+		bool fp_IsDefault() const
 		{
 			return m_Data.m_pImp == &mc_NullImplementation;
 		}
@@ -495,7 +495,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 
-		template <bint t_bMove, typename t_CDummy = void>
+		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
 			typedef TCFunctionSmallBase const & CType;
@@ -507,7 +507,7 @@ namespace NMib::NFunction::NPrivate
 			typedef TCFunctionSmallBase && CType;
 		};
 
-		template <bint t_bMove>
+		template <bool t_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
 		{
 			if (!_Other.fp_IsDefault())
@@ -590,7 +590,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bint t_bSupportCompare2, bint t_bSupportCopy2, bint t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
@@ -619,7 +619,7 @@ namespace NMib::NFunction::NPrivate
 			//NMemory::fg_Free(m_pStorage);
 		}
 
-		bint fp_IsDefault() const
+		bool fp_IsDefault() const
 		{
 			return m_pCall == &CNullFunction::CCallImp0::fs_Call;
 		}
@@ -638,7 +638,7 @@ namespace NMib::NFunction::NPrivate
 			}
 		}
 
-		template <bint t_bMove, typename t_CDummy = void>
+		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
 			typedef TCFunctionNoAllocBase const & CType;
@@ -650,7 +650,7 @@ namespace NMib::NFunction::NPrivate
 			typedef TCFunctionNoAllocBase && CType;
 		};
 
-		template <bint t_bMove>
+		template <bool t_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
 		{
 			if (_Other.m_pCall != &CNullFunction::CCallImp0::fs_Call)
@@ -692,7 +692,7 @@ namespace NMib::NFunction::NPrivate
 			return new(m_Storage.m_Aligned) tf_CObject(fg_Forward<tf_CParam>(_Param));
 		}
 
-		template <bint t_bMustAlloc, bint t_bAllowAlloc, typename t_CDummy = void>
+		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
 		struct TCConstructInternal
 		{
 			template <typename tf_CFunction>
@@ -751,7 +751,7 @@ namespace NMib::NFunction::NPrivate
 			);
 		}
 
-		template <bint t_bMustAlloc, bint t_bAllowAlloc, typename t_CDummy = void>
+		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
 		struct TCAssignInternal
 		{
 			template <typename tf_CFunction>
@@ -985,7 +985,7 @@ namespace NMib::NFunction::NPrivate
 	template
 	<
 		typename t_CFOpts
-		, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+		, bool t_bSupportCompare = t_CFOpts::mc_bSupportCompare
 	>
 	class TCFunctionImplementation : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
@@ -1194,7 +1194,7 @@ namespace NMib::NFunction::NPrivate
 			return *this;
 		}
 
-		inline_small bint f_IsEmpty() const
+		inline_small bool f_IsEmpty() const
 		{
 			return this->fp_IsDefault();
 		}
@@ -1204,13 +1204,13 @@ namespace NMib::NFunction::NPrivate
 			return !this->fp_IsDefault();
 		}
 
-		bint operator == (TCFunctionImplementation const &_Other) const
+		bool operator == (TCFunctionImplementation const &_Other) const
 		{
 			if (this->fp_VTable() != _Other.fp_VTable())
 				return false;
 			return this->fp_CompareEqual()(this->fp_GetImpl(), _Other.fp_GetImpl());
 		}
-		bint operator < (TCFunctionImplementation const &_Other) const
+		bool operator < (TCFunctionImplementation const &_Other) const
 		{
 			if (this->fp_VTable() < _Other.fp_VTable())
 				return true;

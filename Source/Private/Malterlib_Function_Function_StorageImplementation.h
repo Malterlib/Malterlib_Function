@@ -9,9 +9,9 @@ namespace NMib::NFunction::NPrivate
 		<
 			typename t_CFunctor
 			, typename t_CFOpts
-			, bint t_bSupportCompare = t_CFOpts::mc_bSupportCompare
-			, bint t_bSupportCopy = t_CFOpts::mc_bSupportCopy
-			, bint t_bSupportMove = t_CFOpts::mc_bSupportMove
+			, bool t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+			, bool t_bSupportCopy = t_CFOpts::mc_bSupportCopy
+			, bool t_bSupportMove = t_CFOpts::mc_bSupportMove
 		>
 	class TCImpl
 	{
@@ -69,14 +69,14 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
@@ -135,14 +135,14 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
@@ -198,14 +198,14 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
@@ -259,14 +259,14 @@ namespace NMib::NFunction::NPrivate
 		}
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bint fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bint fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
 				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;

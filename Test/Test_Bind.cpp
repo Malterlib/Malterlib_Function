@@ -1,4 +1,4 @@
-// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #include <Mib/Function/Function>
@@ -16,7 +16,7 @@ namespace
 	void fg_Test()
 	{
 	}
-	
+
 	namespace
 	{
 		class CBind_Tests : public NTest::CTest
@@ -26,12 +26,12 @@ namespace
 			{
 				typedef int result_type;
 
-				bint operator == (CBindFunctor const &_Right) const
+				bool operator == (CBindFunctor const &_Right) const
 				{
 					return true;
 				}
 
-				bint operator < (CBindFunctor const &_Right) const
+				bool operator < (CBindFunctor const &_Right) const
 				{
 					return false;
 				}
@@ -94,7 +94,7 @@ namespace
 				{
 					return _Vector;
 				}
-			
+
 				void f_UnaryTest()
 				{
 				}
@@ -124,7 +124,7 @@ namespace
 				{
 				}
 			};
-			
+
 			void f_DoMemberPtrTests()
 			{
 				{
@@ -135,7 +135,7 @@ namespace
 				{
 					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
 					auto MemberPtr = &CBindFunctor::f_BinaryTest2;
-					auto Result = (TestMemberPtr->*MemberPtr)(2);					
+					auto Result = (TestMemberPtr->*MemberPtr)(2);
 				}
 				{
 					auto MemberPtr = fg_MemberFunctionFunctor(&CBindFunctor::f_BinaryTest3);
@@ -145,7 +145,7 @@ namespace
 				{
 					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
 					auto MemberPtr = &CBindFunctor::f_BinaryTest3;
-					auto Result = (TestMemberPtr->*MemberPtr)(2);					
+					auto Result = (TestMemberPtr->*MemberPtr)(2);
 				}
 				{
 					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
@@ -153,7 +153,7 @@ namespace
 					(TestMemberPtr->*MemberPtr)();
 				}
 			}
-			
+
 			void f_DoBindTests()
 			{
 				{
@@ -175,7 +175,7 @@ namespace
 					TestRef();
 				}
 			}
-			
+
 			void f_DoTests()
 			{
 				DMibTestSuite("Member pointers")
@@ -189,6 +189,6 @@ namespace
 			}
 		};
 	}
-	
+
 	DMibTestRegister(CBind_Tests, Malterlib::Function);
 }

@@ -1,4 +1,4 @@
-// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #include <functional>
@@ -93,7 +93,7 @@ namespace
 				DMibTestSuite(_Name)
 				{
 					NTime::CCyclesMin Timer;
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -134,7 +134,7 @@ namespace
 				{
 					NTime::CCyclesMin Timer;
 					t_CFunctor Test = [] (){++g_Test;};
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -176,7 +176,7 @@ namespace
 					NTime::CCyclesMin Timer;
 
 					t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -218,7 +218,7 @@ namespace
 					NTime::CCyclesMin Timer;
 					t_CFunctor Test = [] (){++g_Test;};
 					t_CFunctor Test2;
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -261,7 +261,7 @@ namespace
 
 					t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
 					t_CFunctor Test2;
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -324,7 +324,7 @@ namespace
 					NTime::CCyclesMin Timer;
 					t_CFunctor Test = CFunction_Tests::CMoveFunctor();
 					t_CFunctor Test2;
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -389,7 +389,7 @@ namespace
 					NTime::CCyclesMin Timer;
 					t_CFunctor Test = CFunction_Tests::CMoveFunctorBigMove();
 					t_CFunctor Test2;
-				
+
 					//t_CFunctor Test = Test1;
  					for (mint i = 0; i < mc_nTests; ++i)
 					{
@@ -447,7 +447,7 @@ namespace
 			template <typename t_CFunctor>
 			static void fs_DoTestValidCall(NStr::CStr const &_Name)
 			{
-				
+
 				DMibTestSuite(_Name)
 				{
 					NTime::CCyclesMin Timer;
@@ -460,7 +460,7 @@ namespace
 					t_CFunctor Test5;
 					TestSource = CFunction_Tests::CValidCallTest();
 					Test5 = fg_Move(TestSource);
-				
+
 					DMibTest(DMibExpr(Test()) == DMibExpr(33));
 					DMibTest(DMibExpr(Test2()) == DMibExpr(33));
 					DMibTest(DMibExpr(Test3()) == DMibExpr(33));
@@ -508,7 +508,7 @@ namespace
 					t_CFunctor Test5;
 					TestSource = CFunction_Tests::CValidCallTestBig();
 					Test5 = fg_Move(TestSource);
-				
+
 					DMibTest(DMibExpr(Test()) == DMibExpr(33));
 					DMibTest(DMibExpr(Test2()) == DMibExpr(33));
 					DMibTest(DMibExpr(Test3()) == DMibExpr(33));
@@ -870,9 +870,9 @@ namespace
 			{
 				t_CFunction Test = [&](int const &_Test){};
 				Test(3);
-					
+
 				Test = [&](int const &_Test){};
-					
+
 				Test(4);
 				t_CFunction Test3 = Test;
 				Test3(5);
@@ -888,9 +888,9 @@ namespace
 			{
 				t_CFunction Test = [&](int const &_Test){};
 				Test(3);
-					
+
 				Test = [&](int const &_Test){};
-					
+
 				Test(4);
 				t_CFunction Test3 = Test;
 				Test3(5);
@@ -930,17 +930,17 @@ namespace
 				{
 				}
 
-				bint operator == (CFunctorCompare const &_Other) const
+				bool operator == (CFunctorCompare const &_Other) const
 				{
 					return m_Value == _Other.m_Value;
 				}
 
-				bint operator < (CFunctorCompare const &_Other) const
+				bool operator < (CFunctorCompare const &_Other) const
 				{
 					return m_Value < _Other.m_Value;
 				}
 			};
-			
+
 			struct CCommand
 			{
 				virtual ~CCommand()
@@ -961,7 +961,7 @@ namespace
 					}
 				;
 			}
-			
+
 			struct CCounter
 			{
 				int32 *m_pCount;
@@ -999,7 +999,7 @@ namespace
 				{
 					return 100000000;
 				}
-				
+
 				template <typename tf_CParam0, typename... tfp_CParams>
 				int operator ()(tf_CParam0 _Param, tfp_CParams... p_Params)
 				{
@@ -1021,7 +1021,7 @@ namespace
 					return _Param + (*this)(p_Params...);
 				}
 			};
-			
+
 			void f_DoTests()
 			{
 
@@ -1100,7 +1100,7 @@ namespace
 					}
 					DMibTest(DMibExpr(Count) == DMibExpr(0));
 				};
-				
+
 				DMibTestSuite("Qualifiers tests")
 				{
 					struct CFunctorConst
@@ -1269,7 +1269,7 @@ namespace
 
 				DMibTestSuite("Usage Tests")
 				{
-					struct V1 
+					struct V1
 					{
 						void operator()(int) const {}
 						int operator()() const { return 3; }
@@ -1296,10 +1296,10 @@ namespace
 								, int (CThisTag &, int, int, int, int)
 								, int (CThisTag volatile &, int, int, int, int)
 								, int (CThisTag const volatile &, int, int, int, int)
-							> 
+							>
 						F1;
-						
-						
+
+
 						F1 f1;
 						f1 = CCallAll();
 						DMibTest(DMibExpr(f1(1)) == DMibExpr(100001));
@@ -1367,16 +1367,16 @@ namespace
 //						F1 f2(v1);  // Ignoring extra parameters might be ok?
 					}
 					{
-						struct V2 
+						struct V2
 						{
 							int operator()() { return 2; }
 							int operator()() const { return 3; }
 						} v2;
-						struct V3 
+						struct V3
 						{
 							int operator()() { return 4; }
 						} v3;
-						struct V4 
+						struct V4
 						{
 							int operator()() const { return 5; }
 						} v4;
@@ -1400,7 +1400,7 @@ namespace
 							F1 f1(v4);
 							DMibTest(DMibExpr(f1())==DMibExpr(5));
 							F1 const f2(v4);
-							DMibTest(DMibExpr(f2())==DMibExpr(5));						
+							DMibTest(DMibExpr(f2())==DMibExpr(5));
 						}
 						{
 							auto lambda1 = [](int)->int { return 1;};
@@ -1416,7 +1416,7 @@ namespace
 							//DMibTest(DMibExpr(f5())==DMibExpr(5));
 						}
 						{
-							struct V2 
+							struct V2
 							{
 								void fun(int) {}
 								int fun(void*) { return 3; }
@@ -1465,7 +1465,7 @@ namespace
 					CFunction_Tests::fs_DoTestValidCallBig<std::function<uint8 ()>>("std::function");
 					CFunction_Tests::fs_DoTestValidCallBig<boost::function<uint8 ()>>("boost::function");
 				};
-				
+
 				DMibTestCategory("Create")
 				{
 					CFunction_Tests::fs_DoTestCreate<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
@@ -1635,10 +1635,10 @@ namespace
 				};
 
 			}
-				
+
 		};
 	}
-	
+
 	DMibTestRegister(CFunction_Tests, Malterlib::Function);
 }
 
