@@ -195,10 +195,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
 	{
-#if DMibEnableSafeCheck > 0
-		inline_never
-#endif
-		static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				return (*((t_CBase *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -209,7 +206,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, void (tp_CParams...), EQualifiers_None>
 	{
-		static void fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				(*((t_CBase *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -220,7 +217,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...), EQualifiers_Const>
 	{
-		static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				return (*((t_CBase const *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -231,7 +228,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, void (tp_CParams...), EQualifiers_Const>
 	{
-		static void fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				(*((t_CBase const *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -242,7 +239,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...), EQualifiers_Volatile>
 	{
-		static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				return (*((t_CBase volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -253,7 +250,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, void (tp_CParams...), EQualifiers_Volatile>
 	{
-		static void fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				(*((t_CBase volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -264,7 +261,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...), EQualifiers_ConstVolatile>
 	{
-		static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				return (*((t_CBase const volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -275,7 +272,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CBase, typename... tp_CParams>
 	struct TCCallImpl<t_CBase, void (tp_CParams...), EQualifiers_ConstVolatile>
 	{
-		static void fs_Call(void *_pImpl, tp_CParams... p_Params)
+		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				(*((t_CBase const volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
