@@ -179,7 +179,7 @@ namespace NMib::NFunction::NPrivate
 					fp_Destroy();
 					fp_SetDefault();
 					void *pNew;
-					if (t_bMove)
+					if constexpr (t_bMove)
 						pNew = _Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this);
 					else
 						pNew = _Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this);
@@ -189,7 +189,7 @@ namespace NMib::NFunction::NPrivate
 				else
 				{
 					void *pNew;
-					if (t_bMove)
+					if constexpr (t_bMove)
 						pNew = _Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this);
 					else
 						pNew = _Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this);
@@ -497,7 +497,7 @@ namespace NMib::NFunction::NPrivate
 					fp_Destroy();
 					fp_SetDefault();
 					CImplementationData *pNew;
-					if (t_bMove)
+					if constexpr (t_bMove)
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
 					else
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
@@ -507,7 +507,7 @@ namespace NMib::NFunction::NPrivate
 				else
 				{
 					CImplementationData *pNew;
-					if (t_bMove)
+					if constexpr (t_bMove)
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
 					else
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
@@ -637,7 +637,7 @@ namespace NMib::NFunction::NPrivate
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				if (t_bMove)
+				if constexpr (t_bMove)
 					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
 					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
