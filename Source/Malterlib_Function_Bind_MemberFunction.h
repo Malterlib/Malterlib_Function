@@ -32,14 +32,6 @@ namespace NMib::NFunction
 			: mp_pFunction(_Other.mp_pFunction)
 		{
 		}
-		TCMemberFunctionFunctor(TCMemberFunctionFunctor volatile &_Other)
-			: mp_pFunction(_Other.mp_pFunction)
-		{
-		}
-		TCMemberFunctionFunctor(TCMemberFunctionFunctor const volatile &_Other)
-			: mp_pFunction(_Other.mp_pFunction)
-		{
-		}
 		TCMemberFunctionFunctor(TCMemberFunctionFunctor &&_Other)
 			: mp_pFunction(fg_Move(_Other.mp_pFunction))
 		{
@@ -50,16 +42,6 @@ namespace NMib::NFunction
 			return *this;
 		}
 		TCMemberFunctionFunctor &operator =(TCMemberFunctionFunctor const &_Other)
-		{
-			mp_pFunction = _Other.mp_pFunction;
-			return *this;
-		}
-		TCMemberFunctionFunctor &operator =(TCMemberFunctionFunctor volatile &_Other)
-		{
-			mp_pFunction = _Other.mp_pFunction;
-			return *this;
-		}
-		TCMemberFunctionFunctor &operator =(TCMemberFunctionFunctor const volatile &_Other)
 		{
 			mp_pFunction = _Other.mp_pFunction;
 			return *this;
@@ -83,28 +65,18 @@ namespace NMib::NFunction
 
 	public:
 		template <typename... tfp_CParams>
-		mark_artificial inline_always CReturn operator ()(CClass &_Reference, tfp_CParams &&...p_Params) const volatile
+		mark_artificial inline_always CReturn operator ()(CClass &_Reference, tfp_CParams &&...p_Params) const
 		{
 			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 		template <typename... tfp_CParams>
-		mark_artificial inline_always CReturn operator ()(CClass const &_Reference, tfp_CParams &&...p_Params) const volatile
-		{
-			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
-		template <typename... tfp_CParams>
-		mark_artificial inline_always CReturn operator ()(CClass volatile &_Reference, tfp_CParams &&...p_Params) const volatile
-		{
-			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
-		template <typename... tfp_CParams>
-		mark_artificial inline_always CReturn operator ()(CClass const volatile &_Reference, tfp_CParams &&...p_Params) const volatile
+		mark_artificial inline_always CReturn operator ()(CClass const &_Reference, tfp_CParams &&...p_Params) const
 		{
 			return (_Reference.*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
 
 		template <typename tf_CPtr, typename... tfp_CParams>
-		mark_artificial inline_always CReturn operator ()(tf_CPtr &&_pPtr, tfp_CParams &&...p_Params) const volatile
+		mark_artificial inline_always CReturn operator ()(tf_CPtr &&_pPtr, tfp_CParams &&...p_Params) const
 		{
 			return (_pPtr->*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
 		}
@@ -141,16 +113,6 @@ namespace NMib::NFunction
 			, mp_pThis(_Other.mp_pThis)
 		{
 		}
-		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor volatile &_Other)
-			: mp_pFunction(_Other.mp_pFunction)
-			, mp_pThis(_Other.mp_pThis)
-		{
-		}
-		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor const volatile &_Other)
-			: mp_pFunction(_Other.mp_pFunction)
-			, mp_pThis(_Other.mp_pThis)
-		{
-		}
 		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &&_Other)
 			: mp_pFunction(fg_Move(_Other.mp_pFunction))
 			, mp_pThis(fg_Move(_Other.mp_pThis))
@@ -163,18 +125,6 @@ namespace NMib::NFunction
 			return *this;
 		}
 		TCMemberFunctionBoundFunctor &operator =(TCMemberFunctionBoundFunctor const &_Other)
-		{
-			mp_pFunction = _Other.mp_pFunction;
-			mp_pThis = _Other.mp_pThis;
-			return *this;
-		}
-		TCMemberFunctionBoundFunctor &operator =(TCMemberFunctionBoundFunctor volatile &_Other)
-		{
-			mp_pFunction = _Other.mp_pFunction;
-			mp_pThis = _Other.mp_pThis;
-			return *this;
-		}
-		TCMemberFunctionBoundFunctor &operator =(TCMemberFunctionBoundFunctor const volatile &_Other)
 		{
 			mp_pFunction = _Other.mp_pFunction;
 			mp_pThis = _Other.mp_pThis;
@@ -194,11 +144,6 @@ namespace NMib::NFunction
 		}
 
 	public:
-		template <typename... tfp_CParams>
-		mark_artificial inline_always CReturn operator ()(tfp_CParams &&...p_Params) const volatile
-		{
-			return (const_cast<t_CThis>(mp_pThis)->*fg_RemoveQualifiers(mp_pFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
 		template <typename... tfp_CParams>
 		mark_artificial inline_always CReturn operator ()(tfp_CParams &&...p_Params) const
 		{

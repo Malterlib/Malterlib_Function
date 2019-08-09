@@ -991,14 +991,6 @@ namespace
 				{
 					return 1000000;
 				}
-				int operator ()() volatile
-				{
-					return 10000000;
-				}
-				int operator ()() const volatile
-				{
-					return 100000000;
-				}
 
 				template <typename tf_CParam0, typename... tfp_CParams>
 				int operator ()(tf_CParam0 _Param, tfp_CParams... p_Params)
@@ -1007,16 +999,6 @@ namespace
 				}
 				template <typename tf_CParam0, typename... tfp_CParams>
 				int operator ()(tf_CParam0 _Param, tfp_CParams... p_Params) const
-				{
-					return _Param + (*this)(p_Params...);
-				}
-				template <typename tf_CParam0, typename... tfp_CParams>
-				int operator ()(tf_CParam0 _Param, tfp_CParams... p_Params) volatile
-				{
-					return _Param + (*this)(p_Params...);
-				}
-				template <typename tf_CParam0, typename... tfp_CParams>
-				int operator ()(tf_CParam0 _Param, tfp_CParams... p_Params) const volatile
 				{
 					return _Param + (*this)(p_Params...);
 				}
@@ -1127,41 +1109,11 @@ namespace
 						{
 							return 1;
 						}
-						int operator () () volatile
-						{
-							return 2;
-						}
-						int operator () () volatile const
-						{
-							return 3;
-						}
-					};
-					struct CFunctorVolatile
-					{
-						int operator () () volatile
-						{
-							return 2;
-						}
-					};
-					struct CFunctorConstVolatile
-					{
-						int operator () () const volatile
-						{
-							return 3;
-						}
-
-						void f_Test(int const _Value)
-						{
-						}
 					};
 
-					CFunctorConstVolatile noteuhe;
-					noteuhe.f_Test(0);
-					TCFunction<int (), int (CThisTag &), int (CThisTag volatile &), int (CThisTag volatile const &)> TestAll;
+					TCFunction<int (), int (CThisTag &)> TestAll;
 					TCFunction<int (CThisTag &)> Test;
 					TCFunction<int (CThisTag const &)> TestConst;
-					TCFunction<int (CThisTag volatile &)> TestVolatile;
-					TCFunction<int (CThisTag const volatile &)> TestConstVolatile;
 
 					{
 						DMibTestPath("All");
@@ -1169,23 +1121,13 @@ namespace
 
 						DMibTest(DMibExpr(TestAll()) == DMibExpr(0));
 						DMibTest(DMibExpr(fg_Const(TestAll)()) == DMibExpr(1));
-						DMibTest(DMibExpr(fg_Volatile(TestAll)()) == DMibExpr(2));
-						DMibTest(DMibExpr(fg_ConstVolatile(TestAll)()) == DMibExpr(3));
 
 						Test = CFunctorAll();
 						TestConst = CFunctorAll();
-						TestVolatile = CFunctorAll();
-						TestConstVolatile = CFunctorAll();
 
 						DMibTest(DMibExpr(Test()) == DMibExpr(0));
 						DMibTest(DMibExpr(TestConst()) == DMibExpr(1));
 						DMibTest(DMibExpr(fg_Const(TestConst)()) == DMibExpr(1));
-						DMibTest(DMibExpr(TestVolatile()) == DMibExpr(2));
-						DMibTest(DMibExpr(fg_Volatile(TestVolatile)()) == DMibExpr(2));
-						DMibTest(DMibExpr(TestConstVolatile()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_Const(TestConstVolatile)()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_Volatile(TestConstVolatile)()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_ConstVolatile(TestConstVolatile)()) == DMibExpr(3));
 					}
 
 					{
@@ -1193,39 +1135,9 @@ namespace
 
 						Test = CFunctorConst();
 						TestConst = CFunctorConst();
-						// TestVolatile = CFunctorConst(); // Will not compile
-						// TestConstVolatile = CFunctorConst(); // Will not compile
 						DMibTest(DMibExpr(Test()) == DMibExpr(1));
 						DMibTest(DMibExpr(TestConst()) == DMibExpr(1));
 						DMibTest(DMibExpr(fg_Const(TestConst)()) == DMibExpr(1));
-					}
-
-					{
-						DMibTestPath("Volatile");
-						Test = CFunctorVolatile();
-						// TestConst = CFunctorVolatile(); // Will not compile
-						TestVolatile = CFunctorVolatile();
-						// TestConstVolatile = CFunctorVolatile(); // Will not compile
-						DMibTest(DMibExpr(Test()) == DMibExpr(2));
-						DMibTest(DMibExpr(TestVolatile()) == DMibExpr(2));
-						DMibTest(DMibExpr(fg_Volatile(TestVolatile)()) == DMibExpr(2));
-					}
-
-					{
-						DMibTestPath("Const Volatile");
-						Test = CFunctorConstVolatile();
-						TestConst = CFunctorConstVolatile();
-						TestVolatile = CFunctorConstVolatile();
-						TestConstVolatile = CFunctorConstVolatile();
-						DMibTest(DMibExpr(Test()) == DMibExpr(3));
-						DMibTest(DMibExpr(TestConst()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_Const(TestConst)()) == DMibExpr(3));
-						DMibTest(DMibExpr(TestVolatile()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_Volatile(TestVolatile)()) == DMibExpr(3));
-						DMibTest(DMibExpr(TestConstVolatile()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_Const(TestConstVolatile)()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_Volatile(TestConstVolatile)()) == DMibExpr(3));
-						DMibTest(DMibExpr(fg_ConstVolatile(TestConstVolatile)()) == DMibExpr(3));
 					}
 				};
 
@@ -1282,20 +1194,12 @@ namespace
 							<
 								int (int)
 								, int (CThisTag &, int)
-								, int (CThisTag volatile &, int)
-								, int (CThisTag const volatile &, int)
 								, int (int, int)
 								, int (CThisTag &, int, int)
-								, int (CThisTag volatile &, int, int)
-								, int (CThisTag const volatile &, int, int)
 								, int (int, int, int)
 								, int (CThisTag &, int, int, int)
-								, int (CThisTag volatile &, int, int, int)
-								, int (CThisTag const volatile &, int, int, int)
 								, int (int, int, int, int)
 								, int (CThisTag &, int, int, int, int)
-								, int (CThisTag volatile &, int, int, int, int)
-								, int (CThisTag const volatile &, int, int, int, int)
 							>
 						F1;
 
@@ -1310,14 +1214,6 @@ namespace
 						DMibTest(DMibExpr(fg_Const(f1)(1, 1)) == DMibExpr(1000002));
 						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1)) == DMibExpr(1000003));
 						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1, 1)) == DMibExpr(1000004));
-						DMibTest(DMibExpr(fg_Volatile(f1)(1)) == DMibExpr(10000001));
-						DMibTest(DMibExpr(fg_Volatile(f1)(1, 1)) == DMibExpr(10000002));
-						DMibTest(DMibExpr(fg_Volatile(f1)(1, 1, 1)) == DMibExpr(10000003));
-						DMibTest(DMibExpr(fg_Volatile(f1)(1, 1, 1, 1)) == DMibExpr(10000004));
-						DMibTest(DMibExpr(fg_Const(fg_Volatile(f1))(1)) == DMibExpr(100000001));
-						DMibTest(DMibExpr(fg_Const(fg_Volatile(f1))(1, 1)) == DMibExpr(100000002));
-						DMibTest(DMibExpr(fg_Const(fg_Volatile(f1))(1, 1, 1)) == DMibExpr(100000003));
-						DMibTest(DMibExpr(fg_Const(fg_Volatile(f1))(1, 1, 1, 1)) == DMibExpr(100000004));
 					}
 					{
 						typedef TCFunction<void (int)> F1;

@@ -39,8 +39,6 @@ namespace NMib::NFunction::NPrivate
 	{
 		EQualifiers_None,
 		EQualifiers_Const,
-		EQualifiers_Volatile,
-		EQualifiers_ConstVolatile,
 	};
 
 	template
@@ -99,47 +97,6 @@ namespace NMib::NFunction::NPrivate
 		typedef t_CReturn (CType)(tp_CParams..., ...);
 	};
 
-
-	template <typename t_CReturn, typename... tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag volatile &, tp_CParams...)>
-	{
-		enum
-		{
-			mc_Qualifiers = EQualifiers_Volatile
-		};
-		typedef t_CReturn (CType)(tp_CParams...);
-	};
-
-	template <typename t_CReturn, typename... tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag volatile &, tp_CParams..., ...)>
-	{
-		enum
-		{
-			mc_Qualifiers = EQualifiers_Volatile
-		};
-		typedef t_CReturn (CType)(tp_CParams..., ...);
-	};
-
-
-	template <typename t_CReturn, typename... tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const volatile &, tp_CParams...)>
-	{
-		enum
-		{
-			mc_Qualifiers = EQualifiers_ConstVolatile
-		};
-		typedef t_CReturn (CType)(tp_CParams...);
-	};
-
-	template <typename t_CReturn, typename... tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const volatile &, tp_CParams..., ...)>
-	{
-		enum
-		{
-			mc_Qualifiers = EQualifiers_ConstVolatile
-		};
-		typedef t_CReturn (CType)(tp_CParams..., ...);
-	};
 
 	template <typename t_CFirst, int _FirstQualifiers, typename t_CSecond, int _SecondQualifiers>
 	struct TCIsSameFunction

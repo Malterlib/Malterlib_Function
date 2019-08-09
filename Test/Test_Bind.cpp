@@ -60,16 +60,6 @@ namespace
 					return _Test1;
 				}
 
-				NStr::CStr operator () (int _Test1) volatile
-				{
-					return "Volatile";
-				}
-
-				NStr::CWStr operator () (int _Test1) const volatile
-				{
-					return "Const Volatile";
-				}
-
 				float operator () () const
 				{
 					return 5;
@@ -78,16 +68,6 @@ namespace
 				double operator () ()
 				{
 					return 7;
-				}
-
-				NStr::CStr operator () () volatile
-				{
-					return "Volatile no param";
-				}
-
-				NStr::CWStr operator () () const volatile
-				{
-					return "Const Volatile no param";
 				}
 
 				NContainer::TCVector<int32> operator() (NContainer::TCVector<int32> const &_Vector)
@@ -109,7 +89,7 @@ namespace
 				{
 					return _x;
 				}
-				int f_BinaryTest3(int _x) volatile
+				int f_BinaryTest3(int _x)
 				{
 					return _x;
 				}
@@ -171,7 +151,7 @@ namespace
 					TestMemFun3(Functor, 2);
 
 					auto pFunc = &fg_Test;
-					auto TestRef = fg_VolatileReference(fg_ConstReference(pFunc));
+					auto TestRef = fg_ConstReference(pFunc);
 					TestRef();
 				}
 			}

@@ -84,18 +84,6 @@ namespace NMib::NFunction::NPrivate
 			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
 		}
 
-		template <typename... tp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) volatile
-		{
-			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-		}
-
-		template <typename... tp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const volatile
-		{
-			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-		}
-
 		bool operator == (CNullFunctionImpl const &_Other) const
 		{
 			return true;

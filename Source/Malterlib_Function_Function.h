@@ -40,8 +40,6 @@ namespace NMib::NFunction
 		TCFunction<void ()>							// Defaults to const invocation
 		TCFunction<void (CThisTag &)>				// mutable invocation
 		TCFunction<void (CThisTag const &)>			// const invocation
-		TCFunction<void (CThisTag volatile &)>		// volatile invocation
-		TCFunction<void (CThisTag const volatile &)>// const volatile invocation
 		TCFunction<void (CThisTag &, int)>			// mutable invocation with param
 		~~~
 

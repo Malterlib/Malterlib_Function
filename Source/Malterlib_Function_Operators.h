@@ -8,7 +8,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_Comma
 	{
 		template <typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const volatile
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const
 		-> decltype(fg_Forward<tf_CLeft>(_Left) , fg_Forward<tf_CRight>(_Right))
 		{
 			return fg_Forward<tf_CLeft>(_Left) , fg_Forward<tf_CRight>(_Right);
@@ -18,7 +18,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_Conditional
 	{
 		template <typename tf_CCondition, typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CCondition &&_Condition, tf_CLeft &&_Left, tf_CRight &&_Right) const volatile
+		auto operator () (tf_CCondition &&_Condition, tf_CLeft &&_Left, tf_CRight &&_Right) const
 		-> decltype(fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right))
 		{
 			return fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right);
@@ -28,7 +28,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_Subscript
 	{
 		template <typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const volatile
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const
 		-> decltype(fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)])
 		{
 			return fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)];
@@ -38,7 +38,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_PostfixIncrement
 	{
 		template <typename tf_CRight>
-		auto operator () (tf_CRight &&_Right) const volatile
+		auto operator () (tf_CRight &&_Right) const
 		-> decltype(fg_Forward<tf_CRight>(_Right)++)
 		{
 			return fg_Forward<tf_CRight>(_Right)++;
@@ -48,7 +48,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_PostfixDecrement
 	{
 		template <typename tf_CRight>
-		auto operator () (tf_CRight &&_Right) const volatile
+		auto operator () (tf_CRight &&_Right) const
 		-> decltype(fg_Forward<tf_CRight>(_Right)--)
 		{
 			return fg_Forward<tf_CRight>(_Right)--;
@@ -60,7 +60,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_##d_Name\
 	{\
 		template <typename tf_CLeft, typename tf_CRight>\
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const volatile\
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const\
 		-> decltype(fg_Forward<tf_CLeft>(_Left) d_Operator fg_Forward<tf_CRight>(_Right))\
 		{\
 			return fg_Forward<tf_CLeft>(_Left) d_Operator fg_Forward<tf_CRight>(_Right);\
@@ -117,7 +117,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_##d_Name\
 	{\
 		template <typename tf_CRight>\
-		auto operator () (tf_CRight &&_Right) const volatile\
+		auto operator () (tf_CRight &&_Right) const\
 		-> decltype(d_Operator fg_Forward<tf_CRight>(_Right))\
 		{\
 			return d_Operator fg_Forward<tf_CRight>(_Right);\

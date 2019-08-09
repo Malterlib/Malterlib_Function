@@ -236,48 +236,4 @@ namespace NMib::NFunction::NPrivate
 				((t_CBase const *)_pImpl)->m_Functor(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
-	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
-	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...), EQualifiers_Volatile>
-	{
-		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
-		{
-			if constexpr (t_CBase::mc_IsIndirection)
-				return (*((t_CBase volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-			else
-				return ((t_CBase volatile *)_pImpl)->m_Functor(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-		}
-	};
-	template <typename t_CBase, typename... tp_CParams>
-	struct TCCallImpl<t_CBase, void (tp_CParams...), EQualifiers_Volatile>
-	{
-		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params)
-		{
-			if constexpr (t_CBase::mc_IsIndirection)
-				(*((t_CBase volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-			else
-				((t_CBase volatile *)_pImpl)->m_Functor(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-		}
-	};
-	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
-	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...), EQualifiers_ConstVolatile>
-	{
-		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params)
-		{
-			if constexpr (t_CBase::mc_IsIndirection)
-				return (*((t_CBase const volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-			else
-				return ((t_CBase const volatile *)_pImpl)->m_Functor(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-		}
-	};
-	template <typename t_CBase, typename... tp_CParams>
-	struct TCCallImpl<t_CBase, void (tp_CParams...), EQualifiers_ConstVolatile>
-	{
-		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params)
-		{
-			if constexpr (t_CBase::mc_IsIndirection)
-				(*((t_CBase const volatile *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-			else
-				((t_CBase const volatile *)_pImpl)->m_Functor(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
-		}
-	};
 }
