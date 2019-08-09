@@ -154,13 +154,13 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <bool t_bAllowAlloc, mint t_MaxSize, mint t_Alignment, typename... tp_CParams>
-	struct TCParseFunctionOptions<void, TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment>, tp_CParams...>
+	template <bool t_bAllowAlloc, mint t_MaxSize, mint t_Alignment, bool t_bSeparateCallPointer, typename... tp_CParams>
+	struct TCParseFunctionOptions<void, TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer>, tp_CParams...>
 	{
 		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
 		typedef typename CParent::CFunctions CFunctions;
 		typedef typename CParent::CAllocator CAllocator;
-		typedef TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment> CFunctionAllocOptions;
+		typedef TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer> CFunctionAllocOptions;
 		enum
 		{
 			mc_bSupportCompare = CParent::mc_bSupportCompare

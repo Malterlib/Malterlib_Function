@@ -1,4 +1,4 @@
-// Copyright © 2015 Hansoft AB 
+// Copyright © 2015 Hansoft AB
 // Distributed under the MIT license, see license text in LICENSE.Malterlib
 
 #pragma once
@@ -207,7 +207,6 @@ namespace NMib::NFunction::NPrivate
 			}
 		}
 
-
 		only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl()
 		{
 			return m_Data.m_pImpl;
@@ -273,11 +272,7 @@ namespace NMib::NFunction::NPrivate
 				m_Data.f_Free(m_Data.m_pImpl, VTable.m_Size);
 			}
 		}
-
-
-	public:
 	};
-
 
 	template <typename t_CFOpts>
 	class TCFunctionSmallBase
@@ -474,7 +469,6 @@ namespace NMib::NFunction::NPrivate
 			}
 		}
 
-
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
@@ -564,7 +558,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFOpts>
-	class TCFunctionNoAllocBase
+	class TCFunctionNoAllocBaseSeparateCall
 	{
 	public:
 		using CFunctionOptions = t_CFOpts;
@@ -588,13 +582,13 @@ namespace NMib::NFunction::NPrivate
 
 		typename NTraits::TCAlign<CStorage, t_CFOpts::CFunctionAllocOptions::mc_Alignment>::CType m_Storage;
 
-		TCFunctionNoAllocBase()
+		TCFunctionNoAllocBaseSeparateCall()
 			: m_pCall(&CNullFunction::CCallImp0::fs_Call)
 			, m_pVTable(&CNullFunction::CVTable::mc_VTable)
 		{
 		}
 
-		~TCFunctionNoAllocBase()
+		~TCFunctionNoAllocBaseSeparateCall()
 		{
 			//NMemory::fg_Free(m_pStorage);
 		}
@@ -621,13 +615,13 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
-			typedef TCFunctionNoAllocBase const & CType;
+			typedef TCFunctionNoAllocBaseSeparateCall const & CType;
 		};
 
 		template <typename t_CDummy>
 		struct TCGetDuplicateSignature<true, t_CDummy>
 		{
-			typedef TCFunctionNoAllocBase && CType;
+			typedef TCFunctionNoAllocBaseSeparateCall && CType;
 		};
 
 		template <bool t_bMove>
@@ -651,14 +645,14 @@ namespace NMib::NFunction::NPrivate
 			}
 		}
 
-		void fp_Move(TCFunctionNoAllocBase &&_Other)
+		void fp_Move(TCFunctionNoAllocBaseSeparateCall &&_Other)
 		{
 			fp_Duplicate<true>(fg_Move(_Other));
 			_Other.fp_Destroy();
 			_Other.fp_SetDefault();
 		}
 
-		void fp_MoveAssign(TCFunctionNoAllocBase &&_Other)
+		void fp_MoveAssign(TCFunctionNoAllocBaseSeparateCall &&_Other)
 		{
 			fp_Duplicate<true>(fg_Move(_Other));
 			_Other.fp_Destroy();
@@ -676,7 +670,7 @@ namespace NMib::NFunction::NPrivate
 		struct TCConstructInternal
 		{
 			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
 				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
@@ -692,7 +686,7 @@ namespace NMib::NFunction::NPrivate
 		struct TCConstructInternal<true, true, t_CDummy>
 		{
 			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
 				using CUniquePointer = typename TCChooseType
 					<
@@ -735,7 +729,7 @@ namespace NMib::NFunction::NPrivate
 		struct TCAssignInternal
 		{
 			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
 				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
@@ -756,7 +750,7 @@ namespace NMib::NFunction::NPrivate
 		struct TCAssignInternal<true, true, t_CDummy>
 		{
 			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
 				using CUniquePointer = typename TCChooseType
 					<
@@ -770,7 +764,7 @@ namespace NMib::NFunction::NPrivate
 					>::CType
 				;
 				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
-				
+
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -836,13 +830,13 @@ namespace NMib::NFunction::NPrivate
 		template <mint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis) { return _pThis->m_pCall; }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis) { return _pThis->m_pCall; }
 		};
 
 		template <mint t_iCall>
@@ -859,8 +853,287 @@ namespace NMib::NFunction::NPrivate
 		{
 			return (FCompareLess *)m_pVTable->m_pCompareLess;
 		}
+	};
 
+	template <typename t_CFOpts>
+	class TCFunctionNoAllocBase
+	{
 	public:
+		using CFunctionOptions = t_CFOpts;
+
+	private:
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
+		friend class TCImpl;
+
+		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+		typedef typename CFunctionDefinition::CVTable CVTable;
+		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
+		typedef typename t_CFOpts::CAllocator CAllocator;
+
+		typedef uint8 CStorage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
+
+		static CVTable const *fsp_VTable();
+	protected:
+		CVTable const * m_pVTable;
+
+		typename NTraits::TCAlign<CStorage, t_CFOpts::CFunctionAllocOptions::mc_Alignment>::CType m_Storage;
+
+		TCFunctionNoAllocBase()
+			: m_pVTable(&CNullFunction::CVTable::mc_VTable)
+		{
+		}
+
+		~TCFunctionNoAllocBase()
+		{
+			//NMemory::fg_Free(m_pStorage);
+		}
+
+		bool fp_IsDefault() const
+		{
+			return m_pVTable == &CNullFunction::CVTable::mc_VTable;
+		}
+
+		void fp_SetDefault()
+		{
+			m_pVTable = &CNullFunction::CVTable::mc_VTable;
+		}
+
+		void fp_Destroy()
+		{
+			if (m_pVTable != &CNullFunction::CVTable::mc_VTable)
+			{
+				fp_DestroyCall()(fp_GetImpl());
+			}
+		}
+
+		template <bool t_bMove, typename t_CDummy = void>
+		struct TCGetDuplicateSignature
+		{
+			typedef TCFunctionNoAllocBase const & CType;
+		};
+
+		template <typename t_CDummy>
+		struct TCGetDuplicateSignature<true, t_CDummy>
+		{
+			typedef TCFunctionNoAllocBase && CType;
+		};
+
+		template <bool t_bMove>
+		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
+		{
+			if (_Other.m_pVTable != &CNullFunction::CVTable::mc_VTable)
+			{
+				fp_Destroy();
+				fp_SetDefault();
+				if constexpr (t_bMove)
+					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
+				else
+					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
+				m_pVTable = _Other.m_pVTable;
+			}
+			else
+			{
+				fp_Destroy();
+				fp_SetDefault();
+			}
+		}
+
+		void fp_Move(TCFunctionNoAllocBase &&_Other)
+		{
+			fp_Duplicate<true>(fg_Move(_Other));
+			_Other.fp_Destroy();
+			_Other.fp_SetDefault();
+		}
+
+		void fp_MoveAssign(TCFunctionNoAllocBase &&_Other)
+		{
+			fp_Duplicate<true>(fg_Move(_Other));
+			_Other.fp_Destroy();
+			_Other.fp_SetDefault();
+		}
+
+		template <typename tf_CObject, typename tf_CParam>
+		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
+		{
+			static_assert(sizeof(tf_CObject) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage (internal error)");
+			return new(m_Storage.m_Aligned) tf_CObject(fg_Forward<tf_CParam>(_Param));
+		}
+
+		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
+		struct TCConstructInternal
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			{
+				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
+				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+
+				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+			}
+		};
+
+		template <typename t_CDummy>
+		struct TCConstructInternal<true, true, t_CDummy>
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			{
+				using CUniquePointer = typename TCChooseType
+					<
+						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
+						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						, NStorage::TCUniquePointer
+						<
+							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
+							, CAllocator
+						>
+					>::CType
+				;
+				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+
+				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
+				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+
+				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+			}
+		};
+
+		template <typename t_CFunction>
+		void fp_Construct(t_CFunction &&_Function)
+		{
+			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			TCConstructInternal
+			<
+				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
+				|| (NTraits::TCAlignmentOf<CImpl>::mc_Value > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+				, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
+			>::fs_Perform
+			(
+				*this, fg_Forward<t_CFunction>(_Function)
+			);
+		}
+
+		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
+		struct TCAssignInternal
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			{
+				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
+				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+
+				// Start by destroying in case of exception in constructor
+				_This.fp_Destroy();
+				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+
+				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+			}
+		};
+
+		template <typename t_CDummy>
+		struct TCAssignInternal<true, true, t_CDummy>
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
+			{
+				using CUniquePointer = typename TCChooseType
+					<
+						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
+						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						, NStorage::TCUniquePointer
+						<
+							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
+							, CAllocator
+						>
+					>::CType
+				;
+				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+
+				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
+				static_assert(NTraits::TCAlignmentOf<typename CImpl::CImplBase>::mc_Value <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
+
+				// Start by destroying in case of exception in constructor
+				_This.fp_Destroy();
+				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+
+				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+			}
+		};
+
+		void const *fp_GetFirstFunctionPointer() const
+		{
+			return reinterpret_cast<void const *>(m_pVTable->m_pCalls[0]);
+		}
+
+		template <typename t_CFunction>
+		void fp_Assign(t_CFunction &&_Function)
+		{
+			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			TCAssignInternal
+			<
+				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
+				|| (NTraits::TCAlignmentOf<CImpl>::mc_Value > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+				, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
+			>::fs_Perform
+			(
+				*this, fg_Forward<t_CFunction>(_Function)
+			);
+		}
+
+		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl()
+		{
+			return m_Storage.m_Aligned;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
+		{
+			return (uint8 *)m_Storage.m_Aligned;
+		}
+
+		inline_small CVTable const *fp_VTable() const
+		{
+			return m_pVTable;
+		}
+		FDelete *fp_DestroyCall() const
+		{
+			return m_pVTable->m_pDestroy;
+		}
+		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
+		{
+			return m_pVTable->m_pDuplicate;
+		}
+		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
+		{
+			return m_pVTable->m_pDuplicateMove;
+		}
+
+		template <mint t_iCall>
+		struct TCCallRet
+		{
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+		};
+
+		template <mint t_iCall>
+		mark_artificial inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
+		{
+			return TCCallRet<t_iCall>::fs_Get(this);
+		}
+
+		FCompareEqual *fp_CompareEqual() const
+		{
+			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
+		}
+		FCompareLess *fp_CompareLess() const
+		{
+			return (FCompareLess *)m_pVTable->m_pCompareLess;
+		}
 	};
 
 	template <mint t_iFunction, typename t_CBase, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::CType, int _Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers>
@@ -876,6 +1149,7 @@ namespace NMib::NFunction::NPrivate
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
+
 	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
 	class TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
 		: public t_CBase
@@ -898,6 +1172,7 @@ namespace NMib::NFunction::NPrivate
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
 		}
 	};
+
 	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
 	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
@@ -924,8 +1199,6 @@ namespace NMib::NFunction::NPrivate
 		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
 
 		typedef typename CFunctionDefinition::CVTable CVTable;
-
-
 	public:
 
 		/// The options available for the function
@@ -1007,7 +1280,6 @@ namespace NMib::NFunction::NPrivate
 
 		TCFunctionImplementation(CNullPtr)
 		{
-
 		}
 
 		/// Clears the function object same as if f_Clear was called
@@ -1016,7 +1288,6 @@ namespace NMib::NFunction::NPrivate
 			f_Clear();
 			return *this;
 		}
-
 
 		/// Checks if a functor is stored in the function object. If not true is returned
 		inline_small bool f_IsEmpty() const
@@ -1031,10 +1302,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template
-	<
-		typename t_CFOpts
-	>
+	template <typename t_CFOpts>
 	class TCFunctionImplementation<t_CFOpts, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
 		//
@@ -1046,7 +1314,6 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CFunctionDefinition::CVTable CVTable;
 
 	public:
-
 		typedef t_CFOpts CFunctionOptions;
 
 		using CSuper::operator ();
@@ -1146,6 +1413,5 @@ namespace NMib::NFunction::NPrivate
 				return false;
 			return this->fp_CompareLess()(this->fp_GetImpl(), _Other.fp_GetImpl());
 		}
-
 	};
 }

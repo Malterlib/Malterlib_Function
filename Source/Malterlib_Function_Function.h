@@ -64,12 +64,14 @@ namespace NMib::NFunction
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
 		, uint32 t_Alignment = TCConstantMax<mint, sizeof(void *), NTraits::TCAlignmentOf<fp64>::mc_Value>::mc_Value
 		/// The maximum alignment of a type that can be put in the TCFunctionXXXX object
+		, bool t_bSeparateCallPointer = true
 	>
 	struct TCFunctionNoAllocOptions
 	{
 		static constexpr mint mc_MaxSize = (t_MaxSize + t_Alignment - 1) & ~mint(t_Alignment - 1);
 		static constexpr mint mc_Alignment = t_Alignment;
 		static constexpr mint mc_bAllowAlloc = t_AllowAlloc;
+		static constexpr bool mc_bSeparateCallPointer = t_bSeparateCallPointer;
 	};
 
 	///@}
@@ -137,7 +139,15 @@ namespace NMib::NFunction
 		template <typename... tp_COptions>
 		struct TCFunctionOptions : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>
 		{
-			typedef NPrivate::TCFunctionNoAllocBase<TCFunctionOptions> CImpBase;
+			using CFunctionAllocOptions = typename TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>::CFunctionAllocOptions;
+			using CImpBase = typename TCChooseType
+				<
+					CFunctionAllocOptions::mc_bSeparateCallPointer
+					, NPrivate::TCFunctionNoAllocBaseSeparateCall<TCFunctionOptions>
+					, NPrivate::TCFunctionNoAllocBase<TCFunctionOptions>
+				>
+				::CType
+			;
 		};
 	}
 
@@ -428,7 +438,15 @@ namespace NMib::NFunction
 		template <typename... tp_COptions>
 		struct TCFunctionOptionsNoAlloc : public TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
-			typedef NPrivate::TCFunctionNoAllocBase<TCFunctionOptionsNoAlloc> CImpBase;
+			using CFunctionAllocOptions = typename TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>::CFunctionAllocOptions;
+			using CImpBase = typename TCChooseType
+				<
+					CFunctionAllocOptions::mc_bSeparateCallPointer
+					, NPrivate::TCFunctionNoAllocBaseSeparateCall<TCFunctionOptionsNoAlloc>
+					, NPrivate::TCFunctionNoAllocBase<TCFunctionOptionsNoAlloc>
+				>
+				::CType
+			;
 		};
 	}
 
