@@ -57,243 +57,231 @@ namespace
 			template <typename t_CFunctor>
 			static void fs_DoTestRecursive(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+#ifdef DMibDebug
+				const int s_nRecurse = 100;
+#else
+				const int s_nRecurse = 4000;
+#endif
+				t_CFunctor flr_TestRecursive = [&](int _Value)
 				{
-					NTime::CCyclesMin Timer;
-	#ifdef DMibDebug
-					const int s_nRecurse = 100;
-	#else
-					const int s_nRecurse = 4000;
-	#endif
-					t_CFunctor flr_TestRecursive = [&](int _Value)
-					{
-						if (_Value >= s_nRecurse)
-							return;
-						flr_TestRecursive(_Value + 1);
-					};
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						flr_TestRecursive(0);
-						Timer.f_Stop();
-					}
-					Timer /= s_nRecurse;
-
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					if (_Value >= s_nRecurse)
+						return;
+					flr_TestRecursive(_Value + 1);
 				};
-			};
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					flr_TestRecursive(0);
+					Timer.f_Stop();
+				}
+				Timer /= s_nRecurse;
+
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTestCreate(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							t_CFunctor Test0 = [] (){++g_Test;};
-							t_CFunctor Test1 = [] (){++g_Test;};
-							t_CFunctor Test2 = [] (){++g_Test;};
-							t_CFunctor Test3 = [] (){++g_Test;};
-							t_CFunctor Test4 = [] (){++g_Test;};
-							t_CFunctor Test5 = [] (){++g_Test;};
-							t_CFunctor Test6 = [] (){++g_Test;};
-							t_CFunctor Test7 = [] (){++g_Test;};
-							t_CFunctor Test8 = [] (){++g_Test;};
-							t_CFunctor Test9 = [] (){++g_Test;};
-							t_CFunctor Test10 = [] (){++g_Test;};
-							t_CFunctor Test11 = [] (){++g_Test;};
-							t_CFunctor Test12 = [] (){++g_Test;};
-							t_CFunctor Test13 = [] (){++g_Test;};
-							t_CFunctor Test14 = [] (){++g_Test;};
-							t_CFunctor Test15 = [] (){++g_Test;};
-						}
-						Timer.f_Stop();
+						t_CFunctor Test0 = [] (){++g_Test;};
+						t_CFunctor Test1 = [] (){++g_Test;};
+						t_CFunctor Test2 = [] (){++g_Test;};
+						t_CFunctor Test3 = [] (){++g_Test;};
+						t_CFunctor Test4 = [] (){++g_Test;};
+						t_CFunctor Test5 = [] (){++g_Test;};
+						t_CFunctor Test6 = [] (){++g_Test;};
+						t_CFunctor Test7 = [] (){++g_Test;};
+						t_CFunctor Test8 = [] (){++g_Test;};
+						t_CFunctor Test9 = [] (){++g_Test;};
+						t_CFunctor Test10 = [] (){++g_Test;};
+						t_CFunctor Test11 = [] (){++g_Test;};
+						t_CFunctor Test12 = [] (){++g_Test;};
+						t_CFunctor Test13 = [] (){++g_Test;};
+						t_CFunctor Test14 = [] (){++g_Test;};
+						t_CFunctor Test15 = [] (){++g_Test;};
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTestAssign(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = [] (){++g_Test;};
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = [] (){++g_Test;};
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-							Test = [] (){++g_Test;};
-						}
-						Timer.f_Stop();
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
+						Test = [] (){++g_Test;};
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTestAssignBig(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+
+				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-
-					t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-							Test = CFunction_Tests::CMoveFunctorBig();
-						}
-						Timer.f_Stop();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
+						Test = CFunction_Tests::CMoveFunctorBig();
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTestCopy(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = [] (){++g_Test;};
+				t_CFunctor Test2;
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = [] (){++g_Test;};
-					t_CFunctor Test2;
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-						}
-						Timer.f_Stop();
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTestCopyBig(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+
+				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
+				t_CFunctor Test2;
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-
-					t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
-					t_CFunctor Test2;
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-							Test2 = Test;
-						}
-						Timer.f_Stop();
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
+						Test2 = Test;
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			struct CMoveFunctor
 			{
@@ -319,44 +307,42 @@ namespace
 			template <typename t_CFunctor>
 			static void fs_DoTestMove(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = CFunction_Tests::CMoveFunctor();
+				t_CFunctor Test2;
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = CFunction_Tests::CMoveFunctor();
-					t_CFunctor Test2;
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-						}
-						Timer.f_Stop();
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			struct CMoveFunctorBigMove
 			{
@@ -384,44 +370,42 @@ namespace
 			template <typename t_CFunctor>
 			static void fs_DoTestMoveBig(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = CFunction_Tests::CMoveFunctorBigMove();
+				t_CFunctor Test2;
+
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = CFunction_Tests::CMoveFunctorBigMove();
-					t_CFunctor Test2;
-
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
 					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-							Test2 = fg_Move(Test);
-							Test = fg_Move(Test2);
-						}
-						Timer.f_Stop();
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
+						Test2 = fg_Move(Test);
+						Test = fg_Move(Test2);
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					if (NMib::NTest::fg_GroupActive("Performance"))
-						DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				if (NMib::NTest::fg_GroupActive("Performance"))
+					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			struct CValidCallTest
 			{
@@ -447,28 +431,24 @@ namespace
 			template <typename t_CFunctor>
 			static void fs_DoTestValidCall(NStr::CStr const &_Name)
 			{
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = CFunction_Tests::CValidCallTest();
+				t_CFunctor Test2 = Test;
+				t_CFunctor Test3;
+				Test3 = Test;
+				t_CFunctor TestSource = CFunction_Tests::CValidCallTest();
+				t_CFunctor Test4 = fg_Move(TestSource);
+				t_CFunctor Test5;
+				TestSource = CFunction_Tests::CValidCallTest();
+				Test5 = fg_Move(TestSource);
 
-				DMibTestSuite(_Name)
-				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = CFunction_Tests::CValidCallTest();
-					t_CFunctor Test2 = Test;
-					t_CFunctor Test3;
-					Test3 = Test;
-					t_CFunctor TestSource = CFunction_Tests::CValidCallTest();
-					t_CFunctor Test4 = fg_Move(TestSource);
-					t_CFunctor Test5;
-					TestSource = CFunction_Tests::CValidCallTest();
-					Test5 = fg_Move(TestSource);
-
-					DMibTest(DMibExpr(Test()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test2()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test3()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test4()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test5()) == DMibExpr(33));
-				};
-			};
-
+				DMibTest(DMibExpr(Test()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test2()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test3()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test4()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test5()) == DMibExpr(33));
+			}
 
 			struct CValidCallTestBig
 			{
@@ -496,360 +476,344 @@ namespace
 			template <typename t_CFunctor>
 			static void fs_DoTestValidCallBig(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
-				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = CFunction_Tests::CValidCallTestBig();
-					t_CFunctor Test2 = Test;
-					t_CFunctor Test3;
-					Test3 = Test;
-					t_CFunctor TestSource = CFunction_Tests::CValidCallTestBig();
-					t_CFunctor Test4 = fg_Move(TestSource);
-					t_CFunctor Test5;
-					TestSource = CFunction_Tests::CValidCallTestBig();
-					Test5 = fg_Move(TestSource);
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = CFunction_Tests::CValidCallTestBig();
+				t_CFunctor Test2 = Test;
+				t_CFunctor Test3;
+				Test3 = Test;
+				t_CFunctor TestSource = CFunction_Tests::CValidCallTestBig();
+				t_CFunctor Test4 = fg_Move(TestSource);
+				t_CFunctor Test5;
+				TestSource = CFunction_Tests::CValidCallTestBig();
+				Test5 = fg_Move(TestSource);
 
-					DMibTest(DMibExpr(Test()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test2()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test3()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test4()) == DMibExpr(33));
-					DMibTest(DMibExpr(Test5()) == DMibExpr(33));
-				};
-			};
+				DMibTest(DMibExpr(Test()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test2()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test3()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test4()) == DMibExpr(33));
+				DMibTest(DMibExpr(Test5()) == DMibExpr(33));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTest(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
-				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test
-						(
-							[] ()
-							{
-								++g_Test;
-							}
-						)
-					;
-					//t_CFunctor Test = Test1;
- 					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test
+					(
+						[] ()
 						{
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
+							++g_Test;
 						}
-						Timer.f_Stop();
+					)
+				;
+				//t_CFunctor Test = Test1;
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
 					}
-					Timer /= mc_nLoops*16;
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
 
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
-				};
-			};
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
+
 			static void fs_DoTestDirect(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				auto Test = [] ()
 				{
-					NTime::CCyclesMin Timer;
-					auto Test = [] ()
-					{
-						++g_Test;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							Test();
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops * 16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					++g_Test;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						Test();
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops * 16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTest1(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = [] (int _X)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = [] (int _X)
-					{
-						g_Test += _X;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test(1);
-							Test(2);
-							Test(3);
-							Test(4);
-							Test(5);
-							Test(6);
-							Test(7);
-							Test(8);
-							Test(9);
-							Test(10);
-							Test(11);
-							Test(12);
-							Test(13);
-							Test(14);
-							Test(15);
-							Test(16);
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops*16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					g_Test += _X;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test(1);
+						Test(2);
+						Test(3);
+						Test(4);
+						Test(5);
+						Test(6);
+						Test(7);
+						Test(8);
+						Test(9);
+						Test(10);
+						Test(11);
+						Test(12);
+						Test(13);
+						Test(14);
+						Test(15);
+						Test(16);
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
+
 			static void fs_DoTestDirect1(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				auto Test = [] (int _X)
 				{
-					NTime::CCyclesMin Timer;
-					auto Test = [] (int _X)
-					{
-						g_Test += _X;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test(1);
-							Test(2);
-							Test(3);
-							Test(4);
-							Test(5);
-							Test(6);
-							Test(7);
-							Test(8);
-							Test(9);
-							Test(10);
-							Test(11);
-							Test(12);
-							Test(13);
-							Test(14);
-							Test(15);
-							Test(16);
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops * 16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					g_Test += _X;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test(1);
+						Test(2);
+						Test(3);
+						Test(4);
+						Test(5);
+						Test(6);
+						Test(7);
+						Test(8);
+						Test(9);
+						Test(10);
+						Test(11);
+						Test(12);
+						Test(13);
+						Test(14);
+						Test(15);
+						Test(16);
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops * 16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTest2(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = [] (int _0, int _1)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = [] (int _0, int _1)
-					{
-						g_Test += _0 + _1;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test(1, 17);
-							Test(2, 18);
-							Test(3, 19);
-							Test(4, 20);
-							Test(5, 21);
-							Test(6, 22);
-							Test(7, 23);
-							Test(8, 24);
-							Test(9, 25);
-							Test(10, 26);
-							Test(11, 27);
-							Test(12, 28);
-							Test(13, 29);
-							Test(14, 30);
-							Test(15, 31);
-							Test(16, 32);
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops*16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					g_Test += _0 + _1;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test(1, 17);
+						Test(2, 18);
+						Test(3, 19);
+						Test(4, 20);
+						Test(5, 21);
+						Test(6, 22);
+						Test(7, 23);
+						Test(8, 24);
+						Test(9, 25);
+						Test(10, 26);
+						Test(11, 27);
+						Test(12, 28);
+						Test(13, 29);
+						Test(14, 30);
+						Test(15, 31);
+						Test(16, 32);
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			static void fs_DoTestDirect2(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				auto Test = [] (int _0, int _1)
 				{
-					NTime::CCyclesMin Timer;
-					auto Test = [] (int _0, int _1)
-					{
-						g_Test += _0 + _1;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test(1, 17);
-							Test(2, 18);
-							Test(3, 19);
-							Test(4, 20);
-							Test(5, 21);
-							Test(6, 22);
-							Test(7, 23);
-							Test(8, 24);
-							Test(9, 25);
-							Test(10, 26);
-							Test(11, 27);
-							Test(12, 28);
-							Test(13, 29);
-							Test(14, 30);
-							Test(15, 31);
-							Test(16, 32);
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops * 16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					g_Test += _0 + _1;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test(1, 17);
+						Test(2, 18);
+						Test(3, 19);
+						Test(4, 20);
+						Test(5, 21);
+						Test(6, 22);
+						Test(7, 23);
+						Test(8, 24);
+						Test(9, 25);
+						Test(10, 26);
+						Test(11, 27);
+						Test(12, 28);
+						Test(13, 29);
+						Test(14, 30);
+						Test(15, 31);
+						Test(16, 32);
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops * 16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			template <typename t_CFunctor>
 			static void fs_DoTest10(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				t_CFunctor Test = [] (int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
 				{
-					NTime::CCyclesMin Timer;
-					t_CFunctor Test = [] (int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
-					{
-						g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
-							Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
-							Test(3, 19, 3, 19, 3, 19, 3, 19, 3, 19);
-							Test(4, 20, 4, 20, 4, 20, 4, 20, 4, 20);
-							Test(5, 21, 5, 21, 5, 21, 5, 21, 5, 21);
-							Test(6, 22, 6, 22, 6, 22, 6, 22, 6, 22);
-							Test(7, 23, 7, 23, 7, 23, 7, 23, 7, 23);
-							Test(8, 24, 8, 24, 8, 24, 8, 24, 8, 24);
-							Test(9, 25, 9, 25, 9, 25, 9, 25, 9, 25);
-							Test(10, 26, 10, 26, 10, 26, 10, 26, 10, 26);
-							Test(11, 27, 11, 27, 11, 27, 11, 27, 11, 27);
-							Test(12, 28, 12, 28, 12, 28, 12, 28, 12, 28);
-							Test(13, 29, 13, 29, 13, 29, 13, 29, 13, 29);
-							Test(14, 30, 14, 30, 14, 30, 14, 30, 14, 30);
-							Test(15, 31, 15, 31, 15, 31, 15, 31, 15, 31);
-							Test(16, 32, 16, 32, 16, 32, 16, 32, 16, 32);
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops*16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
+						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
+						Test(3, 19, 3, 19, 3, 19, 3, 19, 3, 19);
+						Test(4, 20, 4, 20, 4, 20, 4, 20, 4, 20);
+						Test(5, 21, 5, 21, 5, 21, 5, 21, 5, 21);
+						Test(6, 22, 6, 22, 6, 22, 6, 22, 6, 22);
+						Test(7, 23, 7, 23, 7, 23, 7, 23, 7, 23);
+						Test(8, 24, 8, 24, 8, 24, 8, 24, 8, 24);
+						Test(9, 25, 9, 25, 9, 25, 9, 25, 9, 25);
+						Test(10, 26, 10, 26, 10, 26, 10, 26, 10, 26);
+						Test(11, 27, 11, 27, 11, 27, 11, 27, 11, 27);
+						Test(12, 28, 12, 28, 12, 28, 12, 28, 12, 28);
+						Test(13, 29, 13, 29, 13, 29, 13, 29, 13, 29);
+						Test(14, 30, 14, 30, 14, 30, 14, 30, 14, 30);
+						Test(15, 31, 15, 31, 15, 31, 15, 31, 15, 31);
+						Test(16, 32, 16, 32, 16, 32, 16, 32, 16, 32);
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops*16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			static void fs_DoTestDirect10(NStr::CStr const &_Name)
 			{
-				DMibTestSuite(_Name)
+				DMibTestPath(_Name);
+				NTime::CCyclesMin Timer;
+				auto Test = [] (int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
 				{
-					NTime::CCyclesMin Timer;
-					auto Test = [] (int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
-					{
-						g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
-					};
-					for (mint i = 0; i < mc_nTests; ++i)
-					{
-						g_Test = 0;
-						Timer.f_Start();
-						for (mint i = 0; i < mc_nLoops; ++i)
-						{
-							Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
-							Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
-							Test(3, 19, 3, 19, 3, 19, 3, 19, 3, 19);
-							Test(4, 20, 4, 20, 4, 20, 4, 20, 4, 20);
-							Test(5, 21, 5, 21, 5, 21, 5, 21, 5, 21);
-							Test(6, 22, 6, 22, 6, 22, 6, 22, 6, 22);
-							Test(7, 23, 7, 23, 7, 23, 7, 23, 7, 23);
-							Test(8, 24, 8, 24, 8, 24, 8, 24, 8, 24);
-							Test(9, 25, 9, 25, 9, 25, 9, 25, 9, 25);
-							Test(10, 26, 10, 26, 10, 26, 10, 26, 10, 26);
-							Test(11, 27, 11, 27, 11, 27, 11, 27, 11, 27);
-							Test(12, 28, 12, 28, 12, 28, 12, 28, 12, 28);
-							Test(13, 29, 13, 29, 13, 29, 13, 29, 13, 29);
-							Test(14, 30, 14, 30, 14, 30, 14, 30, 14, 30);
-							Test(15, 31, 15, 31, 15, 31, 15, 31, 15, 31);
-							Test(16, 32, 16, 32, 16, 32, 16, 32, 16, 32);
-							g_TestCopy = g_Test;
-						}
-						Timer.f_Stop();
-					}
-					Timer /= mc_nLoops * 16;
-
-					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+					g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
 				};
-			};
+				for (mint i = 0; i < mc_nTests; ++i)
+				{
+					g_Test = 0;
+					Timer.f_Start();
+					for (mint i = 0; i < mc_nLoops; ++i)
+					{
+						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
+						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
+						Test(3, 19, 3, 19, 3, 19, 3, 19, 3, 19);
+						Test(4, 20, 4, 20, 4, 20, 4, 20, 4, 20);
+						Test(5, 21, 5, 21, 5, 21, 5, 21, 5, 21);
+						Test(6, 22, 6, 22, 6, 22, 6, 22, 6, 22);
+						Test(7, 23, 7, 23, 7, 23, 7, 23, 7, 23);
+						Test(8, 24, 8, 24, 8, 24, 8, 24, 8, 24);
+						Test(9, 25, 9, 25, 9, 25, 9, 25, 9, 25);
+						Test(10, 26, 10, 26, 10, 26, 10, 26, 10, 26);
+						Test(11, 27, 11, 27, 11, 27, 11, 27, 11, 27);
+						Test(12, 28, 12, 28, 12, 28, 12, 28, 12, 28);
+						Test(13, 29, 13, 29, 13, 29, 13, 29, 13, 29);
+						Test(14, 30, 14, 30, 14, 30, 14, 30, 14, 30);
+						Test(15, 31, 15, 31, 15, 31, 15, 31, 15, 31);
+						Test(16, 32, 16, 32, 16, 32, 16, 32, 16, 32);
+						g_TestCopy = g_Test;
+					}
+					Timer.f_Stop();
+				}
+				Timer /= mc_nLoops * 16;
+
+				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
+			}
 
 			static void fs_Test()
 			{
@@ -1340,7 +1304,7 @@ namespace
 				};
 
 
-				DMibTestCategory("ValidCall")
+				DMibTestSuite("ValidCall")
 				{
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionNoAlloc<uint8 ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestValidCall<TCFunction<uint8 ()>>("TCFunction");
@@ -1351,7 +1315,7 @@ namespace
 					CFunction_Tests::fs_DoTestValidCall<boost::function<uint8 ()>>("boost::function");
 				};
 
-				DMibTestCategory("ValidCallBig")
+				DMibTestSuite("ValidCallBig")
 				{
 					//CFunction_Tests::fs_DoTestValidCallBig<TCFunctionNoAlloc<uint8 ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunction<uint8 ()>>("TCFunction");
@@ -1362,7 +1326,7 @@ namespace
 					CFunction_Tests::fs_DoTestValidCallBig<boost::function<uint8 ()>>("boost::function");
 				};
 
-				DMibTestCategory("Create")
+				DMibTestSuite("Create")
 				{
 					CFunction_Tests::fs_DoTestCreate<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestCreate<TCFunction<void ()>>("TCFunction");
@@ -1373,7 +1337,7 @@ namespace
 					CFunction_Tests::fs_DoTestCreate<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("Copy")
+				DMibTestSuite("Copy")
 				{
 					CFunction_Tests::fs_DoTestCopy<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestCopy<TCFunction<void ()>>("TCFunction");
@@ -1384,7 +1348,7 @@ namespace
 					CFunction_Tests::fs_DoTestCopy<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("CopyBig")
+				DMibTestSuite("CopyBig")
 				{
 					CFunction_Tests::fs_DoTestCopyBig<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestCopyBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
@@ -1394,7 +1358,7 @@ namespace
 					CFunction_Tests::fs_DoTestCopyBig<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("Assign")
+				DMibTestSuite("Assign")
 				{
 					CFunction_Tests::fs_DoTestAssign<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestAssign<TCFunction<void ()>>("TCFunction");
@@ -1405,7 +1369,7 @@ namespace
 					CFunction_Tests::fs_DoTestAssign<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("AssignBig")
+				DMibTestSuite("AssignBig")
 				{
 					CFunction_Tests::fs_DoTestAssignBig<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestAssignBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
@@ -1415,7 +1379,7 @@ namespace
 					CFunction_Tests::fs_DoTestAssignBig<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("Move")
+				DMibTestSuite("Move")
 				{
 					CFunction_Tests::fs_DoTestMove<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestMove<TCFunction<void ()>>("TCFunction");
@@ -1426,7 +1390,7 @@ namespace
 					CFunction_Tests::fs_DoTestMove<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("MoveBig")
+				DMibTestSuite("MoveBig")
 				{
 					CFunction_Tests::fs_DoTestMoveBig<TCFunction<void ()>>("TCFunction");
 					CFunction_Tests::fs_DoTestMoveBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
@@ -1436,7 +1400,7 @@ namespace
 					CFunction_Tests::fs_DoTestMoveBig<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("Recursive")
+				DMibTestSuite("Recursive")
 				{
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestRecursive<TCFunction<void (int)>>("TCFunction");
@@ -1447,7 +1411,7 @@ namespace
 					CFunction_Tests::fs_DoTestRecursive<boost::function<void (int)>>("boost::function");
 				};
 
-				DMibTestCategory("Zero param")
+				DMibTestSuite("Zero param")
 				{
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
@@ -1459,7 +1423,7 @@ namespace
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("No copy")
+				DMibTestSuite("No copy")
 				{
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoCopyTag>>("TCFunctionNoAlloc");
@@ -1471,7 +1435,7 @@ namespace
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("No move")
+				DMibTestSuite("No move")
 				{
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoMoveTag>>("TCFunctionNoAlloc");
@@ -1483,7 +1447,7 @@ namespace
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
 				};
 
-				DMibTestCategory("No copy no move")
+				DMibTestSuite("No copy no move")
 				{
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionNoAlloc");
@@ -1494,7 +1458,7 @@ namespace
 					CFunction_Tests::fs_DoTest<std::function<void ()>>("std::function");
 					CFunction_Tests::fs_DoTest<boost::function<void ()>>("boost::function");
 				};
-				DMibTestCategory("One param")
+				DMibTestSuite("One param")
 				{
 					fs_DoTestDirect1("Direct lambda");
 					CFunction_Tests::fs_DoTest1<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
@@ -1506,7 +1470,7 @@ namespace
 					CFunction_Tests::fs_DoTest1<boost::function<void (int)>>("boost::function");
 				};
 
-				DMibTestCategory("Two param")
+				DMibTestSuite("Two param")
 				{
 					fs_DoTestDirect2("Direct lambda");
 					CFunction_Tests::fs_DoTest2<TCFunctionNoAlloc<void (int, int)>>("TCFunctionNoAlloc");
@@ -1518,7 +1482,7 @@ namespace
 					CFunction_Tests::fs_DoTest2<boost::function<void (int, int)>>("boost::function");
 				};
 
-				DMibTestCategory("Ten param")
+				DMibTestSuite("Ten param")
 				{
 					fs_DoTestDirect10("Direct lambda");
 					CFunction_Tests::fs_DoTest10<TCFunctionNoAlloc<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionNoAlloc");
