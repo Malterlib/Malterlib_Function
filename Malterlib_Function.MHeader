@@ -10,9 +10,9 @@ Property.MalterlibBoostModules "function;bind;config;@(MalterlibBoostModules)"
 
 %Group "{Malterlib}/{Lib_Malterlib_Function}"
 {
-	%Group Function
+	%Group "Function"
 	{
-		%Group Include
+		%Group "Include"
 		{
 			Compile.Type "C++"
 			{
@@ -21,7 +21,7 @@ Property.MalterlibBoostModules "function;bind;config;@(MalterlibBoostModules)"
 			%File "Include/Mib/Function/^*"
 		}
 		%File "Source/^*"
-		%Group Documentation
+		%Group "Documentation"
 		{
 			%File "Documentation/*"
 		}
