@@ -31,7 +31,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename tf_CType>
 		inline_small static CType fs_Forward(tf_CType &&_Type)
 		{
-			return (CType)_Type;
+			return static_cast<CType>(_Type);
 		}
 	};
 
