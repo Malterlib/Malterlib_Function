@@ -280,7 +280,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		typedef NPrivate::TCImpl
 		<
-			t_CFunctor
+			typename NTraits::TCRemoveQualifiers<t_CFunctor>::CType
 			, typename t_CFunctionDefinition::CFunctionOptions
 		> CType;
 	};
