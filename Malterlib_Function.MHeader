@@ -3,7 +3,7 @@
 
 Import "../Core/Lib_Malterlib.MTarget"
 
-Property.MalterlibBoostModules "function;bind;config;@(MalterlibBoostModules)"
+Property.MalterlibBoostModules =+ ["function", "bind", "config"]
 {
 	!!MalterlibEnableInternalTests true
 }
@@ -31,20 +31,13 @@ Property.MalterlibBoostModules "function;bind;config;@(MalterlibBoostModules)"
 
 Property
 {
-	MalterlibLibrary_Function true
-	{
-		&
-		{
-			MalterlibLibrary_Function ""
-			MalterlibLibrary_All true
-		}
-	}
-	MalterlibSubLibraries "Function;@(MalterlibSubLibraries)"
+	MalterlibLibrary_Function define bool = MalterlibLibrary_All
+	MalterlibSubLibraries =+ "Function"
 	{
 		!!MalterlibLibrary_Function true
 	}
-//	MalterlibSubLibrarySeparate_Lib_Malterlib_Function true
-	MalterlibIncludeRoots "@('Include'->MakeAbsolute());@(MalterlibIncludeRoots)"
+//	MalterlibSubLibrarySeparate_Lib_Malterlib_Function define bool = true
+	MalterlibIncludeRoots =+ "Include"->MakeAbsolute()
 	{
 		!!MalterlibLibrary_Function true
 	}
@@ -54,7 +47,7 @@ Property
 {
 	!!MalterlibEnableInternalTests true
 	
-	MalterlibTests "Malterlib_Function;@(MalterlibTests)"
-	MalterlibTestFiles_Malterlib_Function "@('Test/*'->MakeAbsolute())"
+	MalterlibTests =+ "Malterlib_Function"
+	MalterlibTestFiles_Malterlib_Function define [type(CEntity)] = ["Test/*"->MakeAbsolute()]
 }
 
