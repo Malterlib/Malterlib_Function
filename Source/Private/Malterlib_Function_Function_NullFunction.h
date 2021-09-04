@@ -47,9 +47,10 @@ namespace NMib::NFunction::NPrivate
 		{
 			return true;
 		}
-		bool operator < (CNullFunctionImpl const &_Other) const
+
+		COrdering_Partial operator <=> (CNullFunctionImpl const &_Other) const
 		{
-			return false;
+			return COrdering_Partial::equivalent;
 		}
 	};
 }

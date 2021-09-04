@@ -31,9 +31,9 @@ namespace
 					return true;
 				}
 
-				bool operator < (CBindFunctor const &_Right) const
+				COrdering_Weak operator <=> (CBindFunctor const &_Right) const
 				{
-					return false;
+					return COrdering_Weak::equivalent;
 				}
 
 				template <typename t_CType>

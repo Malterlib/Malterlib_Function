@@ -5,12 +5,9 @@
 
 namespace NMib::NFunction::NPrivate
 {
-	template <typename t_CLeft, typename t_CRight, bool t_bBothFunction>
-	struct TCIsTCFunctionCompareInValid;
-
 	typedef void (FDelete)(void *_pImpl);
 	typedef bool (FCompareEqual)(void const *_pImpl0, void const *_pImp1);
-	typedef bool (FCompareLess)(void const *_pImpl0, void const *_pImp1);
+	typedef COrdering_Partial (FCompareSpaceship)(void const *_pImpl0, void const *_pImp1);
 
 	template <typename t_CParamType>
 	struct TCGetReferenceType
@@ -118,7 +115,8 @@ namespace NMib::NFunction::NPrivate
 		typedef void CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = false
+			mc_bSupportEqualityCompare = false
+			, mc_bSupportOrderedCompare = false
 			, mc_bSupportCopy = true
 			, mc_bSupportMove = true
 		};
@@ -133,7 +131,8 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = CParent::mc_bSupportCompare
+			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
 		};
@@ -148,7 +147,8 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = CParent::mc_bSupportCompare
+			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
 		};
@@ -163,14 +163,15 @@ namespace NMib::NFunction::NPrivate
 		typedef TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer> CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = CParent::mc_bSupportCompare
+			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
 		};
 	};
 
 	template <typename... tp_CParams>
-	struct TCParseFunctionOptions<void, CFunctionSupportCompareTag, tp_CParams...>
+	struct TCParseFunctionOptions<void, CFunctionSupportEqualityCompareTag, tp_CParams...>
 	{
 		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
 		typedef typename CParent::CFunctions CFunctions;
@@ -178,7 +179,24 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = true
+			mc_bSupportEqualityCompare = true
+			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
+			, mc_bSupportCopy = CParent::mc_bSupportCopy
+			, mc_bSupportMove = CParent::mc_bSupportMove
+		};
+	};
+
+	template <typename... tp_CParams>
+	struct TCParseFunctionOptions<void, CFunctionSupportOrderedCompareTag, tp_CParams...>
+	{
+		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
+		typedef typename CParent::CFunctions CFunctions;
+		typedef typename CParent::CAllocator CAllocator;
+		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		enum
+		{
+			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = true
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
 		};
@@ -193,7 +211,8 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = CParent::mc_bSupportCompare
+			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = false
 			, mc_bSupportMove = CParent::mc_bSupportMove
 		};
@@ -208,7 +227,8 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
 		enum
 		{
-			mc_bSupportCompare = CParent::mc_bSupportCompare
+			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = false
 		};
@@ -301,7 +321,8 @@ namespace NMib::NFunction::NPrivate
 
 		enum
 		{
-			mc_bSupportCompare = CParsedOptions::mc_bSupportCompare
+			mc_bSupportEqualityCompare = CParsedOptions::mc_bSupportEqualityCompare
+			, mc_bSupportOrderedCompare = CParsedOptions::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParsedOptions::mc_bSupportCopy
 			, mc_bSupportMove = CParsedOptions::mc_bSupportMove
 		};

@@ -9,7 +9,8 @@ namespace NMib::NFunction::NPrivate
 		<
 			typename t_CFunctor
 			, typename t_CFOpts
-			, bool t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+			, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare
+			, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare
 			, bool t_bSupportCopy = t_CFOpts::mc_bSupportCopy
 			, bool t_bSupportMove = t_CFOpts::mc_bSupportMove
 		>
@@ -43,7 +44,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, true, true>
+	class TCImpl<t_CFunctor, t_CFOpts, true, true, true, true>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, true, true> CImplBase;
@@ -76,17 +77,89 @@ namespace NMib::NFunction::NPrivate
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
-				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
-				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, false, true>
+	class TCImpl<t_CFunctor, t_CFOpts, true, false, true, true>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, true, true> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
+		}
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
+		}
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, false, true, true, true>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, true, true> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
+		}
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
+		}
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, false, false, false, true>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
@@ -112,7 +185,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, false, true>
+	class TCImpl<t_CFunctor, t_CFOpts, true, true, false, true>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
@@ -142,17 +215,83 @@ namespace NMib::NFunction::NPrivate
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
-				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
-				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, true, false>
+	class TCImpl<t_CFunctor, t_CFOpts, true, false, false, true>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
+		}
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, false, true, false, true>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
+		}
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, false, false, true, false>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
@@ -175,7 +314,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, true, false>
+	class TCImpl<t_CFunctor, t_CFOpts, true, true, true, false>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
@@ -205,18 +344,83 @@ namespace NMib::NFunction::NPrivate
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
-				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
-				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, true, false, true, false>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
+		}
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, false, false>
+	class TCImpl<t_CFunctor, t_CFOpts, false, true, true, false>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
+		}
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, false, false, false, false>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
@@ -239,7 +443,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, false, false>
+	class TCImpl<t_CFunctor, t_CFOpts, true, true, false, false>
 	{
 	public:
 		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
@@ -266,12 +470,72 @@ namespace NMib::NFunction::NPrivate
 			else
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 		}
-		static bool fs_CompareLess(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
-				return *((CImplBase const *)_pImpl0)->m_pFunctor < *((CImplBase const *)_pImpl1)->m_pFunctor;
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
 			else
-				return ((CImplBase const *)_pImpl0)->m_Functor < ((CImplBase const *)_pImpl1)->m_Functor;
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, true, false, false, false>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	class TCImpl<t_CFunctor, t_CFOpts, false, true, false, false>
+	{
+	public:
+		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
+		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
+		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+
+		template <mint t_iFunction>
+		struct TCGetCallImp
+		{
+			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+		};
+		typedef typename t_CFOpts::CImpBase CAllocator;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			else
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
 		}
 	};
 
@@ -311,7 +575,7 @@ namespace NMib::NFunction::NPrivate
 #endif
 
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
-	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false>
+	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, false>
 	{
 		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
 		typedef typename CFunctionDefinition::CVTable CVTable;
@@ -332,7 +596,7 @@ namespace NMib::NFunction::NPrivate
 		;
 	};
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
-	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true>
+	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, true>
 	{
 		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
 		typedef typename CFunctionDefinition::CVTable CVTable;
@@ -347,7 +611,53 @@ namespace NMib::NFunction::NPrivate
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareEqual
-				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareLess
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareSpaceship
+	#ifdef DMibDebuggerHelpers
+				, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
+	#endif
+			}
+		;
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
+	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, false>
+	{
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+		typedef typename CFunctionDefinition::CVTable CVTable;
+		static constexpr CVTable mc_VTable =
+			{
+				{
+					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+				}
+				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareEqual
+	#ifdef DMibDebuggerHelpers
+				, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
+	#endif
+			}
+		;
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
+	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, true>
+	{
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+		typedef typename CFunctionDefinition::CVTable CVTable;
+		static constexpr CVTable mc_VTable =
+			{
+				{
+					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+				}
+				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_DuplicateMove
+				, TCImpl<t_CFunctor, t_CFOpts>::fs_CompareSpaceship
 	#ifdef DMibDebuggerHelpers
 				, TCFunctionObjectTypeHelperName<t_CFunctor>::mc_FunctorName.m_pString
 	#endif

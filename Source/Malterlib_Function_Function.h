@@ -10,12 +10,21 @@
 
 namespace NMib::NFunction
 {
-	/** \brief Used to specify that a function should implement comparison operators
+	/** \brief Used to specify that a function should implement equality comparison operators
 
 		If you specify this tag the functors you put into the function has to
-		support equal and less than comparison operators.
+		support equal and comparison operator.
 	*/
-	struct CFunctionSupportCompareTag
+	struct CFunctionSupportEqualityCompareTag
+	{
+	};
+
+	/** \brief Used to specify that a function should implement ordered comparison operators
+
+		If you specify this tag the functors you put into the function has to
+		support spaceship comparison operator.
+	*/
+	struct CFunctionSupportOrderedCompareTag
 	{
 	};
 
@@ -98,29 +107,6 @@ namespace NMib::NFunction
 			};
 		};
 
-		template <typename t_CLeft, typename t_CRight, bool t_bBothFunction = TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CLeft>::CType>::CType>::mc_Value && TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CRight>::CType>::CType>::mc_Value>
-		struct TCIsTCFunctionCompareInValid
-		{
-			enum
-			{
-				mc_bLeftFunction = TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CLeft>::CType>::CType>::mc_Value
-				, mc_bRightFunction = TCIsTCFunctionImpl<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CRight>::CType>::CType>::mc_Value
-				, mc_Value = (mc_bLeftFunction || mc_bRightFunction)
-			};
-		};
-
-		template <typename t_CLeft, typename t_CRight>
-		struct TCIsTCFunctionCompareInValid<t_CLeft, t_CRight, true>
-		{
-			enum
-			{
-				mc_Value
-				=
-				!NTraits::TCIsSame<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CLeft>::CType>::CType, typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReference<t_CRight>::CType>::CType>::mc_Value
-				|| !(NTraits::TCRemoveReference<t_CLeft>::CType::CFunctionOptions::mc_bSupportCompare)
-			};
-		};
-
 		template <typename t_CType, typename t_CSelf>
 		struct TCIsSelf
 		{
@@ -155,7 +141,7 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction		/// The function definition to contain
-		, typename... tp_COptions	/// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
+		, typename... tp_COptions	/// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunction
 		: public NPrivate::TCFunctionImplementation
@@ -168,12 +154,8 @@ namespace NMib::NFunction
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
-		friend struct NPrivate::TCIsTCFunctionCompareInValid;
-
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
-
 
 		using CFunctionOptions = NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
@@ -272,15 +254,12 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction /// The function definition to contain
-		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
+		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunctionFastCall
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
-		friend struct NPrivate::TCIsTCFunctionCompareInValid;
-
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
@@ -363,15 +342,12 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction /// The function definition to contain
-		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
+		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunctionSmall
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
-		friend struct NPrivate::TCIsTCFunctionCompareInValid;
-
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
@@ -460,7 +436,7 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction /// The function definition to contain
-		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportCompareTag) or allocator
+		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunctionNoAlloc
 		: public NPrivate::TCFunctionImplementation
@@ -469,9 +445,6 @@ namespace NMib::NFunction
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-		template <typename t_CLeft0, typename t_CRight0, bool t_bBothFunction0>
-		friend struct NPrivate::TCIsTCFunctionCompareInValid;
-
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 

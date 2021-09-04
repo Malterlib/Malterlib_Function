@@ -12,7 +12,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
@@ -258,9 +258,9 @@ namespace NMib::NFunction::NPrivate
 			return (FCompareEqual *)m_Data.m_pVTable->m_pCompareEqual;
 		}
 
-		FCompareLess *fp_CompareLess() const
+		FCompareSpaceship *fp_CompareSpaceship() const
 		{
-			return (FCompareLess *)m_Data.m_pVTable->m_pCompareLess;
+			return (FCompareSpaceship *)m_Data.m_pVTable->m_pCompareSpaceship;
 		}
 
 		void fp_Destroy()
@@ -281,7 +281,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 	public:
@@ -549,9 +549,9 @@ namespace NMib::NFunction::NPrivate
 			return (FCompareEqual *)m_Data.m_pImp->m_pVTable->m_pCompareEqual;
 		}
 
-		FCompareLess *fp_CompareLess() const
+		FCompareSpaceship *fp_CompareSpaceship() const
 		{
-			return (FCompareLess *)m_Data.m_pImp->m_pVTable->m_pCompareLess;
+			return (FCompareSpaceship *)m_Data.m_pImp->m_pVTable->m_pCompareSpaceship;
 		}
 
 	public:
@@ -564,7 +564,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
@@ -849,9 +849,9 @@ namespace NMib::NFunction::NPrivate
 		{
 			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
 		}
-		FCompareLess *fp_CompareLess() const
+		FCompareSpaceship *fp_CompareSpaceship() const
 		{
-			return (FCompareLess *)m_pVTable->m_pCompareLess;
+			return (FCompareSpaceship *)m_pVTable->m_pCompareSpaceship;
 		}
 	};
 
@@ -862,7 +862,7 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionOptions = t_CFOpts;
 
 	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
 		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
@@ -1130,9 +1130,9 @@ namespace NMib::NFunction::NPrivate
 		{
 			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
 		}
-		FCompareLess *fp_CompareLess() const
+		FCompareSpaceship *fp_CompareSpaceship() const
 		{
-			return (FCompareLess *)m_pVTable->m_pCompareLess;
+			return (FCompareSpaceship *)m_pVTable->m_pCompareSpaceship;
 		}
 	};
 
@@ -1188,7 +1188,8 @@ namespace NMib::NFunction::NPrivate
 	template
 	<
 		typename t_CFOpts
-		, bool t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+		, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare
+		, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare
 	>
 	class TCFunctionImplementation : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
@@ -1303,7 +1304,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFOpts>
-	class TCFunctionImplementation<t_CFOpts, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
+	class TCFunctionImplementation<t_CFOpts, true, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
 		//
 		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
@@ -1405,13 +1406,224 @@ namespace NMib::NFunction::NPrivate
 				return false;
 			return this->fp_CompareEqual()(this->fp_GetImpl(), _Other.fp_GetImpl());
 		}
-		bool operator < (TCFunctionImplementation const &_Other) const
+		
+		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const
 		{
-			if (this->fp_VTable() < _Other.fp_VTable())
-				return true;
-			else if (this->fp_VTable() > _Other.fp_VTable())
+			if (auto Result = this->fp_VTable() <=> _Other.fp_VTable(); Result != 0)
+				return Result;
+
+			return this->fp_CompareSpaceship()(this->fp_GetImpl(), _Other.fp_GetImpl());
+		}
+	};
+
+	template <typename t_CFOpts>
+	class TCFunctionImplementation<t_CFOpts, false, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
+	{
+		//
+		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
+		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
+
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+
+		typedef typename CFunctionDefinition::CVTable CVTable;
+
+	public:
+		typedef t_CFOpts CFunctionOptions;
+
+		using CSuper::operator ();
+
+		~TCFunctionImplementation()
+		{
+			this->fp_Destroy();
+		}
+
+		TCFunctionImplementation()
+		{
+		}
+
+		TCFunctionImplementation(TCFunctionImplementation const &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+		}
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+			return *this;
+		}
+
+		TCFunctionImplementation(TCFunctionImplementation &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+		}
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+			return *this;
+		}
+
+		TCFunctionImplementation(TCFunctionImplementation &&_Other)
+		{
+			this->fp_Move(fg_Move(_Other));
+		}
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other)
+		{
+			this->fp_MoveAssign(fg_Move(_Other));
+			return *this;
+		}
+
+		template <typename t_CFunction>
+		TCFunctionImplementation(t_CFunction &&_Function)
+		{
+			this->fp_Construct(fg_Forward<t_CFunction>(_Function));
+		}
+
+		template <typename t_CFunction>
+		TCFunctionImplementation &operator = (t_CFunction &&_Function)
+		{
+			this->fp_Assign(fg_Forward<t_CFunction>(_Function));
+			return *this;
+		}
+
+		void f_Clear()
+		{
+			this->fp_Destroy();
+			this->fp_SetDefault();
+		}
+
+		TCFunctionImplementation(CNullPtr)
+		{
+
+		}
+		TCFunctionImplementation &operator = (CNullPtr)
+		{
+			f_Clear();
+			return *this;
+		}
+
+		inline_small bool f_IsEmpty() const
+		{
+			return this->fp_IsDefault();
+		}
+
+		inline_small explicit operator bool() const
+		{
+			return !this->fp_IsDefault();
+		}
+
+		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const
+		{
+			if (auto Result = this->fp_VTable() <=> _Other.fp_VTable(); Result != 0)
+				return Result;
+
+			return this->fp_CompareSpaceship()(this->fp_GetImpl(), _Other.fp_GetImpl());
+		}
+	};
+
+	template <typename t_CFOpts>
+	class TCFunctionImplementation<t_CFOpts, true, false> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
+	{
+		//
+		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
+		typedef TCImpl<CNullFunctionImpl, t_CFOpts> CNullFunction;
+
+		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
+
+		typedef typename CFunctionDefinition::CVTable CVTable;
+
+	public:
+		typedef t_CFOpts CFunctionOptions;
+
+		using CSuper::operator ();
+
+		~TCFunctionImplementation()
+		{
+			this->fp_Destroy();
+		}
+
+		TCFunctionImplementation()
+		{
+		}
+
+		TCFunctionImplementation(TCFunctionImplementation const &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+		}
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+			return *this;
+		}
+
+		TCFunctionImplementation(TCFunctionImplementation &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+		}
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other)
+		{
+			this->template fp_Duplicate<false>(_Other);
+			return *this;
+		}
+
+		TCFunctionImplementation(TCFunctionImplementation &&_Other)
+		{
+			this->fp_Move(fg_Move(_Other));
+		}
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other)
+		{
+			this->fp_MoveAssign(fg_Move(_Other));
+			return *this;
+		}
+
+		template <typename t_CFunction>
+		TCFunctionImplementation(t_CFunction &&_Function)
+		{
+			this->fp_Construct(fg_Forward<t_CFunction>(_Function));
+		}
+
+		template <typename t_CFunction>
+		TCFunctionImplementation &operator = (t_CFunction &&_Function)
+		{
+			this->fp_Assign(fg_Forward<t_CFunction>(_Function));
+			return *this;
+		}
+
+		void f_Clear()
+		{
+			this->fp_Destroy();
+			this->fp_SetDefault();
+		}
+
+		TCFunctionImplementation(CNullPtr)
+		{
+
+		}
+		TCFunctionImplementation &operator = (CNullPtr)
+		{
+			f_Clear();
+			return *this;
+		}
+
+		inline_small bool f_IsEmpty() const
+		{
+			return this->fp_IsDefault();
+		}
+
+		inline_small explicit operator bool() const
+		{
+			return !this->fp_IsDefault();
+		}
+
+		bool operator == (TCFunctionImplementation const &_Other) const
+		{
+			if (this->fp_VTable() != _Other.fp_VTable())
 				return false;
-			return this->fp_CompareLess()(this->fp_GetImpl(), _Other.fp_GetImpl());
+			return this->fp_CompareEqual()(this->fp_GetImpl(), _Other.fp_GetImpl());
 		}
 	};
 }

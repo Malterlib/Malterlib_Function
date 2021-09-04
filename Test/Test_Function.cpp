@@ -899,9 +899,9 @@ namespace
 					return m_Value == _Other.m_Value;
 				}
 
-				bool operator < (CFunctorCompare const &_Other) const
+				auto operator <=> (CFunctorCompare const &_Other) const
 				{
-					return m_Value < _Other.m_Value;
+					return m_Value <=> _Other.m_Value;
 				}
 			};
 
@@ -1108,8 +1108,8 @@ namespace
 				// Test compares
 				DMibTestSuite("Compare")
 				{
-					TCFunction<void (), CFunctionSupportCompareTag> Test1;
-					TCFunction<void (), CFunctionSupportCompareTag> Test2;
+					TCFunction<void (), CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag> Test1;
+					TCFunction<void (), CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag> Test2;
 					DMibTest(DMibExpr(Test1) == DMibExpr(Test2)) (ETestFlag_NoValues);
 
 					Test1 = CFunction_Tests::CFunctorCompare(2);

@@ -17,7 +17,8 @@ namespace NMib::NFunction::NPrivate
 	template
 	<
 		typename t_CFOpts
-		, bool t_bSupportCompare = t_CFOpts::mc_bSupportCompare
+		, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare
+		, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare
 	>
 	struct TCFunctionDefinitions;
 
@@ -28,7 +29,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFOpts>
-	struct TCFunctionDefinitions<t_CFOpts, false>
+	struct TCFunctionDefinitions<t_CFOpts, false, false>
 	{
 		typedef t_CFOpts CFunctionOptions;
 
@@ -44,7 +45,7 @@ namespace NMib::NFunction::NPrivate
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
 			static const uint8 m_pCompareEqual = 0;
-			static const uint8 m_pCompareLess = 0;
+			static const uint8 m_pCompareSpaceship = 0;
 #ifdef DMibDebuggerHelpers
 			ch8 const *m_pFunctorTypeName;
 #endif
@@ -57,8 +58,9 @@ namespace NMib::NFunction::NPrivate
 		};
 
 	};
+
 	template <typename t_CFOpts>
-	struct TCFunctionDefinitions<t_CFOpts, true>
+	struct TCFunctionDefinitions<t_CFOpts, true, false>
 	{
 		typedef t_CFOpts CFunctionOptions;
 
@@ -74,7 +76,67 @@ namespace NMib::NFunction::NPrivate
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
 			FCompareEqual *m_pCompareEqual;
-			FCompareLess *m_pCompareLess;
+			static const uint8 m_pCompareSpaceship = 0;
+#ifdef DMibDebuggerHelpers
+			ch8 const *m_pFunctorTypeName;
+#endif
+
+			template <mint t_iFunction>
+			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
+			{
+				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
+			}
+		};
+	};
+
+	template <typename t_CFOpts>
+	struct TCFunctionDefinitions<t_CFOpts, false, true>
+	{
+		typedef t_CFOpts CFunctionOptions;
+
+		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+
+		struct CVTable
+		{
+			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			uint32 m_Alignment;
+			uint32 m_Size;
+			FDelete *m_pDestroy;
+			FDuplicate *m_pDuplicate;
+			FDuplicateMove *m_pDuplicateMove;
+			static const uint8 m_pCompareEqual = 0;
+			FCompareSpaceship *m_pCompareSpaceship;
+#ifdef DMibDebuggerHelpers
+			ch8 const *m_pFunctorTypeName;
+#endif
+
+			template <mint t_iFunction>
+			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
+			{
+				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
+			}
+		};
+	};
+
+	template <typename t_CFOpts>
+	struct TCFunctionDefinitions<t_CFOpts, true, true>
+	{
+		typedef t_CFOpts CFunctionOptions;
+
+		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+
+		struct CVTable
+		{
+			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			uint32 m_Alignment;
+			uint32 m_Size;
+			FDelete *m_pDestroy;
+			FDuplicate *m_pDuplicate;
+			FDuplicateMove *m_pDuplicateMove;
+			FCompareEqual *m_pCompareEqual;
+			FCompareSpaceship *m_pCompareSpaceship;
 #ifdef DMibDebuggerHelpers
 			ch8 const *m_pFunctorTypeName;
 #endif
