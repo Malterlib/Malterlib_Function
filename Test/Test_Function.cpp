@@ -68,6 +68,7 @@ namespace
 				{
 					if (_Value >= s_nRecurse)
 						return;
+					++g_Test;
 					flr_TestRecursive(_Value + 1);
 				};
 
@@ -77,6 +78,7 @@ namespace
 					g_Test = 0;
 					Timer.f_Start();
 					flr_TestRecursive(0);
+					g_TestCopy = g_Test;
 					Timer.f_Stop();
 				}
 				Timer /= s_nRecurse;
@@ -114,6 +116,7 @@ namespace
 						t_CFunctor Test13 = [] (){++g_Test;};
 						t_CFunctor Test14 = [] (){++g_Test;};
 						t_CFunctor Test15 = [] (){++g_Test;};
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -153,6 +156,7 @@ namespace
 						Test = [] (){++g_Test;};
 						Test = [] (){++g_Test;};
 						Test = [] (){++g_Test;};
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -193,6 +197,7 @@ namespace
 						Test = CFunction_Tests::CMoveFunctorBig();
 						Test = CFunction_Tests::CMoveFunctorBig();
 						Test = CFunction_Tests::CMoveFunctorBig();
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -233,6 +238,7 @@ namespace
 						Test2 = Test;
 						Test2 = Test;
 						Test2 = Test;
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -274,6 +280,7 @@ namespace
 						Test2 = Test;
 						Test2 = Test;
 						Test2 = Test;
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -335,6 +342,7 @@ namespace
 						Test = fg_Move(Test2);
 						Test2 = fg_Move(Test);
 						Test = fg_Move(Test2);
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -398,6 +406,7 @@ namespace
 						Test = fg_Move(Test2);
 						Test2 = fg_Move(Test);
 						Test = fg_Move(Test2);
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
@@ -531,6 +540,7 @@ namespace
 						Test();
 						Test();
 						Test();
+						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
 				}
