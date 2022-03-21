@@ -44,8 +44,6 @@ namespace NMib::NFunction::NPrivate
 	>
 	struct TCDetermineFunctionDefinition
 	{
-		static_assert(NTraits::TCFunctionTraits<t_CFunction>::mc_Arity <= 10, "Unsupported number of function parameters");
-
 		enum
 		{
 			mc_Qualifiers = EQualifiers_Const

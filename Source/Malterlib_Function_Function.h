@@ -82,8 +82,6 @@ namespace NMib::NFunction
 		static constexpr mint mc_bAllowAlloc = t_AllowAlloc;
 		static constexpr bool mc_bSeparateCallPointer = t_bSeparateCallPointer;
 	};
-
-	///@}
 }
 
 #include "Private/Malterlib_Function_Function_Helpers.h"
@@ -189,7 +187,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunction(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -206,7 +204,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunction &operator = (tf_CFunction &&_Function)
 		{
@@ -295,7 +293,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunctionFastCall(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -312,15 +310,13 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunctionFastCall &operator = (tf_CFunction &&_Function)
 		{
 			CSuper::operator = (fg_Forward<tf_CFunction>(_Function));
 			return *this;
 		}
-
-		/// @}
 	};
 
 	template <typename t_CSignature>
@@ -383,7 +379,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunctionSmall(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -400,7 +396,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunctionSmall &operator = (tf_CFunction &&_Function)
 		{
@@ -480,7 +476,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunctionNoAlloc(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -497,7 +493,7 @@ namespace NMib::NFunction
 				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 				, bool
-			> = true /**@hidden*/
+			> = true ///< @hidden
 		>
 		TCFunctionNoAlloc &operator = (tf_CFunction &&_Function)
 		{
