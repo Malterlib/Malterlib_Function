@@ -584,7 +584,7 @@ namespace NMib::NFunction::NPrivate
 				{
 					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
-				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
@@ -605,7 +605,7 @@ namespace NMib::NFunction::NPrivate
 				{
 					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
-				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
@@ -629,7 +629,7 @@ namespace NMib::NFunction::NPrivate
 				{
 					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
-				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate
@@ -652,7 +652,7 @@ namespace NMib::NFunction::NPrivate
 				{
 					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
-				, NTraits::TCAlignmentOf<typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase>::mc_Value
+				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Destroy
 				, TCImpl<t_CFunctor, t_CFOpts>::fs_Duplicate

@@ -71,7 +71,7 @@ namespace NMib::NFunction
 		/// Set to true to allow the function to allocate memory dynamically
 		, uint32 t_MaxSize = sizeof(void *)*4
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
-		, uint32 t_Alignment = TCConstantMax<mint, sizeof(void *), NTraits::TCAlignmentOf<fp64>::mc_Value>::mc_Value
+		, uint32 t_Alignment = TCConstantMax<mint, sizeof(void *), alignof(fp64)>::mc_Value
 		/// The maximum alignment of a type that can be put in the TCFunctionXXXX object
 		, bool t_bSeparateCallPointer = true
 	>
