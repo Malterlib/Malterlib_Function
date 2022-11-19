@@ -31,12 +31,12 @@ Property.MalterlibBoostModules =+ ["function", "describe", "mp11", "bind", "conf
 
 Property
 {
-	MalterlibLibrary_Function define bool = MalterlibLibrary_All
+	MalterlibLibrary_Function: bool = MalterlibLibrary_All
 	MalterlibSubLibraries =+ "Function"
 	{
 		!!MalterlibLibrary_Function true
 	}
-//	MalterlibSubLibrarySeparate_Lib_Malterlib_Function define bool = true
+//	MalterlibSubLibrarySeparate_Lib_Malterlib_Function: bool = true
 	MalterlibIncludeRoots =+ "Include"->MakeAbsolute()
 	{
 		!!MalterlibLibrary_Function true
@@ -48,6 +48,6 @@ Property
 	!!MalterlibEnableInternalTests true
 	
 	MalterlibTests =+ "Malterlib_Function"
-	MalterlibTestFiles_Malterlib_Function define [type(CEntity)] = ["Test/*"->MakeAbsolute()]
+	MalterlibTestFiles_Malterlib_Function: [type(CEntity)] = ["Test/*"->MakeAbsolute()]
 }
 
