@@ -99,10 +99,7 @@ namespace NMib::NFunction
 		template <typename t_CType>
 		struct TCIsTCFunctionImpl
 		{
-			enum
-			{
-				mc_Value = false
-			};
+			static constexpr bool mc_Value = false;
 		};
 
 		template <typename t_CType, typename t_CSelf>
@@ -115,6 +112,10 @@ namespace NMib::NFunction
 			};
 		};
 	}
+
+	template <typename tf_CType>
+	concept cIsTCFunction = NPrivate::TCIsTCFunctionImpl<tf_CType>::mc_Value;
+
 	template <typename t_CFunction>
 	struct TCFunctionInfo;
 
@@ -514,55 +515,37 @@ namespace NMib::NFunction
 		template <typename t_CFunction, typename... tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunction<t_CFunction, tp_COptions...>>
 		{
-			enum
-			{
-				mc_Value = true
-			};
+			static constexpr bool mc_Value = true;
 		};
 
 		template <typename t_CFunction>
 		struct TCIsTCFunctionImpl<TCFunctionMovable<t_CFunction>>
 		{
-			enum
-			{
-				mc_Value = true
-			};
+			static constexpr bool mc_Value = true;
 		};
 
 		template <typename t_CFunction>
 		struct TCIsTCFunctionImpl<TCFunctionMutable<t_CFunction>>
 		{
-			enum
-			{
-				mc_Value = true
-			};
+			static constexpr bool mc_Value = true;
 		};
 
 		template <typename t_CFunction, typename... tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionFastCall<t_CFunction, tp_COptions...>>
 		{
-			enum
-			{
-				mc_Value = true
-			};
+			static constexpr bool mc_Value = true;
 		};
 
 		template <typename t_CFunction, typename... tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionNoAlloc<t_CFunction, tp_COptions...>>
 		{
-			enum
-			{
-				mc_Value = true
-			};
+ 			static constexpr bool mc_Value = true;
 		};
 
 		template <typename t_CFunction, typename... tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionSmall<t_CFunction, tp_COptions...>>
 		{
-			enum
-			{
-				mc_Value = true
-			};
+			static constexpr bool mc_Value = true;
 		};
 	}
 
