@@ -110,22 +110,22 @@ namespace
 				{
 					NStorage::TCUniquePointer<CTestMemberPtr> TestMemberPtr = fg_Construct();
 					auto MemberPtr = &CTestMemberPtr::m_Member;
-					auto TestInit = TestMemberPtr->*MemberPtr;
+					[[maybe_unused]] auto TestInit = TestMemberPtr->*MemberPtr;
 				}
 				{
 					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
 					auto MemberPtr = &CBindFunctor::f_BinaryTest2;
-					auto Result = (TestMemberPtr->*MemberPtr)(2);
+					[[maybe_unused]] auto Result = (TestMemberPtr->*MemberPtr)(2);
 				}
 				{
 					auto MemberPtr = fg_MemberFunctionFunctor(&CBindFunctor::f_BinaryTest3);
 					CBindFunctor Fununu;
-					auto Result = MemberPtr(&Fununu, 2);
+					[[maybe_unused]] auto Result = MemberPtr(&Fununu, 2);
 				}
 				{
 					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
 					auto MemberPtr = &CBindFunctor::f_BinaryTest3;
-					auto Result = (TestMemberPtr->*MemberPtr)(2);
+					[[maybe_unused]] auto Result = (TestMemberPtr->*MemberPtr)(2);
 				}
 				{
 					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
