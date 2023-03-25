@@ -539,7 +539,7 @@ namespace NMib::NFunction
 		template <typename t_CFunction, typename... tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionNoAlloc<t_CFunction, tp_COptions...>>
 		{
- 			static constexpr bool mc_Value = true;
+			static constexpr bool mc_Value = true;
 		};
 
 		template <typename t_CFunction, typename... tp_COptions>
