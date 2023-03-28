@@ -18,3 +18,7 @@ namespace NMib::NFunction
 	template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
 }
 
+namespace NMib::NFunction::NPrivate
+{
+	constexpr CReturnReference const g_ReturnReference;
+}

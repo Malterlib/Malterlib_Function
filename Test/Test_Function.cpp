@@ -4,6 +4,7 @@
 #include <functional>
 #include <boost/function.hpp>
 #include <Mib/Function/Function>
+#include <Mib/Test/Exception>
 
 // TODO
 // Combined function
@@ -1148,10 +1149,14 @@ namespace
 					TCFunction<void (), CFunctionNoCopyTag, CFunctionNoMoveTag> TestNoCopyNoMove(Test);
 
 					TCFunction<void (TCFunction<void (), CFunctionNoCopyTag> &&)> Test2;
-
-
 				};
 
+				DMibTestSuite("Empty function")
+				{
+					TCFunction<NStr::CStr ()> fTest;
+
+					DMibExpectException(fTest(), DMibImpErrorInstance(NMib::NException::CExceptionBadFunctionCall, "Trying to call an empty TCFunction"));
+				};
 
 				DMibTestSuite("Usage Tests")
 				{

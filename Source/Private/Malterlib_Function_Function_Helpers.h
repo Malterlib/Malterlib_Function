@@ -92,6 +92,46 @@ namespace NMib::NFunction::NPrivate
 		typedef t_CReturn (CType)(tp_CParams..., ...);
 	};
 
+	template <typename t_CReturn, typename... tp_CParams>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &, tp_CParams...) noexcept>
+	{
+		enum
+		{
+			mc_Qualifiers = EQualifiers_None
+		};
+		typedef t_CReturn (CType)(tp_CParams...) noexcept;
+	};
+
+	template <typename t_CReturn, typename... tp_CParams>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &, tp_CParams..., ...) noexcept>
+	{
+		enum
+		{
+			mc_Qualifiers = EQualifiers_None
+		};
+		typedef t_CReturn (CType)(tp_CParams..., ...) noexcept;
+	};
+
+	template <typename t_CReturn, typename... tp_CParams>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &, tp_CParams...) noexcept>
+	{
+		enum
+		{
+			mc_Qualifiers = EQualifiers_Const
+		};
+		typedef t_CReturn (CType)(tp_CParams...) noexcept;
+	};
+
+	template <typename t_CReturn, typename... tp_CParams>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &, tp_CParams..., ...) noexcept>
+	{
+		enum
+		{
+			mc_Qualifiers = EQualifiers_Const
+		};
+		typedef t_CReturn (CType)(tp_CParams..., ...) noexcept;
+	};
+
 
 	template <typename t_CFirst, int _FirstQualifiers, typename t_CSecond, int _SecondQualifiers>
 	struct TCIsSameFunction
@@ -117,6 +157,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = false
 			, mc_bSupportCopy = true
 			, mc_bSupportMove = true
+			, mc_nExcept = 0
+			, mc_nNoExcept = 0
 		};
 	};
 
@@ -127,12 +169,17 @@ namespace NMib::NFunction::NPrivate
 		typedef typename NMeta::TCTypeList_Concat<NMeta::TCTypeList<t_CFirst>, typename CParent::CFunctions>::CType CFunctions;
 		typedef typename CParent::CAllocator CAllocator;
 		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+
 		enum
 		{
-			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
+			mc_bIsNoExcept = NTraits::TCFunctionTraits<t_CFirst>::mc_IsNoExcept
+
+			, mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
 			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
+			, mc_nExcept = CParent::mc_nExcept + !mc_bIsNoExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept + mc_bIsNoExcept
 		};
 	};
 
@@ -149,6 +196,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
+			, mc_nExcept = CParent::mc_nExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept
 		};
 	};
 
@@ -165,6 +214,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
+			, mc_nExcept = CParent::mc_nExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept
 		};
 	};
 
@@ -181,6 +232,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
+			, mc_nExcept = CParent::mc_nExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept
 		};
 	};
 
@@ -197,6 +250,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = true
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = CParent::mc_bSupportMove
+			, mc_nExcept = CParent::mc_nExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept
 		};
 	};
 
@@ -213,6 +268,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = false
 			, mc_bSupportMove = CParent::mc_bSupportMove
+			, mc_nExcept = CParent::mc_nExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept
 		};
 	};
 
@@ -229,6 +286,8 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParent::mc_bSupportCopy
 			, mc_bSupportMove = false
+			, mc_nExcept = CParent::mc_nExcept
+			, mc_nNoExcept = CParent::mc_nNoExcept
 		};
 	};
 
@@ -323,7 +382,10 @@ namespace NMib::NFunction::NPrivate
 			, mc_bSupportOrderedCompare = CParsedOptions::mc_bSupportOrderedCompare
 			, mc_bSupportCopy = CParsedOptions::mc_bSupportCopy
 			, mc_bSupportMove = CParsedOptions::mc_bSupportMove
+			, mc_bNoExcept = CParsedOptions::mc_nNoExcept != 0
 		};
+
+		static_assert(!!CParsedOptions::mc_nNoExcept != !!CParsedOptions::mc_nExcept, "You cannot mix noexcept(true) and noexcept(false) functions");
 
 		typedef typename TCChooseType<NTraits::TCIsVoid<typename CParsedOptions::CAllocator>::mc_Value, t_CDefaultAllocator, typename CParsedOptions::CAllocator>::CType CAllocator;
 		typedef typename TCChooseType

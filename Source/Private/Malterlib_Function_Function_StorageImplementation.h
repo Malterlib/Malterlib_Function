@@ -572,6 +572,18 @@ namespace NMib::NFunction::NPrivate
 		}
 		static_assert(TCInstantiateValue<&fs_Debug_GetFunctorType>::mc_Value);
 	};
+
+	template <typename t_CReturn, typename ...tfp_CParams>
+	struct TCFunctionObjectTypeHelperName<t_CReturn (&)(tfp_CParams...) noexcept>
+	{
+		using FFunctor = t_CReturn (*)(tfp_CParams...) noexcept;
+		static constexpr auto mc_FunctorName = fg_GetTypeNameConstExprArray<TCFunctionObjectTypeHelperName>();
+		static FFunctor fs_Debug_GetFunctorType()
+		{
+			return nullptr;
+		}
+		static_assert(TCInstantiateValue<&fs_Debug_GetFunctorType>::mc_Value);
+	};
 #endif
 
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>

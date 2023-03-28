@@ -11,12 +11,15 @@ namespace NMib::NFunction::NPrivate
 	struct CReturnReference;
 
 	typedef CReturnReference const &  CReturnReferenceReturn;
-	class CNullFunctionImpl;
+	template <bool t_bNoExcept>
+	class TCNullFunctionImpl;
 
 	struct CReturnReference
 	{
 	private:
-		friend class CNullFunctionImpl;
+		template <bool t_bNoExcept>
+		friend class TCNullFunctionImpl;
+
 		template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
 		friend struct TCCallImpl;
 
@@ -27,7 +30,10 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	class CNullFunctionImpl
+	extern CReturnReference const g_ReturnReference;
+
+	template <bool t_bNoExcept>
+	class TCNullFunctionImpl
 	{
 	public:
 
@@ -43,12 +49,44 @@ namespace NMib::NFunction::NPrivate
 			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
 		}
 
-		bool operator == (CNullFunctionImpl const &_Other) const
+		bool operator == (TCNullFunctionImpl const &_Other) const
 		{
 			return true;
 		}
 
-		COrdering_Partial operator <=> (CNullFunctionImpl const &_Other) const
+		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const
+		{
+			return COrdering_Partial::equivalent;
+		}
+	};
+
+	template <>
+	class TCNullFunctionImpl<true>
+	{
+	public:
+
+		template <typename... tp_CParams>
+		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) noexcept
+		{
+			// Trying to call an empty TCFunction
+			DMibPDebugBreak;
+			fg_NoReturn();
+		}
+
+		template <typename... tp_CParams>
+		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const noexcept
+		{
+			// Trying to call an empty TCFunction
+			DMibPDebugBreak;
+			fg_NoReturn();
+		}
+
+		bool operator == (TCNullFunctionImpl const &_Other) const
+		{
+			return true;
+		}
+
+		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const
 		{
 			return COrdering_Partial::equivalent;
 		}

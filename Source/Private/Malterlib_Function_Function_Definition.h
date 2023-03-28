@@ -14,6 +14,12 @@ namespace NMib::NFunction::NPrivate
 		typedef t_CReturnType (CType)(void *_pImpl, tp_CParams...);
 	};
 
+	template <typename t_CReturnType, typename... tp_CParams>
+	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...) noexcept>
+	{
+		typedef t_CReturnType (CType)(void *_pImpl, tp_CParams...) noexcept;
+	};
+
 	template
 	<
 		typename t_CFOpts

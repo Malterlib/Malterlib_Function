@@ -224,6 +224,12 @@ namespace NMib::NFunction
 		{
 			using CType = t_CReturn (t_CTag, tp_CParams...);
 		};
+
+		template <typename t_CTag, typename t_CReturn, typename ...tp_CParams>
+		struct TCAddThisTag<t_CReturn (tp_CParams...) noexcept, t_CTag>
+		{
+			using CType = t_CReturn (t_CTag, tp_CParams...) noexcept;
+		};
 	}
 
 	template <typename t_CSignature>
