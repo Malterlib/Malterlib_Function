@@ -3,7 +3,7 @@
 
 Import "../Core/Lib_Malterlib.MTarget"
 
-Property.MalterlibBoostModules =+ ["function", "describe", "mp11", "bind", "config"]
+Property.MalterlibBoostModules =+ ["function", "describe", "mp11", "bind", "config", "preprocessor"]
 {
 	!!MalterlibEnableInternalTests true
 }
