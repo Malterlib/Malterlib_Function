@@ -573,14 +573,12 @@ namespace NMib::NFunction::NPrivate
 		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
 		typedef typename t_CFOpts::CAllocator CAllocator;
 
-		typedef uint8 CStorage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
-
 		static CVTable const *fsp_VTable();
 	protected:
 		CCallType0 * m_pCall;
 		CVTable const * m_pVTable;
 
-		typename NTraits::TCAlign<CStorage, t_CFOpts::CFunctionAllocOptions::mc_Alignment>::CType m_Storage;
+		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
 
 		TCFunctionNoAllocBaseSeparateCall()
 			: m_pCall(&CNullFunction::CCallImp0::fs_Call)
@@ -663,7 +661,7 @@ namespace NMib::NFunction::NPrivate
 		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
 		{
 			static_assert(sizeof(tf_CObject) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage (internal error)");
-			return new(m_Storage.m_Aligned) tf_CObject(fg_Forward<tf_CParam>(_Param));
+			return new(m_Storage) tf_CObject(fg_Forward<tf_CParam>(_Param));
 		}
 
 		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
@@ -676,7 +674,7 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
@@ -704,7 +702,7 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
@@ -740,7 +738,7 @@ namespace NMib::NFunction::NPrivate
 				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
 				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
@@ -773,7 +771,7 @@ namespace NMib::NFunction::NPrivate
 				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
 				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
@@ -802,12 +800,12 @@ namespace NMib::NFunction::NPrivate
 
 		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl()
 		{
-			return m_Storage.m_Aligned;
+			return m_Storage;
 		}
 
 		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
 		{
-			return (uint8 *)m_Storage.m_Aligned;
+			return (uint8 *)m_Storage;
 		}
 
 		inline_small CVTable const *fp_VTable() const
@@ -871,13 +869,11 @@ namespace NMib::NFunction::NPrivate
 		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
 		typedef typename t_CFOpts::CAllocator CAllocator;
 
-		typedef uint8 CStorage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
-
 		static CVTable const *fsp_VTable();
 	protected:
 		CVTable const * m_pVTable;
 
-		typename NTraits::TCAlign<CStorage, t_CFOpts::CFunctionAllocOptions::mc_Alignment>::CType m_Storage;
+		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
 
 		TCFunctionNoAllocBase()
 			: m_pVTable(&CNullFunction::CVTable::mc_VTable)
@@ -957,7 +953,7 @@ namespace NMib::NFunction::NPrivate
 		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
 		{
 			static_assert(sizeof(tf_CObject) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage (internal error)");
-			return new(m_Storage.m_Aligned) tf_CObject(fg_Forward<tf_CParam>(_Param));
+			return new(m_Storage) tf_CObject(fg_Forward<tf_CParam>(_Param));
 		}
 
 		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
@@ -970,7 +966,7 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
@@ -997,7 +993,7 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
@@ -1031,7 +1027,7 @@ namespace NMib::NFunction::NPrivate
 				_This.fp_Destroy();
 				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
@@ -1062,7 +1058,7 @@ namespace NMib::NFunction::NPrivate
 				_This.fp_Destroy();
 				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 
-				new(_This.m_Storage.m_Aligned) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		};
@@ -1089,12 +1085,12 @@ namespace NMib::NFunction::NPrivate
 
 		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl()
 		{
-			return m_Storage.m_Aligned;
+			return m_Storage;
 		}
 
 		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
 		{
-			return (uint8 *)m_Storage.m_Aligned;
+			return (uint8 *)m_Storage;
 		}
 
 		inline_small CVTable const *fp_VTable() const
