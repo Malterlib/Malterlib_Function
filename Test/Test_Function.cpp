@@ -60,7 +60,7 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CCyclesMin Timer;
-#ifdef DMibDebug
+#if defined(DMibDebug) || defined(DMibSanitizerEnabled_Address)
 				const int s_nRecurse = 100;
 #else
 				const int s_nRecurse = 4000;
