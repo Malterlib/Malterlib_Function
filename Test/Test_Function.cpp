@@ -981,11 +981,12 @@ namespace
 
 			void f_DoTests()
 			{
-
-				f_DoFunctionTestsBig<TCFunction<void (int)>>();
-				f_DoFunctionTests<TCFunctionNoAlloc<void (int)>>();
-				f_DoFunctionTestsBig<TCFunctionSmall<void (int)>>();
-
+				DMibTestSuite("Misc")
+				{
+					f_DoFunctionTestsBig<TCFunction<void (int)>>();
+					f_DoFunctionTests<TCFunctionNoAlloc<void (int)>>();
+					f_DoFunctionTestsBig<TCFunctionSmall<void (int)>>();
+				};
 
 				if (0)
 				{
@@ -1033,15 +1034,6 @@ namespace
 					DMibTrace("sizeof(boost::function): {}\r\n", sizeof(Test5));
 				}
 
-				{
-					TCFunction<void (int), void (float), void (const ch8 *)> Test10;
-					TCFunction<void (float)> Test2;
-//					CTesting Test2;
-					//Test10((const ch8 *)"testing");
-					//Test10(3.0f);
-					//Test10(1);
-					//Test10(3.0);
-				}
 				DMibTestSuite("Capture")
 				{
 					int32 Count = 0;
