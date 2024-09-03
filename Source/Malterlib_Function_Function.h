@@ -153,13 +153,17 @@ namespace NMib::NFunction
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
+	public:
+		using CFunctionOptions = NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>;
+
+	private:
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		using CFunctionOptions = NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
+
 		~TCFunction()
 		{
 		}
@@ -265,13 +269,17 @@ namespace NMib::NFunction
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
+	public:
+		using CFunctionOptions = NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>;
+
+	private:
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...> CFunctionOptions;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
+
 		~TCFunctionFastCall()
 		{
 		}
@@ -351,13 +359,17 @@ namespace NMib::NFunction
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
+	public:
+		using CFunctionOptions = NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>;
+
+	private:
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...> CFunctionOptions;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
+
 		~TCFunctionSmall()
 		{
 		}
@@ -448,13 +460,17 @@ namespace NMib::NFunction
 		>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
+	public:
+		using CFunctionOptions = NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>;
+
+	private:
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...> CFunctionOptions;
 		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
 
 	public:
+
 		~TCFunctionNoAlloc()
 		{
 		}
