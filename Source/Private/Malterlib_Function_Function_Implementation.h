@@ -238,7 +238,7 @@ namespace NMib::NFunction::NPrivate
 		template <mint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase const *_pThis) { return _pThis->m_Data.m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
 		template <typename t_CDummmy>
