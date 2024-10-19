@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <Mib/Storage/BitStorePointer>
+
 namespace NMib::NFunction::NPrivate
 {
 	template <typename t_CFOpts>
@@ -21,7 +23,6 @@ namespace NMib::NFunction::NPrivate
 		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
 		typedef typename t_CFOpts::CAllocator CAllocator;
 
-		static CVTable const *fsp_VTable();
 	protected:
 
 		class CData : public CAllocator
@@ -217,6 +218,16 @@ namespace NMib::NFunction::NPrivate
 			return m_Data.m_pImpl;
 		}
 
+		only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctor() const
+		{
+			return m_Data.m_pImpl;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctorUnsafe() const
+		{
+			return m_Data.m_pImpl;
+		}
+
 		inline_small CVTable const *fp_VTable() const
 		{
 			return m_Data.m_pVTable;
@@ -291,7 +302,6 @@ namespace NMib::NFunction::NPrivate
 		typedef typename CFunctionDefinition::CVTable CVTable;
 		typedef typename t_CFOpts::CAllocator CAllocator;
 
-		static CVTable const *fsp_VTable();
 	protected:
 
 		struct CImplementationData
@@ -345,6 +355,16 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl() const
+		{
+			return m_Data.m_pImp + 1;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctor() const
+		{
+			return m_Data.m_pImp + 1;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctorUnsafe() const
 		{
 			return m_Data.m_pImp + 1;
 		}
@@ -573,16 +593,15 @@ namespace NMib::NFunction::NPrivate
 		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
 		typedef typename t_CFOpts::CAllocator CAllocator;
 
-		static CVTable const *fsp_VTable();
 	protected:
 		CCallType0 * m_pCall;
-		CVTable const * m_pVTable;
+		NStorage::TCBitStorePointer<CVTable const, 2> m_pVTable;
 
 		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
 
 		TCFunctionNoAllocBaseSeparateCall()
 			: m_pCall(&CNullFunction::CCallImp0::fs_Call)
-			, m_pVTable(&CNullFunction::CVTable::mc_VTable)
+			, m_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
 		{
 		}
 
@@ -593,18 +612,18 @@ namespace NMib::NFunction::NPrivate
 
 		bool fp_IsDefault() const
 		{
-			return m_pCall == &CNullFunction::CCallImp0::fs_Call;
+			return m_pVTable.f_GetBits() == 2;
 		}
 
 		void fp_SetDefault()
 		{
 			m_pCall = &CNullFunction::CCallImp0::fs_Call;
-			m_pVTable = &CNullFunction::CVTable::mc_VTable;
+			m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 		}
 
 		void fp_Destroy()
 		{
-			if (m_pCall != &CNullFunction::CCallImp0::fs_Call)
+			if (m_pVTable.f_GetBits() != 2)
 			{
 				fp_DestroyCall()(fp_GetImpl());
 			}
@@ -625,7 +644,7 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
 		{
-			if (_Other.m_pCall != &CNullFunction::CCallImp0::fs_Call)
+			if (_Other.m_pVTable.f_GetBits() != 2)
 			{
 				fp_Destroy();
 				fp_SetDefault();
@@ -634,7 +653,7 @@ namespace NMib::NFunction::NPrivate
 				else
 					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
 				m_pCall = _Other.m_pCall;
-				m_pVTable = _Other.m_pVTable;
+				m_pVTable.f_SetBoth(_Other.m_pVTable);
 			}
 			else
 			{
@@ -676,7 +695,7 @@ namespace NMib::NFunction::NPrivate
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -704,7 +723,7 @@ namespace NMib::NFunction::NPrivate
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
@@ -736,11 +755,11 @@ namespace NMib::NFunction::NPrivate
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
 				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -769,11 +788,11 @@ namespace NMib::NFunction::NPrivate
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
 				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
@@ -805,6 +824,27 @@ namespace NMib::NFunction::NPrivate
 
 		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
 		{
+			return (uint8 *)m_Storage;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctor() const
+		{
+			if (m_pVTable.f_GetBits() == 2)
+				return nullptr;
+
+			if constexpr (t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc)
+			{
+				if (m_pVTable.f_GetBits() == 1)
+					return ((NStorage::TCUniquePointer<uint8, CAllocator> *)m_Storage)->f_Get();
+			}
+
+			return (uint8 *)m_Storage;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctorUnsafe() const
+		{
+			DMibFastCheck(m_pVTable.f_GetBits() == 0);
+
 			return (uint8 *)m_Storage;
 		}
 
@@ -869,14 +909,13 @@ namespace NMib::NFunction::NPrivate
 		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
 		typedef typename t_CFOpts::CAllocator CAllocator;
 
-		static CVTable const *fsp_VTable();
 	protected:
-		CVTable const * m_pVTable;
+		NStorage::TCBitStorePointer<CVTable const, 2> m_pVTable;
 
 		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
 
 		TCFunctionNoAllocBase()
-			: m_pVTable(&CNullFunction::CVTable::mc_VTable)
+			: m_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
 		{
 		}
 
@@ -887,17 +926,17 @@ namespace NMib::NFunction::NPrivate
 
 		bool fp_IsDefault() const
 		{
-			return m_pVTable == &CNullFunction::CVTable::mc_VTable;
+			return m_pVTable.f_GetBits() == 2;
 		}
 
 		void fp_SetDefault()
 		{
-			m_pVTable = &CNullFunction::CVTable::mc_VTable;
+			m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 		}
 
 		void fp_Destroy()
 		{
-			if (m_pVTable != &CNullFunction::CVTable::mc_VTable)
+			if (m_pVTable.f_GetBits() != 2)
 			{
 				fp_DestroyCall()(fp_GetImpl());
 			}
@@ -918,7 +957,7 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
 		{
-			if (_Other.m_pVTable != &CNullFunction::CVTable::mc_VTable)
+			if (_Other.m_pVTable.f_GetBits() != 2)
 			{
 				fp_Destroy();
 				fp_SetDefault();
@@ -926,7 +965,7 @@ namespace NMib::NFunction::NPrivate
 					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
 					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
-				m_pVTable = _Other.m_pVTable;
+				m_pVTable.f_SetBoth(_Other.m_pVTable);
 			}
 			else
 			{
@@ -967,7 +1006,7 @@ namespace NMib::NFunction::NPrivate
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -994,7 +1033,7 @@ namespace NMib::NFunction::NPrivate
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
@@ -1025,10 +1064,10 @@ namespace NMib::NFunction::NPrivate
 
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
-				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -1056,10 +1095,10 @@ namespace NMib::NFunction::NPrivate
 
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
-				_This.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable = &CImpl::CVTable::mc_VTable;
+				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
@@ -1090,6 +1129,27 @@ namespace NMib::NFunction::NPrivate
 
 		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
 		{
+			return (uint8 *)m_Storage;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctor() const
+		{
+			if (m_pVTable.f_GetBits() == 2)
+				return nullptr;
+
+			if constexpr (t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc)
+			{
+				if (m_pVTable.f_GetBits() == 1)
+					return ((NStorage::TCUniquePointer<uint8, CAllocator> *)m_Storage)->f_Get();
+			}
+
+			return (uint8 *)m_Storage;
+		}
+
+		only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctorUnsafe() const
+		{
+			DMibFastCheck(m_pVTable.f_GetBits() == 0);
+
 			return (uint8 *)m_Storage;
 		}
 
@@ -1343,6 +1403,16 @@ namespace NMib::NFunction::NPrivate
 		{
 			return !this->fp_IsDefault();
 		}
+
+		inline_small void *f_Unsafe_GetFunctor() const
+		{
+			return this->fp_GetFunctorUnsafe();
+		}
+
+		inline_small void *f_GetFunctor() const
+		{
+			return this->fp_GetFunctor();
+		}
 	};
 
 	template <typename t_CFOpts>
@@ -1440,6 +1510,16 @@ namespace NMib::NFunction::NPrivate
 		inline_small explicit operator bool() const
 		{
 			return !this->fp_IsDefault();
+		}
+
+		inline_small void *f_Unsafe_GetFunctor() const
+		{
+			return this->fp_GetFunctorUnsafe();
+		}
+
+		inline_small void *f_GetFunctor() const
+		{
+			return this->fp_GetFunctor();
 		}
 
 		bool operator == (TCFunctionImplementation const &_Other) const
@@ -1555,6 +1635,16 @@ namespace NMib::NFunction::NPrivate
 			return !this->fp_IsDefault();
 		}
 
+		inline_small void *f_Unsafe_GetFunctor() const
+		{
+			return this->fp_GetFunctorUnsafe();
+		}
+
+		inline_small void *f_GetFunctor() const
+		{
+			return this->fp_GetFunctor();
+		}
+
 		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const
 		{
 			if (auto Result = this->fp_VTable() <=> _Other.fp_VTable(); Result != 0)
@@ -1659,6 +1749,16 @@ namespace NMib::NFunction::NPrivate
 		inline_small explicit operator bool() const
 		{
 			return !this->fp_IsDefault();
+		}
+
+		inline_small void *f_Unsafe_GetFunctor() const
+		{
+			return this->fp_GetFunctorUnsafe();
+		}
+
+		inline_small void *f_GetFunctor() const
+		{
+			return this->fp_GetFunctor();
 		}
 
 		bool operator == (TCFunctionImplementation const &_Other) const

@@ -17,6 +17,21 @@ namespace
 	int g_Add = 1;
 	using namespace NMib::NFunction;
 	using namespace NMib;
+
+	template <typename ...tp_FFunction>
+	using TCFunctionNSCP = NFunction::TCFunction
+		<
+			tp_FFunction...
+			, NFunction::TCFunctionNoAllocOptions
+			<
+				true
+				, sizeof(void *)
+				, NFunction::TCFunctionNoAllocOptions<>::mc_Alignment
+				, false
+			>
+		>
+	;
+
 	namespace
 	{
 		class CFunction_Tests : public NTest::CTest
@@ -1310,11 +1325,11 @@ namespace
 
 				};
 
-
 				DMibTestSuite("ValidCall")
 				{
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionNoAlloc<uint8 ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestValidCall<TCFunction<uint8 ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestValidCall<TCFunctionNSCP<uint8 ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionSmall<uint8 ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionSmall<uint8 (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestValidCall<TCFunctionFastCall<uint8 ()>>("TCFunctionFastCall");
@@ -1326,6 +1341,7 @@ namespace
 				{
 					//CFunction_Tests::fs_DoTestValidCallBig<TCFunctionNoAlloc<uint8 ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunction<uint8 ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionNSCP<uint8 ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionSmall<uint8 ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionSmall<uint8 (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestValidCallBig<TCFunctionFastCall<uint8 ()>>("TCFunctionFastCall");
@@ -1337,6 +1353,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestCreate<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestCreate<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestCreate<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestCreate<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestCreate<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestCreate<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1348,6 +1365,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestCopy<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestCopy<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestCopy<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestCopy<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestCopy<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestCopy<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1358,6 +1376,7 @@ namespace
 				DMibTestSuite("CopyBig")
 				{
 					CFunction_Tests::fs_DoTestCopyBig<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestCopyBig<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestCopyBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestCopyBig<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestCopyBig<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1369,6 +1388,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestAssign<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestAssign<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestAssign<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestAssign<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestAssign<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestAssign<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1379,6 +1399,7 @@ namespace
 				DMibTestSuite("AssignBig")
 				{
 					CFunction_Tests::fs_DoTestAssignBig<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestAssignBig<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestAssignBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestAssignBig<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestAssignBig<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1390,6 +1411,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestMove<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestMove<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestMove<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestMove<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestMove<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestMove<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1400,6 +1422,7 @@ namespace
 				DMibTestSuite("MoveBig")
 				{
 					CFunction_Tests::fs_DoTestMoveBig<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTestMoveBig<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestMoveBig<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestMoveBig<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestMoveBig<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1411,6 +1434,7 @@ namespace
 				{
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTestRecursive<TCFunction<void (int)>>("TCFunction");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionNSCP<void (int)>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int)>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTestRecursive<TCFunctionFastCall<void (int)>>("TCFunctionFastCall");
@@ -1423,6 +1447,7 @@ namespace
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void ()>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void ()>>("TCFunction");
+					CFunction_Tests::fs_DoTest<TCFunctionNSCP<void ()>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void ()>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void ()>>("TCFunctionFastCall");
@@ -1435,6 +1460,7 @@ namespace
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoCopyTag>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void (), CFunctionNoCopyTag>>("TCFunction");
+					CFunction_Tests::fs_DoTest<TCFunctionNSCP<void (), CFunctionNoCopyTag>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoCopyTag>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoCopyTag, NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void (), CFunctionNoCopyTag>>("TCFunctionFastCall");
@@ -1447,6 +1473,7 @@ namespace
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoMoveTag>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void (), CFunctionNoMoveTag>>("TCFunction");
+					CFunction_Tests::fs_DoTest<TCFunctionNSCP<void (), CFunctionNoMoveTag>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void (), CFunctionNoMoveTag>>("TCFunctionFastCall");
@@ -1459,6 +1486,7 @@ namespace
 					fs_DoTestDirect("Direct lambda");
 					CFunction_Tests::fs_DoTest<TCFunctionNoAlloc<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest<TCFunction<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunction");
+					CFunction_Tests::fs_DoTest<TCFunctionNSCP<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest<TCFunctionSmall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag, NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest<TCFunctionFastCall<void (), CFunctionNoMoveTag, CFunctionNoCopyTag>>("TCFunctionFastCall");
@@ -1470,6 +1498,7 @@ namespace
 					fs_DoTestDirect1("Direct lambda");
 					CFunction_Tests::fs_DoTest1<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest1<TCFunction<void (int)>>("TCFunction");
+					CFunction_Tests::fs_DoTest1<TCFunctionNSCP<void (int)>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int)>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest1<TCFunctionFastCall<void (int)>>("TCFunctionFastCall");
@@ -1482,6 +1511,7 @@ namespace
 					fs_DoTestDirect2("Direct lambda");
 					CFunction_Tests::fs_DoTest2<TCFunctionNoAlloc<void (int, int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest2<TCFunction<void (int, int)>>("TCFunction");
+					CFunction_Tests::fs_DoTest2<TCFunctionNSCP<void (int, int)>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int)>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest2<TCFunctionFastCall<void (int, int)>>("TCFunctionFastCall");
@@ -1494,6 +1524,7 @@ namespace
 					fs_DoTestDirect10("Direct lambda");
 					CFunction_Tests::fs_DoTest10<TCFunctionNoAlloc<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionNoAlloc");
 					CFunction_Tests::fs_DoTest10<TCFunction<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunction");
+					CFunction_Tests::fs_DoTest10<TCFunctionNSCP<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionNSCP");
 					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionSmall");
 					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
 					CFunction_Tests::fs_DoTest10<TCFunctionFastCall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionFastCall");
