@@ -734,7 +734,7 @@ namespace NMib::NFunction::NPrivate
 			TCConstructInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
-				|| (alignof(CImpl) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+				|| (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 				, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 			>::fs_Perform
 			(
@@ -808,7 +808,7 @@ namespace NMib::NFunction::NPrivate
 			TCAssignInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
-				|| (alignof(CImpl) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+				|| (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 				, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 			>::fs_Perform
 			(
@@ -1044,7 +1044,7 @@ namespace NMib::NFunction::NPrivate
 			TCConstructInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
-				|| (alignof(CImpl) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+				|| (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 				, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 			>::fs_Perform
 			(
@@ -1114,7 +1114,7 @@ namespace NMib::NFunction::NPrivate
 			TCAssignInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
-				|| (alignof(CImpl) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
+				|| (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 				, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 			>::fs_Perform
 			(
