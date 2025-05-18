@@ -71,7 +71,7 @@ namespace NMib::NFunction
 		/// Set to true to allow the function to allocate memory dynamically
 		, uint32 t_MaxSize = sizeof(void *)*4
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
-		, uint32 t_Alignment = TCConstantMax<mint, sizeof(void *), alignof(fp64)>::mc_Value
+		, uint32 t_Alignment = gc_ConstantMax<mint, sizeof(void *), alignof(fp64)>
 		/// The maximum alignment of a type that can be put in the TCFunctionXXXX object
 		, bool t_bSeparateCallPointer = true
 	>
@@ -105,10 +105,10 @@ namespace NMib::NFunction
 		template <typename t_CType, typename t_CSelf>
 		struct TCIsSelf
 		{
-			using CDecayed = typename NTraits::TCDecay<t_CType>::CType;
+			using CDecayed = NTraits::TCDecay<t_CType>;
 			enum
 			{
-				mc_Value = NTraits::TCIsSame<CDecayed, t_CSelf>::mc_Value
+				mc_Value = NTraits::cIsSame<CDecayed, t_CSelf>
 			};
 		};
 	}
@@ -125,13 +125,12 @@ namespace NMib::NFunction
 		struct TCFunctionOptions : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>
 		{
 			using CFunctionAllocOptions = typename TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>::CFunctionAllocOptions;
-			using CImpBase = typename TCChooseType
+			using CImpBase = TCConditional
 				<
 					CFunctionAllocOptions::mc_bSeparateCallPointer
 					, NPrivate::TCFunctionNoAllocBaseSeparateCall<TCFunctionOptions>
 					, NPrivate::TCFunctionNoAllocBase<TCFunctionOptions>
 				>
-				::CType
 			;
 		};
 	}
@@ -186,10 +185,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -203,10 +202,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -302,10 +301,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -319,10 +318,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -392,10 +391,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -409,10 +408,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -436,13 +435,12 @@ namespace NMib::NFunction
 		struct TCFunctionOptionsNoAlloc : public TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
 			using CFunctionAllocOptions = typename TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>::CFunctionAllocOptions;
-			using CImpBase = typename TCChooseType
+			using CImpBase = TCConditional
 				<
 					CFunctionAllocOptions::mc_bSeparateCallPointer
 					, NPrivate::TCFunctionNoAllocBaseSeparateCall<TCFunctionOptionsNoAlloc>
 					, NPrivate::TCFunctionNoAllocBase<TCFunctionOptionsNoAlloc>
 				>
-				::CType
 			;
 		};
 	}
@@ -493,10 +491,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 				, bool
 			> = true ///< @hidden
@@ -510,10 +508,10 @@ namespace NMib::NFunction
 		template
 		<
 			typename tf_CFunction
-			, TCEnableIfType
+			, TCEnableIf
 			<
-				!NTraits::TCIsSame<typename NTraits::TCRemoveReference<tf_CFunction>::CType, NInternal::CDefault>::mc_Value
-				&& !NTraits::TCIsSame<typename NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>::CType, NPrivate::CReturnReference>::mc_Value
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 				, bool
 			> = true ///< @hidden

@@ -126,7 +126,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<t_CFunction>(_Function));
 			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
 			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
@@ -140,7 +140,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			if (m_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
@@ -455,7 +455,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			typedef TCConstructObject<typename CImpl::CImplBase> CConstructObject;
 			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
 			m_Data.m_pImp = pObject - 1;
@@ -470,7 +470,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			typedef TCConstructObject<typename CImpl::CImplBase> CConstructObject;
 			if (m_Data.f_OnlyOneAlloc())
 			{
@@ -689,7 +689,7 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -705,16 +705,16 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
-				using CUniquePointer = typename TCChooseType
+				using CUniquePointer = TCConditional
 					<
-						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
-						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						NTraits::cIsSame<CAllocator, NMemory::CDefaultAllocator>
+						, NStorage::TCUniquePointer<NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>>
 						, NStorage::TCUniquePointer
 						<
-							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
+							NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>
 							, CAllocator
 						>
-					>::CType
+					>
 				;
 				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
 
@@ -730,7 +730,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			TCConstructInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -748,7 +748,7 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -769,16 +769,16 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
-				using CUniquePointer = typename TCChooseType
+				using CUniquePointer = TCConditional
 					<
-						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
-						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						NTraits::cIsSame<CAllocator, NMemory::CDefaultAllocator>
+						, NStorage::TCUniquePointer<NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>>
 						, NStorage::TCUniquePointer
 						<
-							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
+							NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>
 							, CAllocator
 						>
-					>::CType
+					>
 				;
 				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
 
@@ -804,7 +804,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			TCAssignInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -1001,7 +1001,7 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -1016,16 +1016,16 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				using CUniquePointer = typename TCChooseType
+				using CUniquePointer = TCConditional
 					<
-						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
-						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						NTraits::cIsSame<CAllocator, NMemory::CDefaultAllocator>
+						, NStorage::TCUniquePointer<NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>>
 						, NStorage::TCUniquePointer
 						<
-							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
+							NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>
 							, CAllocator
 						>
-					>::CType
+					>
 				;
 				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
 
@@ -1040,7 +1040,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			TCConstructInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -1058,7 +1058,7 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -1077,16 +1077,16 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				using CUniquePointer = typename TCChooseType
+				using CUniquePointer = TCConditional
 					<
-						NTraits::TCIsSame<CAllocator, NMemory::CDefaultAllocator>::mc_Value
-						, NStorage::TCUniquePointer<typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType>
+						NTraits::cIsSame<CAllocator, NMemory::CDefaultAllocator>
+						, NStorage::TCUniquePointer<NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>>
 						, NStorage::TCUniquePointer
 						<
-							typename NTraits::TCRemoveQualifiers<typename NTraits::TCRemoveReferenceStorable<tf_CFunction>::CType>::CType
+							NTraits::TCRemoveQualifiers<NTraits::TCRemoveReferenceStorable<tf_CFunction>>
 							, CAllocator
 						>
-					>::CType
+					>
 				;
 				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
 
@@ -1110,7 +1110,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<typename NTraits::TCRemoveReferenceStorable<t_CFunction>::CType, CFunctionDefinition>::CType CImpl;
+			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
 			TCAssignInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)

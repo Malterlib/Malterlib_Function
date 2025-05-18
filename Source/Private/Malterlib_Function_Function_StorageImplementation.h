@@ -544,7 +544,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		typedef NPrivate::TCImpl
 		<
-			typename NTraits::TCRemoveQualifiers<t_CFunctor>::CType
+			NTraits::TCRemoveQualifiers<t_CFunctor>
 			, typename t_CFunctionDefinition::CFunctionOptions
 		> CType;
 	};

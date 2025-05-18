@@ -5,25 +5,20 @@
 
 namespace NMib::NFunction::NPrivate
 {
-	typedef void (FDelete)(void *_pImpl);
-	typedef bool (FCompareEqual)(void const *_pImpl0, void const *_pImp1);
-	typedef COrdering_Partial (FCompareSpaceship)(void const *_pImpl0, void const *_pImp1);
+	using FDelete = void (void *_pImpl);
+	using FCompareEqual = bool (void const *_pImpl0, void const *_pImp1);
+	using FCompareSpaceship = COrdering_Partial (void const *_pImpl0, void const *_pImp1);
 
 	template <typename t_CParamType>
 	struct TCGetReferenceType
 	{
-		typedef typename TCChooseType
+		using CType = TCConditional
 			<
-				NTraits::TCIsReference<t_CParamType>::mc_Value
+				NTraits::cIsReference<t_CParamType>
 				, t_CParamType
-				, typename NTraits::TCAddLValueReference
-				<
-					typename NTraits::TCAddConst
-					<
-						t_CParamType
-					>::CType
-				>::CType
-			>::CType CType;
+				, NTraits::TCAddLValueReference<NTraits::TCAddConst<t_CParamType>>
+			>
+		;
 
 		template <typename tf_CType>
 		inline_small static CType fs_Forward(tf_CType &&_Type)
@@ -48,7 +43,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_Const
 		};
-		typedef t_CFunction CType;
+		using CType = t_CFunction;
 	};
 
 
@@ -59,7 +54,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_None
 		};
-		typedef t_CReturn (CType)(tp_CParams...);
+		using CType = t_CReturn (tp_CParams...);
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -69,7 +64,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_None
 		};
-		typedef t_CReturn (CType)(tp_CParams..., ...);
+		using CType = t_CReturn (tp_CParams..., ...);
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -79,7 +74,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_Const
 		};
-		typedef t_CReturn (CType)(tp_CParams...);
+		using CType = t_CReturn (tp_CParams...);
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -89,7 +84,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_Const
 		};
-		typedef t_CReturn (CType)(tp_CParams..., ...);
+		using CType = t_CReturn (tp_CParams..., ...);
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -99,7 +94,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_None
 		};
-		typedef t_CReturn (CType)(tp_CParams...) noexcept;
+		using CType = t_CReturn (tp_CParams...) noexcept;
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -109,7 +104,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_None
 		};
-		typedef t_CReturn (CType)(tp_CParams..., ...) noexcept;
+		using CType = t_CReturn (tp_CParams..., ...) noexcept;
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -119,7 +114,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_Const
 		};
-		typedef t_CReturn (CType)(tp_CParams...) noexcept;
+		using CType = t_CReturn (tp_CParams...) noexcept;
 	};
 
 	template <typename t_CReturn, typename... tp_CParams>
@@ -129,18 +124,12 @@ namespace NMib::NFunction::NPrivate
 		{
 			mc_Qualifiers = EQualifiers_Const
 		};
-		typedef t_CReturn (CType)(tp_CParams..., ...) noexcept;
+		using CType = t_CReturn (tp_CParams..., ...) noexcept;
 	};
 
 
 	template <typename t_CFirst, int _FirstQualifiers, typename t_CSecond, int _SecondQualifiers>
-	struct TCIsSameFunction
-	{
-		enum
-		{
-			mc_Value = NTraits::TCIsSame<t_CFirst, t_CSecond>::mc_Value && _FirstQualifiers == _SecondQualifiers
-		};
-	};
+	concept cIsSameFunction = NTraits::cIsSame<t_CFirst, t_CSecond> && _FirstQualifiers == _SecondQualifiers;
 
 	template <typename t_CIsFunction, typename... tp_CParams>
 	struct TCParseFunctionOptions;
@@ -148,9 +137,10 @@ namespace NMib::NFunction::NPrivate
 	template <>
 	struct TCParseFunctionOptions<void>
 	{
-		typedef NMeta::TCTypeList<> CFunctions;
-		typedef void CAllocator;
-		typedef void CFunctionAllocOptions;
+		using CFunctions = NMeta::TCTypeList<>;
+		using CAllocator = void;
+		using CFunctionAllocOptions = void;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = false
@@ -163,12 +153,12 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFirst, typename... tp_CParams>
-	struct TCParseFunctionOptions<typename TCEnableIf<NTraits::TCIsFunction<t_CFirst>::mc_Value>::CType, t_CFirst, tp_CParams...>
+	struct TCParseFunctionOptions<TCEnableIf<NTraits::cIsFunction<t_CFirst>>, t_CFirst, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename NMeta::TCTypeList_Concat<NMeta::TCTypeList<t_CFirst>, typename CParent::CFunctions>::CType CFunctions;
-		typedef typename CParent::CAllocator CAllocator;
-		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = NMeta::TCTypeList_Concat<NMeta::TCTypeList<t_CFirst>, typename CParent::CFunctions>;
+		using CAllocator = typename CParent::CAllocator;
+		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
 
 		enum
 		{
@@ -184,12 +174,13 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFirst, typename... tp_CParams>
-	struct TCParseFunctionOptions<typename TCEnableIf<NTraits::TCIsBaseOf<t_CFirst, NMemory::CAllocator_Base>::mc_Value>::CType, t_CFirst, tp_CParams...>
+	struct TCParseFunctionOptions<TCEnableIf<NTraits::cIsBaseOf<t_CFirst, NMemory::CAllocator_Base>>, t_CFirst, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename CParent::CFunctions CFunctions;
-		typedef t_CFirst CAllocator;
-		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = typename CParent::CFunctions;
+		using CAllocator = t_CFirst;
+		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
@@ -204,10 +195,11 @@ namespace NMib::NFunction::NPrivate
 	template <bool t_bAllowAlloc, mint t_MaxSize, mint t_Alignment, bool t_bSeparateCallPointer, typename... tp_CParams>
 	struct TCParseFunctionOptions<void, TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer>, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename CParent::CFunctions CFunctions;
-		typedef typename CParent::CAllocator CAllocator;
-		typedef TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer> CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = typename CParent::CFunctions;
+		using CAllocator = typename CParent::CAllocator;
+		using CFunctionAllocOptions = TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer>;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
@@ -222,10 +214,11 @@ namespace NMib::NFunction::NPrivate
 	template <typename... tp_CParams>
 	struct TCParseFunctionOptions<void, CFunctionSupportEqualityCompareTag, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename CParent::CFunctions CFunctions;
-		typedef typename CParent::CAllocator CAllocator;
-		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = typename CParent::CFunctions;
+		using CAllocator = typename CParent::CAllocator;
+		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = true
@@ -240,10 +233,11 @@ namespace NMib::NFunction::NPrivate
 	template <typename... tp_CParams>
 	struct TCParseFunctionOptions<void, CFunctionSupportOrderedCompareTag, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename CParent::CFunctions CFunctions;
-		typedef typename CParent::CAllocator CAllocator;
-		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = typename CParent::CFunctions;
+		using CAllocator = typename CParent::CAllocator;
+		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
@@ -258,10 +252,11 @@ namespace NMib::NFunction::NPrivate
 	template <typename... tp_CParams>
 	struct TCParseFunctionOptions<void, CFunctionNoCopyTag, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename CParent::CFunctions CFunctions;
-		typedef typename CParent::CAllocator CAllocator;
-		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = typename CParent::CFunctions;
+		using CAllocator = typename CParent::CAllocator;
+		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
@@ -276,10 +271,11 @@ namespace NMib::NFunction::NPrivate
 	template <typename... tp_CParams>
 	struct TCParseFunctionOptions<void, CFunctionNoMoveTag, tp_CParams...>
 	{
-		typedef TCParseFunctionOptions<void, tp_CParams...> CParent;
-		typedef typename CParent::CFunctions CFunctions;
-		typedef typename CParent::CAllocator CAllocator;
-		typedef typename CParent::CFunctionAllocOptions CFunctionAllocOptions;
+		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
+		using CFunctions = typename CParent::CFunctions;
+		using CAllocator = typename CParent::CAllocator;
+		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
+
 		enum
 		{
 			mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare
@@ -294,8 +290,9 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctionList, mint t_iCall>
 	struct TCGetCallInfo
 	{
-		typedef TCDetermineFunctionDefinition<typename NMeta::TCTypeList_Get<t_iCall, t_CFunctionList>::CType> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CType CType;
+		using CFunctionDefinition = TCDetermineFunctionDefinition<NMeta::TCTypeList_Get<t_iCall, t_CFunctionList>>;
+		using CType = typename CFunctionDefinition::CType;
+
 		enum
 		{
 			mc_Qualifiers = CFunctionDefinition::mc_Qualifiers
@@ -307,14 +304,14 @@ namespace NMib::NFunction::NPrivate
 	{
 		enum
 		{
-			mc_Value = TCIsSameFunction
+			mc_Value = cIsSameFunction
 				<
 					typename TCGetCallInfo<t_CFunctionList, t_Compare>::CType
 					, TCGetCallInfo<t_CFunctionList, t_Compare>::mc_Qualifiers
 					, typename TCGetCallInfo<t_CFunctionList, t_Start>::CType
 					, TCGetCallInfo<t_CFunctionList, t_Start>::mc_Qualifiers
-				>::mc_Value
-			|| TCHasDuplicateFunctionInner<t_CFunctionList, t_Compare, t_Start + 1, t_End>::mc_Value
+				>
+				|| TCHasDuplicateFunctionInner<t_CFunctionList, t_Compare, t_Start + 1, t_End>::mc_Value
 		};
 	};
 
@@ -354,14 +351,13 @@ namespace NMib::NFunction::NPrivate
 	>
 	struct TCFunctionOptionsShared
 	{
-		//typedef NMeta::TCTypeList<tp_COptions...> COptionList;
-		typedef TCParseFunctionOptions<void, tp_COptions...> CParsedOptions;
-		typedef typename CParsedOptions::CFunctions CFunctionList;
+		using CParsedOptions = TCParseFunctionOptions<void, tp_COptions...>;
+		using CFunctionList = typename CParsedOptions::CFunctions;
 		// Contracts
 
 		enum
 		{
-			mc_NumFunctions = NMeta::TCTypeList_Len<CFunctionList>::mc_Value
+			mc_NumFunctions = NMeta::gc_TypeList_Len<CFunctionList>
 		};
 
 		static_assert(mint(mc_NumFunctions) > 0, "You have to specify at least one function definition");
@@ -387,10 +383,7 @@ namespace NMib::NFunction::NPrivate
 
 		static_assert(!!CParsedOptions::mc_nNoExcept != !!CParsedOptions::mc_nExcept, "You cannot mix noexcept(true) and noexcept(false) functions");
 
-		typedef typename TCChooseType<NTraits::TCIsVoid<typename CParsedOptions::CAllocator>::mc_Value, t_CDefaultAllocator, typename CParsedOptions::CAllocator>::CType CAllocator;
-		typedef typename TCChooseType
-		<
-			NTraits::TCIsVoid<typename CParsedOptions::CFunctionAllocOptions>::mc_Value, t_CDefaultAllocOptions, typename CParsedOptions::CFunctionAllocOptions
-		>::CType CFunctionAllocOptions;
+		using CAllocator = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CAllocator>, t_CDefaultAllocator, typename CParsedOptions::CAllocator> ;
+		using CFunctionAllocOptions = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CFunctionAllocOptions>, t_CDefaultAllocOptions, typename CParsedOptions::CFunctionAllocOptions>;
 	};
 }

@@ -257,7 +257,7 @@ namespace NMib::NFunction::NPrivate
 	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_None>
 	{
 		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params) noexcept
-			requires(NTraits::cIsNoThrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
+			requires(NTraits::cIsNothrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				return (*((t_CBase *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -269,7 +269,7 @@ namespace NMib::NFunction::NPrivate
 	struct TCCallImpl<t_CBase, void (tp_CParams...) noexcept, EQualifiers_None>
 	{
 		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params) noexcept
-			requires(NTraits::cIsNoThrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
+			requires(NTraits::cIsNothrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				(*((t_CBase *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -281,7 +281,7 @@ namespace NMib::NFunction::NPrivate
 	struct TCCallImpl<t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_Const>
 	{
 		mark_no_coroutine_debug static t_CReturn fs_Call(void *_pImpl, tp_CParams... p_Params) noexcept
-			requires(NTraits::cIsNoThrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
+			requires(NTraits::cIsNothrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				return (*((t_CBase const *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -293,7 +293,7 @@ namespace NMib::NFunction::NPrivate
 	struct TCCallImpl<t_CBase, void (tp_CParams...) noexcept, EQualifiers_Const>
 	{
 		mark_no_coroutine_debug static void fs_Call(void *_pImpl, tp_CParams... p_Params) noexcept
-			requires(NTraits::cIsNoThrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
+			requires(NTraits::cIsNothrowCallableWith<typename t_CBase::CFunctor, void (tp_CParams...)>)
 		{
 			if constexpr (t_CBase::mc_IsIndirection)
 				(*((t_CBase const *)_pImpl)->m_pFunctor)(TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
