@@ -11,13 +11,13 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CReturnType, typename... tp_CParams>
 	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...)>
 	{
-		typedef t_CReturnType (CType)(void *_pImpl, tp_CParams...);
+		using CType = t_CReturnType (void *_pImpl, tp_CParams...);
 	};
 
 	template <typename t_CReturnType, typename... tp_CParams>
 	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...) noexcept>
 	{
-		typedef t_CReturnType (CType)(void *_pImpl, tp_CParams...) noexcept;
+		using CType = t_CReturnType (void *_pImpl, tp_CParams...) noexcept;
 	};
 
 	template
@@ -31,16 +31,16 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts, mint t_iFunction>
 	struct TCGetFunctionCallDefinition
 	{
-		typedef typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType CType;
+		using CType = typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType;
 	};
 
 	template <typename t_CFOpts>
 	struct TCFunctionDefinitions<t_CFOpts, false, false>
 	{
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
-		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 
 		struct CVTable
 		{
@@ -68,10 +68,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	struct TCFunctionDefinitions<t_CFOpts, true, false>
 	{
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
-		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 
 		struct CVTable
 		{
@@ -98,10 +98,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	struct TCFunctionDefinitions<t_CFOpts, false, true>
 	{
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
-		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 
 		struct CVTable
 		{
@@ -128,10 +128,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	struct TCFunctionDefinitions<t_CFOpts, true, true>
 	{
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
-		typedef void *(FDuplicate)(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
-		typedef void *(FDuplicateMove)(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 
 		struct CVTable
 		{

@@ -362,7 +362,7 @@ namespace NMib::NFunction::NPrivate
 
 		static_assert(mint(mc_NumFunctions) > 0, "You have to specify at least one function definition");
 
-		typedef typename TCGetCallInfo<CFunctionList, 0>::CType CCall0;
+		using CCall0 = typename TCGetCallInfo<CFunctionList, 0>::CType;
 
 		enum
 		{

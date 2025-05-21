@@ -159,7 +159,7 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
 
@@ -254,7 +254,7 @@ namespace NMib::NFunction
 		template <typename... tp_COptions>
 		struct TCFunctionOptionsFastCall : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
-			typedef NPrivate::TCFunctionBase<TCFunctionOptionsFastCall> CImpBase;
+			using CImpBase = NPrivate::TCFunctionBase<TCFunctionOptionsFastCall>;
 		};
 	}
 
@@ -275,7 +275,7 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
 
@@ -344,7 +344,7 @@ namespace NMib::NFunction
 		template <typename... tp_COptions>
 		struct TCFunctionOptionsSmall : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
-			typedef NPrivate::TCFunctionSmallBase<TCFunctionOptionsSmall> CImpBase;
+			using CImpBase = NPrivate::TCFunctionSmallBase<TCFunctionOptionsSmall>;
 		};
 	}
 
@@ -365,10 +365,9 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-
 		~TCFunctionSmall()
 		{
 		}
@@ -465,10 +464,9 @@ namespace NMib::NFunction
 		template <typename t_CFunction0>
 		friend struct TCFunctionInfo;
 
-		typedef NPrivate::TCFunctionImplementation<CFunctionOptions> CSuper;
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-
 		~TCFunctionNoAlloc()
 		{
 		}

@@ -1176,7 +1176,7 @@ namespace
 					V1 v1;
 
 					{
-						typedef TCFunction
+						using F1 = TCFunction
 							<
 								int (int)
 								, int (CThisTag &, int)
@@ -1187,8 +1187,7 @@ namespace
 								, int (int, int, int, int)
 								, int (CThisTag &, int, int, int, int)
 							>
-						F1;
-
+						;
 
 						F1 f1;
 						f1 = CCallAll();
@@ -1202,7 +1201,7 @@ namespace
 						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1, 1)) == DMibExpr(1000004));
 					}
 					{
-						typedef TCFunction<void (int)> F1;
+						using F1 = TCFunction<void (int)>;
 						F1 f1;
 						DMibTest(DMibExpr(!f1));
 						F1 f2(v1);
@@ -1211,30 +1210,30 @@ namespace
 						F1 f4([](int)->void {});
 					}
 					{
-						typedef TCFunction<void (char)> F1;
+						using F1 = TCFunction<void (char)>;
 						F1 f1;
 						F1 f2(v1);
 					}
 					{
-						typedef TCFunction<int ()> F1;
+						using F1 = TCFunction<int ()>;
 						F1 f1;
 						F1 f2(v1);
 					}
 					{
-						typedef TCFunction<void (int), void ()> F1;
+						using F1 = TCFunction<void (int), void ()>;
 						F1 f1;
 						F1 f2(v1); // return value ignored. OK? Yes
 						// F1 f3([](int)->void {}); // Fails
 						// Fails: F1 f4([](int)->void {},[]()->void {}); (waiting for TCCombinedFunction support)
 					}
 					{
-						//typedef TCFunction<void (int),void (int)> F1;  // Fails
+						//using F1 = TCFunction<void (int),void (int)>;  // Fails
 						//F1 f1;
 						//F1 f2(v1);
 					}
 					{
-						typedef TCFunction<void (int), void ()> F1;
-						typedef TCFunction<void (int)> F2;
+						using F1 = TCFunction<void (int), void ()>;
+						using F2 = TCFunction<void (int)> ;
 						F1 f1(v1);
 						F2 f2(f1);
 						// F1 f3(f2);
@@ -1244,7 +1243,7 @@ namespace
 
 					// No
 					{
-						typedef TCFunction<void (int,int)> F1;
+						using F1 = TCFunction<void (int,int)>;
 						F1 f1;
 //						F1 f2(v1);  // Ignoring extra parameters might be ok?
 					}
@@ -1266,7 +1265,7 @@ namespace
 						v3();
 						v4();
 
-						typedef TCFunction<int (CThisTag &), int ()> F1;
+						using F1 = TCFunction<int (CThisTag &), int ()>;
 						F1 f1(v2);
 						DMibTest(DMibExpr(f1())==DMibExpr(2));
 						F1 const f2(v2);
@@ -1303,11 +1302,11 @@ namespace
 								void fun(int) {}
 								int fun(void*) { return 3; }
 							};// v2;
-							//typedef TCFunction<void (int)> F1;
+							//using F1 = TCFunction<void (int)>;
 							//F1 f1(boost::bind(&V2::fun,v2));
 						}
 
-						//typedef TCFunction<int ()> F1;
+						//using F1 = TCFunction<int ()>;
 					}
 
 					{

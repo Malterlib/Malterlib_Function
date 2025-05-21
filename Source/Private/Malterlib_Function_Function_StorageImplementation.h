@@ -17,17 +17,17 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, t_bSupportCopy, t_bSupportMove> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, t_bSupportCopy, t_bSupportMove>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> ;
 		};
 
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -47,16 +47,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, true, true, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -90,16 +90,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, false, true, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -126,16 +126,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, true, true, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase ;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -162,16 +162,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, false, false, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -188,16 +188,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, true, false, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -228,16 +228,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, false, false, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -261,16 +261,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, true, false, true>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, true> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, true>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -294,16 +294,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, false, true, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -317,16 +317,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, true, true, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -357,16 +357,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, false, true, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -390,16 +390,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, true, true, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, true, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, true, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -423,16 +423,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, false, false, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -446,16 +446,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, true, false, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -483,16 +483,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, true, false, false, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -513,16 +513,16 @@ namespace NMib::NFunction::NPrivate
 	class TCImpl<t_CFunctor, t_CFOpts, false, true, false, false>
 	{
 	public:
-		typedef TCImplBase<t_CFunctor, false, false> CImplBase;
-		typedef TCImplVTable<t_CFunctor, t_CFOpts> CVTable;
-		typedef TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0> CCallImp0;
+		using CImplBase = TCImplBase<t_CFunctor, false, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
 		template <mint t_iFunction>
 		struct TCGetCallImp
 		{
-			typedef TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> CType;
+			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
 		};
-		typedef typename t_CFOpts::CImpBase CAllocator;
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
@@ -542,11 +542,12 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctor, typename t_CFunctionDefinition>
 	struct TCDetermineImpl
 	{
-		typedef NPrivate::TCImpl
-		<
-			NTraits::TCRemoveQualifiers<t_CFunctor>
-			, typename t_CFunctionDefinition::CFunctionOptions
-		> CType;
+		using CType = NPrivate::TCImpl
+			<
+				NTraits::TCRemoveQualifiers<t_CFunctor>
+				, typename t_CFunctionDefinition::CFunctionOptions
+			>
+		;
 	};
 
 #ifdef DMibDebuggerHelpers
@@ -589,8 +590,9 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, false>
 	{
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+
 		static constexpr CVTable mc_VTable =
 			{
 				{
@@ -610,8 +612,9 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, true>
 	{
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+
 		static constexpr CVTable mc_VTable =
 			{
 				{
@@ -634,8 +637,9 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, false>
 	{
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+
 		static constexpr CVTable mc_VTable =
 			{
 				{
@@ -657,8 +661,9 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, true>
 	{
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+
 		static constexpr CVTable mc_VTable =
 			{
 				{

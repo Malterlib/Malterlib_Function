@@ -10,7 +10,7 @@ namespace NMib::NFunction::NPrivate
 
 	struct CReturnReference;
 
-	typedef CReturnReference const &  CReturnReferenceReturn;
+	using CReturnReferenceReturn = CReturnReference const &;
 	template <bool t_bNoExcept>
 	class TCNullFunctionImpl;
 

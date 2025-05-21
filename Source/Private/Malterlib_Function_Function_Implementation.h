@@ -17,14 +17,13 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
-		typedef TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts> CNullFunction;
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
-		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
-		typedef typename t_CFOpts::CAllocator CAllocator;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+		using CCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType;
+		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
-
 		class CData : public CAllocator
 		{
 		public:
@@ -126,7 +125,8 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+
 			m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<t_CFunction>(_Function));
 			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
 			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
@@ -140,7 +140,8 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+
 			if (m_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
@@ -161,13 +162,13 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
-			typedef TCFunctionBase const & CType;
+			using CType = TCFunctionBase const &;
 		};
 
 		template <typename t_CDummy>
 		struct TCGetDuplicateSignature<true, t_CDummy>
 		{
-			typedef TCFunctionBase && CType;
+			using CType = TCFunctionBase &&;
 		};
 
 		template <bool t_bMove>
@@ -296,11 +297,12 @@ namespace NMib::NFunction::NPrivate
 		friend class TCImpl;
 
 	public:
-		typedef TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts> CNullFunction;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+
 	private:
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
-		typedef typename t_CFOpts::CAllocator CAllocator;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
 
@@ -447,7 +449,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CObject, typename t_CParam>
 		void *fp_ConstructObject(t_CParam &&_Param)
 		{
-			typedef TCConstructObject<t_CObject> CConstructObject;
+			using CConstructObject = TCConstructObject<t_CObject>;
 			CConstructObject *pObject = fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CParam>(_Param));
 			return pObject;
 		}
@@ -455,8 +457,9 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
-			typedef TCConstructObject<typename CImpl::CImplBase> CConstructObject;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CConstructObject = TCConstructObject<typename CImpl::CImplBase>;
+
 			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
 			m_Data.m_pImp = pObject - 1;
 			m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
@@ -470,8 +473,9 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
-			typedef TCConstructObject<typename CImpl::CImplBase> CConstructObject;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CConstructObject = TCConstructObject<typename CImpl::CImplBase>;
+
 			if (m_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
@@ -492,13 +496,13 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
-			typedef TCFunctionSmallBase const & CType;
+			using CType = TCFunctionSmallBase const &;
 		};
 
 		template <typename t_CDummy>
 		struct TCGetDuplicateSignature<true, t_CDummy>
 		{
-			typedef TCFunctionSmallBase && CType;
+			using CType = TCFunctionSmallBase &&;
 		};
 
 		template <bool t_bMove>
@@ -587,11 +591,11 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
-		typedef TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts> CNullFunction;
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
-		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
-		typedef typename t_CFOpts::CAllocator CAllocator;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+		using CCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType;
+		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
 		CCallType0 * m_pCall;
@@ -632,13 +636,13 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
-			typedef TCFunctionNoAllocBaseSeparateCall const & CType;
+			using CType = TCFunctionNoAllocBaseSeparateCall const &;
 		};
 
 		template <typename t_CDummy>
 		struct TCGetDuplicateSignature<true, t_CDummy>
 		{
-			typedef TCFunctionNoAllocBaseSeparateCall && CType;
+			using CType = TCFunctionNoAllocBaseSeparateCall &&;
 		};
 
 		template <bool t_bMove>
@@ -689,11 +693,13 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
+
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
@@ -716,12 +722,14 @@ namespace NMib::NFunction::NPrivate
 						>
 					>
 				;
-				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+
+				using CImpl = typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType;
 
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
@@ -730,7 +738,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
 			TCConstructInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -748,7 +756,8 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
+
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -758,6 +767,7 @@ namespace NMib::NFunction::NPrivate
 				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
@@ -780,7 +790,7 @@ namespace NMib::NFunction::NPrivate
 						>
 					>
 				;
-				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType;
 
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
@@ -791,6 +801,7 @@ namespace NMib::NFunction::NPrivate
 				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
 				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+
 				_This.m_pCall = CImpl::CCallImp0::fs_Call;
 				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
@@ -804,7 +815,8 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+
 			TCAssignInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -903,11 +915,11 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend class TCImpl;
 
-		typedef TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts> CNullFunction;
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-		typedef typename CFunctionDefinition::CVTable CVTable;
-		typedef typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType CCallType0;
-		typedef typename t_CFOpts::CAllocator CAllocator;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+		using CCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType;
+		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
 		NStorage::TCBitStorePointer<CVTable const, 2> m_pVTable;
@@ -945,13 +957,13 @@ namespace NMib::NFunction::NPrivate
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
-			typedef TCFunctionNoAllocBase const & CType;
+			using CType = TCFunctionNoAllocBase const &;
 		};
 
 		template <typename t_CDummy>
 		struct TCGetDuplicateSignature<true, t_CDummy>
 		{
-			typedef TCFunctionNoAllocBase && CType;
+			using CType = TCFunctionNoAllocBase &&;
 		};
 
 		template <bool t_bMove>
@@ -1001,7 +1013,8 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
+
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -1027,7 +1040,7 @@ namespace NMib::NFunction::NPrivate
 						>
 					>
 				;
-				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType;
 
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
@@ -1040,7 +1053,8 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Construct(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+
 			TCConstructInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -1058,7 +1072,8 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function)
 			{
-				typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
+
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
@@ -1088,7 +1103,7 @@ namespace NMib::NFunction::NPrivate
 						>
 					>
 				;
-				typedef typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType CImpl;
+				using CImpl = typename TCDetermineImpl<CUniquePointer, CFunctionDefinition>::CType;
 
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
@@ -1110,7 +1125,8 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunction>
 		void fp_Assign(t_CFunction &&_Function)
 		{
-			typedef typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType CImpl;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+
 			TCAssignInternal
 			<
 				(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize)
@@ -1296,16 +1312,14 @@ namespace NMib::NFunction::NPrivate
 	class TCFunctionImplementation : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
 		//
-		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
-		typedef TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts> CNullFunction;
+		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
 
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-
-		typedef typename CFunctionDefinition::CVTable CVTable;
 	public:
-
 		/// The options available for the function
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
 		using CSuper::operator ();
 
@@ -1419,15 +1433,13 @@ namespace NMib::NFunction::NPrivate
 	class TCFunctionImplementation<t_CFOpts, true, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
 		//
-		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
-		typedef TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts> CNullFunction;
-
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
 
 	public:
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
 		using CSuper::operator ();
 
@@ -1541,16 +1553,13 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	class TCFunctionImplementation<t_CFOpts, false, true> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
-		//
-		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
-		typedef TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts> CNullFunction;
-
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
 
 	public:
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
 		using CSuper::operator ();
 
@@ -1657,16 +1666,13 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts>
 	class TCFunctionImplementation<t_CFOpts, true, false> : public TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>
 	{
-		//
-		typedef TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase> CSuper;
-		typedef TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts> CNullFunction;
-
-		typedef TCFunctionDefinitions<t_CFOpts> CFunctionDefinition;
-
-		typedef typename CFunctionDefinition::CVTable CVTable;
+		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions-1, typename t_CFOpts::CImpBase>;
+		using CNullFunction = TCImpl<TCNullFunctionImpl<t_CFOpts::mc_bNoExcept>, t_CFOpts>;
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
 
 	public:
-		typedef t_CFOpts CFunctionOptions;
+		using CFunctionOptions = t_CFOpts;
 
 		using CSuper::operator ();
 

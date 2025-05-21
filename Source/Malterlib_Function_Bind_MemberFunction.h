@@ -21,8 +21,8 @@ namespace NMib::NFunction
 	template <typename t_CFunctionMemberPointer>
 	class TCMemberFunctionFunctor
 	{
-		typedef typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CReturn CReturn;
-		typedef typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CClass CClass;
+		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CReturn;
+		using CClass = typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CClass;
 	public:
 		TCMemberFunctionFunctor(TCMemberFunctionFunctor &_Other)
 			: mp_pFunction(_Other.mp_pFunction)
@@ -101,7 +101,7 @@ namespace NMib::NFunction
 	template <typename t_CFunctionMemberPointer, typename t_CThis>
 	class TCMemberFunctionBoundFunctor
 	{
-		typedef typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CReturn CReturn;
+		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CReturn;
 	public:
 		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &_Other)
 			: mp_pFunction(_Other.mp_pFunction)

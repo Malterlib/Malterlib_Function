@@ -24,7 +24,7 @@ namespace
 		public:
 			struct CBindFunctor
 			{
-				typedef int result_type;
+				using result_type = int;
 
 				bool operator == (CBindFunctor const &_Right) const
 				{
@@ -39,7 +39,7 @@ namespace
 				template <typename t_CType>
 				struct result
 				{
-					typedef int type;
+					using type = int;
 				};
 				int operator () (int _Test, int _Test2, int _Test3, int _Test4) const
 				{
