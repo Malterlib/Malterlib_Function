@@ -172,6 +172,12 @@ namespace NMib::NFunction
 		{
 		}
 
+		template <typename... tfp_CParams>
+		TCFunction(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+		{
+		}
+
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
 		TCFunction(TCFunction const &_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
@@ -288,6 +294,12 @@ namespace NMib::NFunction
 		{
 		}
 
+		template <typename... tfp_CParams>
+		TCFunctionFastCall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+		{
+		}
+
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
 		TCFunctionFastCall(TCFunctionFastCall const &_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
@@ -374,6 +386,12 @@ namespace NMib::NFunction
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_Default
 		TCFunctionSmall()
+		{
+		}
+
+		template <typename... tfp_CParams>
+		TCFunctionSmall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
 		}
 

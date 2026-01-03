@@ -5,6 +5,7 @@
 #include <boost/function.hpp>
 #include <Mib/Function/Function>
 #include <Mib/Test/Exception>
+#include <Mib/Memory/MemoryManager>
 
 // TODO
 // Combined function
@@ -1529,6 +1530,224 @@ namespace
 					CFunction_Tests::fs_DoTest10<TCFunctionFastCall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionFastCall");
 					CFunction_Tests::fs_DoTest10<std::function<void (int, int, int, int, int, int, int, int, int, int)>>("std::function");
 					CFunction_Tests::fs_DoTest10<boost::function<void (int, int, int, int, int, int, int, int, int, int)>>("boost::function");
+				};
+
+				DMibTestSuite("Allocator behavior")
+				{
+					using CMemoryManagerParams = NMemory::TCMemoryManagerParams<>;
+					using CMemoryManager = NMemory::TCMemoryManager<CMemoryManagerParams>;
+					using CStatefulAllocator = NMemory::TCAllocator_MemoryManager<CMemoryManagerParams>;
+					using CFunctionStateful = TCFunctionSmall<int32 (), CStatefulAllocator>;
+					// Use a large static buffer to test static allocations properly
+					using CFunctionStatic = TCFunctionSmall<int32 (), NMemory::TCAllocator_Static<128>>;
+
+					// Functor that tracks whether data was copied or moved
+					struct CFunctorWithData
+					{
+						int32 m_Value;
+						uint8 *m_pData;
+
+						CFunctorWithData(int32 _Value)
+							: m_Value(_Value)
+							, m_pData(new uint8[16])
+						{
+						}
+
+						~CFunctorWithData()
+						{
+							delete[] m_pData;
+						}
+
+						CFunctorWithData(CFunctorWithData const &_Other)
+							: m_Value(_Other.m_Value)
+							, m_pData(new uint8[16])
+						{
+						}
+
+						CFunctorWithData(CFunctorWithData &&_Other)
+							: m_Value(_Other.m_Value)
+							, m_pData(fg_Exchange(_Other.m_pData, nullptr))
+						{
+						}
+
+						int32 operator()() const
+						{
+							return m_Value;
+						}
+					};
+
+					DMibTestCategory("DefaultAllocator")
+					{
+						// Default allocator is stateless - always steals
+						{
+							DMibTestPath("MoveConstruct");
+							TCFunction<int32 ()> Source = CFunctorWithData(42);
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							TCFunction<int32 ()> Dest(fg_Move(Source));
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+						}
+
+						{
+							DMibTestPath("MoveAssign");
+							TCFunction<int32 ()> Source = CFunctorWithData(42);
+							TCFunction<int32 ()> Dest;
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							Dest = fg_Move(Source);
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+						}
+					};
+
+					DMibTestCategory("StatefulAllocator")
+					{
+						CMemoryManager MemoryManagerA{NMemory::CMemoryManagerConfig()};
+						CMemoryManager MemoryManagerB{NMemory::CMemoryManagerConfig()};
+
+						{
+							DMibTestPath("MoveConstruct/SameAllocator");
+							// Same allocator instance - should steal
+							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
+							Source = CFunctorWithData(42);
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							CFunctionStateful Dest(fg_Move(Source));
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+						}
+
+						{
+							DMibTestPath("MoveConstruct/DifferentAllocator");
+							// Different allocator instances (both using same memory manager, but different instances)
+							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
+							Source = CFunctorWithData(42);
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							// Move construct copies allocator from source, so can always steal
+							CFunctionStateful Dest(fg_Move(Source));
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							// Source should be empty after move
+							DMibTest(!DMibExpr(Source));
+						}
+
+						{
+							DMibTestPath("MoveAssign/SameAllocator");
+							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
+							Source = CFunctorWithData(42);
+							CFunctionStateful Dest(CAllocatorConstructTag(), &MemoryManagerA);
+
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							Dest = fg_Move(Source);
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+						}
+
+						{
+							DMibTestPath("MoveAssign/DifferentAllocator");
+							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
+							Source = CFunctorWithData(42);
+							CFunctionStateful Dest(CAllocatorConstructTag(), &MemoryManagerB);
+
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							Dest = fg_Move(Source);
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							// Source should be empty after move (data was duplicated then source destroyed)
+							DMibTest(!DMibExpr(Source));
+						}
+					};
+
+					DMibTestCategory("StaticAllocator")
+					{
+						// Small functor that fits in static buffer
+						struct CSmallFunctor
+						{
+							int32 m_Value;
+
+							CSmallFunctor(int32 _Value)
+								: m_Value(_Value)
+							{
+							}
+
+							int32 operator()() const
+							{
+								return m_Value;
+							}
+						};
+
+						// Large functor that overflows static buffer and uses heap
+						struct CLargeFunctor
+						{
+							int32 m_Value;
+							uint8 m_Data[256]; // Large enough to force heap allocation
+
+							CLargeFunctor(int32 _Value)
+								: m_Value(_Value)
+							{
+							}
+
+							int32 operator()() const
+							{
+								return m_Value;
+							}
+						};
+
+						{
+							DMibTestPath("StaticAllocation/MoveConstruct");
+							// Static allocations should NOT be stolen between different function objects
+							CFunctionStatic Source;
+							Source = CSmallFunctor(42);
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							// Move construct - since static allocation, should copy
+							CFunctionStatic Dest(fg_Move(Source));
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							// Source is emptied after move even when copying (duplicated then destroyed)
+							DMibTest(!DMibExpr(Source));
+						}
+
+						{
+							DMibTestPath("StaticAllocation/MoveAssign");
+							CFunctionStatic Source;
+							Source = CSmallFunctor(42);
+							CFunctionStatic Dest;
+
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							Dest = fg_Move(Source);
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							// Source is emptied after move even when copying
+							DMibTest(!DMibExpr(Source));
+						}
+
+						{
+							DMibTestPath("HeapOverflow/MoveConstruct");
+							// Large allocation that overflows to heap - should be stolen
+							CFunctionStatic Source;
+							Source = CLargeFunctor(42);
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							CFunctionStatic Dest(fg_Move(Source));
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+						}
+
+						{
+							DMibTestPath("HeapOverflow/MoveAssign");
+							CFunctionStatic Source;
+							Source = CLargeFunctor(42);
+							CFunctionStatic Dest;
+
+							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+
+							Dest = fg_Move(Source);
+							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+						}
+					};
 				};
 
 			}

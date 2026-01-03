@@ -27,12 +27,38 @@ namespace NMib::NFunction::NPrivate
 		class CData : public CAllocator
 		{
 		public:
+			template <typename... tfp_CParams>
+			CData(CAllocatorConstructTag const &, tfp_CParams && ...p_Params)
+				: CAllocator(fg_Forward<tfp_CParams>(p_Params)...)
+				, m_pVTable(&CNullFunction::CVTable::mc_VTable)
+				, m_pImpl(nullptr)
+				, m_pCall(&CNullFunction::CCallImp0::fs_Call)
+			{
+			}
+
 			CData()
 				: m_pVTable(&CNullFunction::CVTable::mc_VTable)
 				, m_pImpl(nullptr)
 				, m_pCall(&CNullFunction::CCallImp0::fs_Call)
 			{
 			}
+
+			CData(CData &&_Other)
+				: CAllocator(fg_Move(static_cast<CAllocator &>(_Other)))
+				, m_pVTable(&CNullFunction::CVTable::mc_VTable)
+				, m_pImpl(nullptr)
+				, m_pCall(&CNullFunction::CCallImp0::fs_Call)
+			{
+			}
+
+			CData(CData const &_Other)
+				: CAllocator(static_cast<CAllocator const &>(_Other))
+				, m_pVTable(&CNullFunction::CVTable::mc_VTable)
+				, m_pImpl(nullptr)
+				, m_pCall(&CNullFunction::CCallImp0::fs_Call)
+			{
+			}
+
 			void * m_pImpl;
 			CCallType0 * m_pCall;
 			CVTable const * m_pVTable;
@@ -50,9 +76,15 @@ namespace NMib::NFunction::NPrivate
 
 		CData m_Data;
 
-		TCFunctionBase()
+		template <typename... tfp_CParams>
+		TCFunctionBase(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: m_Data(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
 		}
+
+		TCFunctionBase() = default;
+		TCFunctionBase(TCFunctionBase const &) = default;
+		TCFunctionBase(TCFunctionBase &&) = default;
 
 		bool fp_IsDefault() const
 		{
@@ -69,20 +101,40 @@ namespace NMib::NFunction::NPrivate
 		{
 			if (_Other.m_Data.m_pImpl)
 			{
-				if (_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImpl))
-				{
-					fp_SetDefault();
-					fp_Duplicate<true>(fg_Move(_Other));
-					_Other.fp_Destroy();
-					_Other.fp_SetDefault();
-				}
-				else
+				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
 					m_Data.m_pImpl = _Other.m_Data.m_pImpl;
 					m_Data.m_pCall = _Other.m_Data.m_pCall;
 					m_Data.m_pVTable = _Other.m_Data.m_pVTable;
 					m_Data = fg_Move(_Other.m_Data);
 					_Other.fp_SetDefault();
+				}
+				else
+				{
+					bool bCanSteal = false;
+					if constexpr (CAllocator::mc_CanBeStatic)
+					{
+						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImpl))
+							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+					}
+					else
+						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+
+					if (bCanSteal)
+					{
+						m_Data.m_pImpl = _Other.m_Data.m_pImpl;
+						m_Data.m_pCall = _Other.m_Data.m_pCall;
+						m_Data.m_pVTable = _Other.m_Data.m_pVTable;
+						m_Data = fg_Move(_Other.m_Data);
+						_Other.fp_SetDefault();
+					}
+					else
+					{
+						fp_SetDefault();
+						fp_Duplicate<true>(fg_Move(_Other));
+						_Other.fp_Destroy();
+						_Other.fp_SetDefault();
+					}
 				}
 			}
 			else
@@ -93,13 +145,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			if (!_Other.fp_IsDefault())
 			{
-				if (_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImpl))
-				{
-					fp_Duplicate<true>(fg_Move(_Other));
-					_Other.fp_Destroy();
-					_Other.fp_SetDefault();
-				}
-				else
+				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
 					fp_Destroy();
 					m_Data.m_pImpl = _Other.m_Data.m_pImpl;
@@ -107,6 +153,33 @@ namespace NMib::NFunction::NPrivate
 					m_Data.m_pVTable = _Other.m_Data.m_pVTable;
 					m_Data = fg_Move(_Other.m_Data);
 					_Other.fp_SetDefault();
+				}
+				else
+				{
+					bool bCanSteal = false;
+					if constexpr (CAllocator::mc_CanBeStatic)
+					{
+						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImpl))
+							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+					}
+					else
+						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+
+					if (bCanSteal)
+					{
+						fp_Destroy();
+						m_Data.m_pImpl = _Other.m_Data.m_pImpl;
+						m_Data.m_pCall = _Other.m_Data.m_pCall;
+						m_Data.m_pVTable = _Other.m_Data.m_pVTable;
+						m_Data = fg_Move(_Other.m_Data);
+						_Other.fp_SetDefault();
+					}
+					else
+					{
+						fp_Duplicate<true>(fg_Move(_Other));
+						_Other.fp_Destroy();
+						_Other.fp_SetDefault();
+					}
 				}
 			}
 			else
@@ -198,7 +271,6 @@ namespace NMib::NFunction::NPrivate
 					fp_Destroy();
 					m_Data.m_pImpl = pNew;
 				}
-				m_Data = _Other.m_Data;
 				m_Data.m_pCall = _Other.m_Data.m_pCall;
 				m_Data.m_pVTable = _Other.m_Data.m_pVTable;
 			}
@@ -318,10 +390,30 @@ namespace NMib::NFunction::NPrivate
 		class CData : public CAllocator
 		{
 		public:
+			template <typename... tfp_CParams>
+			CData(CAllocatorConstructTag const &, tfp_CParams && ...p_Params)
+				: CAllocator(fg_Forward<tfp_CParams>(p_Params)...)
+				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+			{
+			}
+
 			CData()
 				: m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
 			{
 			}
+
+			CData(CData &&_Other)
+				: CAllocator(fg_Move(static_cast<CAllocator &>(_Other)))
+				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+			{
+			}
+
+			CData(CData const &_Other)
+				: CAllocator(static_cast<CAllocator const &>(_Other))
+				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+			{
+			}
+
 			CImplementationData *m_pImp;
 			CData &operator =(CData &&_Other)
 			{
@@ -337,9 +429,15 @@ namespace NMib::NFunction::NPrivate
 
 		CData m_Data;
 
-		TCFunctionSmallBase()
+		template <typename... tfp_CParams>
+		TCFunctionSmallBase(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: m_Data(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
 		}
+
+		TCFunctionSmallBase() = default;
+		TCFunctionSmallBase(TCFunctionSmallBase const &) = default;
+		TCFunctionSmallBase(TCFunctionSmallBase &&) = default;
 
 		bool fp_IsDefault() const
 		{
@@ -392,18 +490,36 @@ namespace NMib::NFunction::NPrivate
 		{
 			if (!_Other.fp_IsDefault())
 			{
-				if (_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImp))
-				{
-					fp_SetDefault();
-					fp_Duplicate<true>(fg_Move(_Other));
-					_Other.fp_Destroy();
-					_Other.fp_SetDefault();
-				}
-				else
+				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
 					m_Data.m_pImp = _Other.m_Data.m_pImp;
 					m_Data = fg_Move(_Other.m_Data);
 					_Other.fp_SetDefault();
+				}
+				else
+				{
+					bool bCanSteal = false;
+					if constexpr (CAllocator::mc_CanBeStatic)
+					{
+						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImp))
+							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+					}
+					else
+						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+
+					if (bCanSteal)
+					{
+						m_Data.m_pImp = _Other.m_Data.m_pImp;
+						m_Data = fg_Move(_Other.m_Data);
+						_Other.fp_SetDefault();
+					}
+					else
+					{
+						fp_SetDefault();
+						fp_Duplicate<true>(fg_Move(_Other));
+						_Other.fp_Destroy();
+						_Other.fp_SetDefault();
+					}
 				}
 			}
 			else
@@ -414,18 +530,37 @@ namespace NMib::NFunction::NPrivate
 		{
 			if (!_Other.fp_IsDefault())
 			{
-				if (_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImp))
-				{
-					fp_Duplicate<true>(fg_Move(_Other));
-					_Other.fp_Destroy();
-					_Other.fp_SetDefault();
-				}
-				else
+				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
 					fp_Destroy();
 					m_Data.m_pImp = _Other.m_Data.m_pImp;
 					m_Data = fg_Move(_Other.m_Data);
 					_Other.fp_SetDefault();
+				}
+				else
+				{
+					bool bCanSteal = false;
+					if constexpr (CAllocator::mc_CanBeStatic)
+					{
+						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImp))
+							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+					}
+					else
+						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+
+					if (bCanSteal)
+					{
+						fp_Destroy();
+						m_Data.m_pImp = _Other.m_Data.m_pImp;
+						m_Data = fg_Move(_Other.m_Data);
+						_Other.fp_SetDefault();
+					}
+					else
+					{
+						fp_Duplicate<true>(fg_Move(_Other));
+						_Other.fp_Destroy();
+						_Other.fp_SetDefault();
+					}
 				}
 			}
 			else
@@ -532,7 +667,6 @@ namespace NMib::NFunction::NPrivate
 					fp_Destroy();
 					m_Data.m_pImp = pNew - 1;
 				}
-				m_Data = _Other.m_Data;
 				m_Data.m_pImp->m_pVTable = _Other.m_Data.m_pImp->m_pVTable;
 			}
 			else
@@ -606,6 +740,16 @@ namespace NMib::NFunction::NPrivate
 		TCFunctionNoAllocBaseSeparateCall()
 			: m_pCall(&CNullFunction::CCallImp0::fs_Call)
 			, m_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
+		{
+		}
+
+		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall const &)
+			: TCFunctionNoAllocBaseSeparateCall()
+		{
+		}
+
+		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall &&)
+			: TCFunctionNoAllocBaseSeparateCall()
 		{
 		}
 
@@ -931,6 +1075,16 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
+		TCFunctionNoAllocBase(TCFunctionNoAllocBase const &)
+			: TCFunctionNoAllocBase()
+		{
+		}
+
+		TCFunctionNoAllocBase(TCFunctionNoAllocBase &&)
+			: TCFunctionNoAllocBase()
+		{
+		}
+
 		~TCFunctionNoAllocBase()
 		{
 			//NMemory::fg_Free(m_pStorage);
@@ -1216,6 +1370,8 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
+		using t_CBase::t_CBase;
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1227,6 +1383,8 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
+		using t_CBase::t_CBase;
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1238,7 +1396,9 @@ namespace NMib::NFunction::NPrivate
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1250,7 +1410,9 @@ namespace NMib::NFunction::NPrivate
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params)
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1262,6 +1424,8 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
+		using t_CBase::t_CBase;
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const noexcept
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1273,6 +1437,8 @@ namespace NMib::NFunction::NPrivate
 		: public t_CBase
 	{
 	public:
+		using t_CBase::t_CBase;
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) noexcept
 		{
 			return this->template fp_Call<0>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1284,7 +1450,9 @@ namespace NMib::NFunction::NPrivate
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) const noexcept
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1296,7 +1464,9 @@ namespace NMib::NFunction::NPrivate
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 	public:
+		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::operator ();
+
 		mark_artificial inline_always t_CReturn operator () (typename TCGetReferenceType<tp_CParams>::CType... p_Params) noexcept
 		{
 			return this->template fp_Call<t_iFunction>()(this->fp_GetImpl(), TCGetReferenceType<tp_CParams>::fs_Forward(p_Params)...);
@@ -1332,11 +1502,17 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
+		template <typename... tfp_CParams>
+		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+		{
+		}
+
 		TCFunctionImplementation(TCFunctionImplementation const &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
-
 
 		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other)
 		{
@@ -1345,6 +1521,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1356,6 +1533,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &&_Other)
+			: CSuper(fg_Move(static_cast<CSuper &>(_Other)))
 		{
 			this->fp_Move(fg_Move(_Other));
 		}
@@ -1452,7 +1630,14 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
+		template <typename... tfp_CParams>
+		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+		{
+		}
+
 		TCFunctionImplementation(TCFunctionImplementation const &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1464,6 +1649,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1475,6 +1661,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &&_Other)
+			: CSuper(fg_Move(static_cast<CSuper &>(_Other)))
 		{
 			this->fp_Move(fg_Move(_Other));
 		}
@@ -1540,7 +1727,7 @@ namespace NMib::NFunction::NPrivate
 				return false;
 			return this->fp_CompareEqual()(this->fp_GetImpl(), _Other.fp_GetImpl());
 		}
-		
+
 		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const
 		{
 			if (auto Result = this->fp_VTable() <=> _Other.fp_VTable(); Result != 0)
@@ -1572,7 +1759,14 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
+		template <typename... tfp_CParams>
+		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+		{
+		}
+
 		TCFunctionImplementation(TCFunctionImplementation const &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1584,6 +1778,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1595,6 +1790,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &&_Other)
+			: CSuper(fg_Move(static_cast<CSuper &>(_Other)))
 		{
 			this->fp_Move(fg_Move(_Other));
 		}
@@ -1685,7 +1881,14 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
+		template <typename... tfp_CParams>
+		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
+			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+		{
+		}
+
 		TCFunctionImplementation(TCFunctionImplementation const &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1697,6 +1900,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &_Other)
+			: CSuper(static_cast<CSuper const &>(_Other))
 		{
 			this->template fp_Duplicate<false>(_Other);
 		}
@@ -1708,6 +1912,7 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionImplementation(TCFunctionImplementation &&_Other)
+			: CSuper(fg_Move(static_cast<CSuper &>(_Other)))
 		{
 			this->fp_Move(fg_Move(_Other));
 		}
