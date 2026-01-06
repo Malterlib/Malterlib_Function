@@ -14,5 +14,5 @@ namespace NMib::NFunction
 }
 
 #ifndef DMibPNoShortCuts
-	using namespace NMib::NFunction;	
+	using namespace NMib::NFunction;
 #endif

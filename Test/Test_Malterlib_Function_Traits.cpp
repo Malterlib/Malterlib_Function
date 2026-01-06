@@ -60,7 +60,7 @@ namespace
 		virtual void f_TestVirtual3() override
 		{
 		}
-		
+
 		virtual void f_TestVirtual4()
 		{
 		}
@@ -83,7 +83,7 @@ namespace
 		virtual void f_TestVirtual3() override
 		{
 		}
-		
+
 		virtual void f_TestVirtual4()
 		{
 		}
