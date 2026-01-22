@@ -171,7 +171,7 @@ The module includes comprehensive tests in the `Test/` directory:
 ### Running Tests
 ```bash
 # Build and run Function module tests
-MalterlibBuildShowProgress=false ./mib build Tests macOS arm64 Debug
+MalterlibBuildShowProgress=false ./mib build Tests
 /opt/Deploy/Tests/RunAllTests --paths '["Malterlib/Function*"]'
 ```
 
