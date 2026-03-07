@@ -3,9 +3,11 @@
 
 #include <functional>
 #include <boost/function.hpp>
+
 #include <Mib/Function/Function>
-#include <Mib/Test/Exception>
 #include <Mib/Memory/MemoryManager>
+#include <Mib/Test/Exception>
+#include <Mib/Time/PerfTimeMeasure>
 
 // TODO
 // Combined function
@@ -75,7 +77,7 @@ namespace
 			static void fs_DoTestRecursive(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 #if defined(DMibDebug) || defined(DMibSanitizerEnabled_Address)
 				const int s_nRecurse = 100;
 #else
@@ -108,7 +110,7 @@ namespace
 			static void fs_DoTestCreate(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 
 				//t_CFunctor Test = Test1;
 				for (mint i = 0; i < mc_nTests; ++i)
@@ -147,7 +149,7 @@ namespace
 			static void fs_DoTestAssign(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = [] (){++g_Test;};
 
 				//t_CFunctor Test = Test1;
@@ -187,7 +189,7 @@ namespace
 			static void fs_DoTestAssignBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 
 				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
 
@@ -228,7 +230,7 @@ namespace
 			static void fs_DoTestCopy(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = [] (){++g_Test;};
 				t_CFunctor Test2;
 
@@ -269,7 +271,7 @@ namespace
 			static void fs_DoTestCopyBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 
 				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
 				t_CFunctor Test2;
@@ -332,7 +334,7 @@ namespace
 			static void fs_DoTestMove(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = CFunction_Tests::CMoveFunctor();
 				t_CFunctor Test2;
 
@@ -396,7 +398,7 @@ namespace
 			static void fs_DoTestMoveBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = CFunction_Tests::CMoveFunctorBigMove();
 				t_CFunctor Test2;
 
@@ -458,7 +460,7 @@ namespace
 			static void fs_DoTestValidCall(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = CFunction_Tests::CValidCallTest();
 				t_CFunctor Test2 = Test;
 				t_CFunctor Test3;
@@ -503,7 +505,7 @@ namespace
 			static void fs_DoTestValidCallBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = CFunction_Tests::CValidCallTestBig();
 				t_CFunctor Test2 = Test;
 				t_CFunctor Test3;
@@ -525,7 +527,7 @@ namespace
 			static void fs_DoTest(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test
 					(
 						[] ()
@@ -569,7 +571,7 @@ namespace
 			static void fs_DoTestDirect(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				auto Test = [] ()
 				{
 					++g_Test;
@@ -609,7 +611,7 @@ namespace
 			static void fs_DoTest1(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = [] (int _X)
 				{
 					g_Test += _X;
@@ -648,7 +650,7 @@ namespace
 			static void fs_DoTestDirect1(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				auto Test = [] (int _X)
 				{
 					g_Test += _X;
@@ -688,7 +690,7 @@ namespace
 			static void fs_DoTest2(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = [] (int _0, int _1)
 				{
 					g_Test += _0 + _1;
@@ -727,7 +729,7 @@ namespace
 			static void fs_DoTestDirect2(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				auto Test = [] (int _0, int _1)
 				{
 					g_Test += _0 + _1;
@@ -767,7 +769,7 @@ namespace
 			static void fs_DoTest10(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				t_CFunctor Test = [] (int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
 				{
 					g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
@@ -806,7 +808,7 @@ namespace
 			static void fs_DoTestDirect10(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
-				NTime::CCyclesMin Timer;
+				NTime::CPrefCyclesTimeMeasureMin Timer;
 				auto Test = [] (int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
 				{
 					g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
