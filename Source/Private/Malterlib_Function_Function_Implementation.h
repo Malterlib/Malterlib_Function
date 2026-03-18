@@ -337,12 +337,12 @@ namespace NMib::NFunction::NPrivate
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
 
-		FCompareEqual *fp_CompareEqual() const
+		FCompareEqual *fp_CompareEqual() const noexcept
 		{
 			return (FCompareEqual *)m_Data.m_pVTable->m_pCompareEqual;
 		}
 
-		FCompareSpaceship *fp_CompareSpaceship() const
+		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
 			return (FCompareSpaceship *)m_Data.m_pVTable->m_pCompareSpaceship;
 		}
@@ -702,12 +702,12 @@ namespace NMib::NFunction::NPrivate
 		}
 
 
-		FCompareEqual *fp_CompareEqual() const
+		FCompareEqual *fp_CompareEqual() const noexcept
 		{
 			return (FCompareEqual *)m_Data.m_pImp->m_pVTable->m_pCompareEqual;
 		}
 
-		FCompareSpaceship *fp_CompareSpaceship() const
+		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
 			return (FCompareSpaceship *)m_Data.m_pImp->m_pVTable->m_pCompareSpaceship;
 		}
@@ -1039,11 +1039,11 @@ namespace NMib::NFunction::NPrivate
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
 
-		FCompareEqual *fp_CompareEqual() const
+		FCompareEqual *fp_CompareEqual() const noexcept
 		{
 			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
 		}
-		FCompareSpaceship *fp_CompareSpaceship() const
+		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
 			return (FCompareSpaceship *)m_pVTable->m_pCompareSpaceship;
 		}
@@ -1352,11 +1352,11 @@ namespace NMib::NFunction::NPrivate
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
 
-		FCompareEqual *fp_CompareEqual() const
+		FCompareEqual *fp_CompareEqual() const noexcept
 		{
 			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
 		}
-		FCompareSpaceship *fp_CompareSpaceship() const
+		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
 			return (FCompareSpaceship *)m_pVTable->m_pCompareSpaceship;
 		}
@@ -1721,14 +1721,14 @@ namespace NMib::NFunction::NPrivate
 			return this->fp_GetFunctor();
 		}
 
-		bool operator == (TCFunctionImplementation const &_Other) const
+		bool operator == (TCFunctionImplementation const &_Other) const noexcept
 		{
 			if (this->fp_VTable() != _Other.fp_VTable())
 				return false;
 			return this->fp_CompareEqual()(this->fp_GetImpl(), _Other.fp_GetImpl());
 		}
 
-		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const
+		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const noexcept
 		{
 			if (auto Result = this->fp_VTable() <=> _Other.fp_VTable(); Result != 0)
 				return Result;
@@ -1850,7 +1850,7 @@ namespace NMib::NFunction::NPrivate
 			return this->fp_GetFunctor();
 		}
 
-		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const
+		COrdering_Partial operator <=> (TCFunctionImplementation const &_Other) const noexcept
 		{
 			if (auto Result = this->fp_VTable() <=> _Other.fp_VTable(); Result != 0)
 				return Result;
@@ -1972,7 +1972,7 @@ namespace NMib::NFunction::NPrivate
 			return this->fp_GetFunctor();
 		}
 
-		bool operator == (TCFunctionImplementation const &_Other) const
+		bool operator == (TCFunctionImplementation const &_Other) const noexcept
 		{
 			if (this->fp_VTable() != _Other.fp_VTable())
 				return false;

@@ -49,12 +49,12 @@ namespace NMib::NFunction::NPrivate
 			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
 		}
 
-		bool operator == (TCNullFunctionImpl const &_Other) const
+		bool operator == (TCNullFunctionImpl const &_Other) const noexcept
 		{
 			return true;
 		}
 
-		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const
+		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const noexcept
 		{
 			return COrdering_Partial::equivalent;
 		}
@@ -81,12 +81,12 @@ namespace NMib::NFunction::NPrivate
 			fg_NoReturn();
 		}
 
-		bool operator == (TCNullFunctionImpl const &_Other) const
+		bool operator == (TCNullFunctionImpl const &_Other) const noexcept
 		{
 			return true;
 		}
 
-		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const
+		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const noexcept
 		{
 			return COrdering_Partial::equivalent;
 		}

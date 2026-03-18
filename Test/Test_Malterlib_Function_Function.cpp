@@ -923,12 +923,12 @@ namespace
 				{
 				}
 
-				bool operator == (CFunctorCompare const &_Other) const
+				bool operator == (CFunctorCompare const &_Other) const noexcept
 				{
 					return m_Value == _Other.m_Value;
 				}
 
-				auto operator <=> (CFunctorCompare const &_Other) const
+				auto operator <=> (CFunctorCompare const &_Other) const noexcept
 				{
 					return m_Value <=> _Other.m_Value;
 				}

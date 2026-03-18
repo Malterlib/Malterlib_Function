@@ -6,8 +6,8 @@
 namespace NMib::NFunction::NPrivate
 {
 	using FDelete = void (void *_pImpl);
-	using FCompareEqual = bool (void const *_pImpl0, void const *_pImp1);
-	using FCompareSpaceship = COrdering_Partial (void const *_pImpl0, void const *_pImp1);
+	using FCompareEqual = bool (void const *_pImpl0, void const *_pImp1) noexcept;
+	using FCompareSpaceship = COrdering_Partial (void const *_pImpl0, void const *_pImp1) noexcept;
 
 	template <typename t_CParamType>
 	struct TCGetReferenceType

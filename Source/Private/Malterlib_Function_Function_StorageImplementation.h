@@ -70,19 +70,31 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -113,12 +125,18 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -149,12 +167,18 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -208,19 +232,31 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -248,12 +284,18 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -281,12 +323,18 @@ namespace NMib::NFunction::NPrivate
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -337,19 +385,31 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -377,12 +437,18 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -410,12 +476,18 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -463,19 +535,31 @@ namespace NMib::NFunction::NPrivate
 		}
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -500,12 +584,18 @@ namespace NMib::NFunction::NPrivate
 		}
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1)
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 
@@ -530,12 +620,18 @@ namespace NMib::NFunction::NPrivate
 		}
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1)
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
 				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
 			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
 				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
 		}
 	};
 

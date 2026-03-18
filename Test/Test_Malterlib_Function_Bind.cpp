@@ -26,12 +26,12 @@ namespace
 			{
 				using result_type = int;
 
-				bool operator == (CBindFunctor const &_Right) const
+				bool operator == (CBindFunctor const &_Right) const noexcept
 				{
 					return true;
 				}
 
-				COrdering_Weak operator <=> (CBindFunctor const &_Right) const
+				COrdering_Weak operator <=> (CBindFunctor const &_Right) const noexcept
 				{
 					return COrdering_Weak::equivalent;
 				}
