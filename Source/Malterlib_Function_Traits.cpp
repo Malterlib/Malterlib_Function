@@ -11,8 +11,8 @@ namespace NMib::NFunction::NPrivate
 	{
 		struct CMemberPointerStruct
 		{
-			mint m_Pointer;
-			mint m_Adjustment;
+			umint m_Pointer;
+			umint m_Adjustment;
 		};
 	}
 

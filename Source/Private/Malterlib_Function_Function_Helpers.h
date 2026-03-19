@@ -192,7 +192,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <bool t_bAllowAlloc, mint t_MaxSize, mint t_Alignment, bool t_bSeparateCallPointer, typename... tp_CParams>
+	template <bool t_bAllowAlloc, umint t_MaxSize, umint t_Alignment, bool t_bSeparateCallPointer, typename... tp_CParams>
 	struct TCParseFunctionOptions<void, TCFunctionNoAllocOptions<t_bAllowAlloc, t_MaxSize, t_Alignment, t_bSeparateCallPointer>, tp_CParams...>
 	{
 		using CParent = TCParseFunctionOptions<void, tp_CParams...>;
@@ -287,7 +287,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <typename t_CFunctionList, mint t_iCall>
+	template <typename t_CFunctionList, umint t_iCall>
 	struct TCGetCallInfo
 	{
 		using CFunctionDefinition = TCDetermineFunctionDefinition<NMeta::TCTypeList_Get<t_iCall, t_CFunctionList>>;
@@ -299,7 +299,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <typename t_CFunctionList, mint t_Compare, mint t_Start, mint t_End, bool t_bOutOfBounds = t_Start >= t_End>
+	template <typename t_CFunctionList, umint t_Compare, umint t_Start, umint t_End, bool t_bOutOfBounds = t_Start >= t_End>
 	struct TCHasDuplicateFunctionInner
 	{
 		enum
@@ -315,7 +315,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <typename t_CFunctionList, mint t_Compare, mint t_Start, mint t_End>
+	template <typename t_CFunctionList, umint t_Compare, umint t_Start, umint t_End>
 	struct TCHasDuplicateFunctionInner<t_CFunctionList, t_Compare, t_Start, t_End, true>
 	{
 		enum
@@ -324,7 +324,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <typename t_CFunctionList, mint t_Start, mint t_End, bool t_bOutOfBounds = t_Start >= t_End>
+	template <typename t_CFunctionList, umint t_Start, umint t_End, bool t_bOutOfBounds = t_Start >= t_End>
 	struct TCHasDuplicateFunction
 	{
 		enum
@@ -334,7 +334,7 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 
-	template <typename t_CFunctionList, mint t_Start, mint t_End>
+	template <typename t_CFunctionList, umint t_Start, umint t_End>
 	struct TCHasDuplicateFunction<t_CFunctionList, t_Start, t_End, true>
 	{
 		enum
@@ -360,7 +360,7 @@ namespace NMib::NFunction::NPrivate
 			mc_NumFunctions = NMeta::gc_TypeList_Len<CFunctionList>
 		};
 
-		static_assert(mint(mc_NumFunctions) > 0, "You have to specify at least one function definition");
+		static_assert(umint(mc_NumFunctions) > 0, "You have to specify at least one function definition");
 
 		using CCall0 = typename TCGetCallInfo<CFunctionList, 0>::CType;
 

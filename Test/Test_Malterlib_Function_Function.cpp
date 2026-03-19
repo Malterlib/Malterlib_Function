@@ -66,11 +66,11 @@ namespace
 			};
 
 #ifdef DMibDebug
-			static const mint mc_nTests = 3;
-			static const mint mc_nLoops = 1000;
+			static const umint mc_nTests = 3;
+			static const umint mc_nLoops = 1000;
 #else
-			static const mint mc_nTests = 3;
-			static const mint mc_nLoops = 20000;
+			static const umint mc_nTests = 3;
+			static const umint mc_nLoops = 20000;
 #endif
 
 			template <typename t_CFunctor>
@@ -92,7 +92,7 @@ namespace
 				};
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
@@ -113,11 +113,11 @@ namespace
 				NTime::CPrefCyclesTimeMeasureMin Timer;
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						t_CFunctor Test0 = [] (){++g_Test;};
 						t_CFunctor Test1 = [] (){++g_Test;};
@@ -153,11 +153,11 @@ namespace
 				t_CFunctor Test = [] (){++g_Test;};
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test = [] (){++g_Test;};
 						Test = [] (){++g_Test;};
@@ -194,11 +194,11 @@ namespace
 				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test = CFunction_Tests::CMoveFunctorBig();
 						Test = CFunction_Tests::CMoveFunctorBig();
@@ -235,11 +235,11 @@ namespace
 				t_CFunctor Test2;
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test2 = Test;
 						Test2 = Test;
@@ -277,11 +277,11 @@ namespace
 				t_CFunctor Test2;
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test2 = Test;
 						Test2 = Test;
@@ -339,11 +339,11 @@ namespace
 				t_CFunctor Test2;
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test2 = fg_Move(Test);
 						Test = fg_Move(Test2);
@@ -403,11 +403,11 @@ namespace
 				t_CFunctor Test2;
 
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test2 = fg_Move(Test);
 						Test = fg_Move(Test2);
@@ -537,11 +537,11 @@ namespace
 					)
 				;
 				//t_CFunctor Test = Test1;
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test();
 						Test();
@@ -576,11 +576,11 @@ namespace
 				{
 					++g_Test;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test();
 						Test();
@@ -616,11 +616,11 @@ namespace
 				{
 					g_Test += _X;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test(1);
 						Test(2);
@@ -655,11 +655,11 @@ namespace
 				{
 					g_Test += _X;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test(1);
 						Test(2);
@@ -695,11 +695,11 @@ namespace
 				{
 					g_Test += _0 + _1;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test(1, 17);
 						Test(2, 18);
@@ -734,11 +734,11 @@ namespace
 				{
 					g_Test += _0 + _1;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test(1, 17);
 						Test(2, 18);
@@ -774,11 +774,11 @@ namespace
 				{
 					g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
 						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
@@ -813,11 +813,11 @@ namespace
 				{
 					g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
 				};
-				for (mint i = 0; i < mc_nTests; ++i)
+				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (mint i = 0; i < mc_nLoops; ++i)
+					for (umint i = 0; i < mc_nLoops; ++i)
 					{
 						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
 						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
@@ -913,8 +913,8 @@ namespace
 
 			struct CFunctorCompare
 			{
-				mint m_Value;
-				CFunctorCompare(mint _Value)
+				umint m_Value;
+				CFunctorCompare(umint _Value)
 					: m_Value(_Value)
 				{
 				}
@@ -1023,7 +1023,7 @@ namespace
 						uint8 m_Data[sizeof(void *)*3];
 						CSizedStruct()
 						{
-							for (mint i = 0; i < sizeof(void *)*3; ++i)
+							for (umint i = 0; i < sizeof(void *)*3; ++i)
 								m_Data[i] = i;
 						}
 					};

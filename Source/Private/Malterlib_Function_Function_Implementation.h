@@ -319,7 +319,7 @@ namespace NMib::NFunction::NPrivate
 			return m_Data.m_pVTable->m_pDuplicateMove;
 		}
 
-		template <mint t_iCall, typename t_CDummmy = void>
+		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase const *_pThis) { return _pThis->m_Data.m_pVTable->template f_GetFunction<t_iCall>(); }
@@ -331,7 +331,7 @@ namespace NMib::NFunction::NPrivate
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionBase const *_pThis) { return _pThis->m_Data.m_pCall; }
 		};
 
-		template <mint t_iCall>
+		template <umint t_iCall>
 		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
@@ -689,13 +689,13 @@ namespace NMib::NFunction::NPrivate
 			return m_Data.m_pImp->m_pVTable->m_pDuplicateMove;
 		}
 
-		template <mint t_iCall, typename t_CDummmy = void>
+		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionSmallBase const *_pThis) { return _pThis->m_Data.m_pImp->m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
-		template <mint t_iCall>
+		template <umint t_iCall>
 		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
@@ -1021,7 +1021,7 @@ namespace NMib::NFunction::NPrivate
 			return m_pVTable->m_pDuplicateMove;
 		}
 
-		template <mint t_iCall, typename t_CDummmy = void>
+		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
@@ -1033,7 +1033,7 @@ namespace NMib::NFunction::NPrivate
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis) { return _pThis->m_pCall; }
 		};
 
-		template <mint t_iCall>
+		template <umint t_iCall>
 		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
@@ -1340,13 +1340,13 @@ namespace NMib::NFunction::NPrivate
 			return m_pVTable->m_pDuplicateMove;
 		}
 
-		template <mint t_iCall>
+		template <umint t_iCall>
 		struct TCCallRet
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
 		};
 
-		template <mint t_iCall>
+		template <umint t_iCall>
 		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
@@ -1362,7 +1362,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template <mint t_iFunction, typename t_CBase, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::CType, int _Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers>
+	template <umint t_iFunction, typename t_CBase, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::CType, int _Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers>
 	class TCFunctionImplementation0;
 
 	template <typename t_CBase, typename t_CReturn, typename... tp_CParams>
@@ -1391,7 +1391,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename... tp_CParams>
 	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Const>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
@@ -1405,7 +1405,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename... tp_CParams>
 	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
@@ -1445,7 +1445,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename... tp_CParams>
 	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_Const>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
@@ -1459,7 +1459,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template <typename t_CBase, mint t_iFunction, typename t_CReturn, typename... tp_CParams>
+	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename... tp_CParams>
 	class TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_None>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{

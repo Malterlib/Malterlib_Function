@@ -21,7 +21,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> ;
@@ -51,7 +51,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -106,7 +106,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -148,7 +148,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -190,7 +190,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -216,7 +216,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -268,7 +268,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -307,7 +307,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -346,7 +346,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -369,7 +369,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -421,7 +421,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -460,7 +460,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -499,7 +499,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -522,7 +522,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -571,7 +571,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -607,7 +607,7 @@ namespace NMib::NFunction::NPrivate
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
 
-		template <mint t_iFunction>
+		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
 			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
@@ -683,7 +683,7 @@ namespace NMib::NFunction::NPrivate
 	};
 #endif
 
-	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, false>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
@@ -705,7 +705,7 @@ namespace NMib::NFunction::NPrivate
 			}
 		;
 	};
-	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, true>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
@@ -730,7 +730,7 @@ namespace NMib::NFunction::NPrivate
 		;
 	};
 
-	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, false>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
@@ -754,7 +754,7 @@ namespace NMib::NFunction::NPrivate
 		;
 	};
 
-	template <typename t_CFunctor, typename t_CFOpts, mint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, true>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;

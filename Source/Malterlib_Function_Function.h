@@ -71,15 +71,15 @@ namespace NMib::NFunction
 		/// Set to true to allow the function to allocate memory dynamically
 		, uint32 t_MaxSize = sizeof(void *)*4
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
-		, uint32 t_Alignment = gc_ConstantMax<mint, sizeof(void *), alignof(fp64)>
+		, uint32 t_Alignment = gc_ConstantMax<umint, sizeof(void *), alignof(fp64)>
 		/// The maximum alignment of a type that can be put in the TCFunctionXXXX object
 		, bool t_bSeparateCallPointer = true
 	>
 	struct TCFunctionNoAllocOptions
 	{
-		static constexpr mint mc_MaxSize = (t_MaxSize + t_Alignment - 1) & ~mint(t_Alignment - 1);
-		static constexpr mint mc_Alignment = t_Alignment;
-		static constexpr mint mc_bAllowAlloc = t_AllowAlloc;
+		static constexpr umint mc_MaxSize = (t_MaxSize + t_Alignment - 1) & ~umint(t_Alignment - 1);
+		static constexpr umint mc_Alignment = t_Alignment;
+		static constexpr umint mc_bAllowAlloc = t_AllowAlloc;
 		static constexpr bool mc_bSeparateCallPointer = t_bSeparateCallPointer;
 	};
 }
@@ -588,9 +588,9 @@ namespace NMib::NFunction
 	template <typename t_CFunction>
 	struct TCFunctionInfo
 	{
-		static constexpr mint mc_nCalls = t_CFunction::CFunctionOptions::mc_NumFunctions;
+		static constexpr umint mc_nCalls = t_CFunction::CFunctionOptions::mc_NumFunctions;
 
-		template <mint t_iCall>
+		template <umint t_iCall>
 		using TCCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::CType;
 	};
 

@@ -28,7 +28,7 @@ namespace NMib::NFunction::NPrivate
 	>
 	struct TCFunctionDefinitions;
 
-	template <typename t_CFOpts, mint t_iFunction>
+	template <typename t_CFOpts, umint t_iFunction>
 	struct TCGetFunctionCallDefinition
 	{
 		using CType = typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType;
@@ -56,7 +56,7 @@ namespace NMib::NFunction::NPrivate
 			ch8 const *m_pFunctorTypeName;
 #endif
 
-			template <mint t_iFunction>
+			template <umint t_iFunction>
 			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
 			{
 				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
@@ -87,7 +87,7 @@ namespace NMib::NFunction::NPrivate
 			ch8 const *m_pFunctorTypeName;
 #endif
 
-			template <mint t_iFunction>
+			template <umint t_iFunction>
 			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
 			{
 				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
@@ -117,7 +117,7 @@ namespace NMib::NFunction::NPrivate
 			ch8 const *m_pFunctorTypeName;
 #endif
 
-			template <mint t_iFunction>
+			template <umint t_iFunction>
 			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
 			{
 				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
@@ -147,7 +147,7 @@ namespace NMib::NFunction::NPrivate
 			ch8 const *m_pFunctorTypeName;
 #endif
 
-			template <mint t_iFunction>
+			template <umint t_iFunction>
 			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
 			{
 				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
