@@ -28,10 +28,52 @@ namespace NMib::NFunction::NPrivate
 	>
 	struct TCFunctionDefinitions;
 
-	template <typename t_CFOpts, umint t_iFunction>
-	struct TCGetFunctionCallDefinition
+	template <typename t_CFOpts, umint t_iFunction, typename t_CFunctionList = typename t_CFOpts::CFunctionList>
+	struct TCGetFunctionCallDefinition;
+
+	template <typename t_CFOpts, umint t_iFunction, typename... tp_CFunctions>
+	struct TCGetFunctionCallDefinition<t_CFOpts, t_iFunction, NMeta::TCTypeList<tp_CFunctions...>>
 	{
-		using CType = typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType;
+		using CType = typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions...[t_iFunction]>::CType>::CType;
+	};
+
+	template <umint t_iFunction, typename t_FCall>
+	struct TCVTableCall
+	{
+		t_FCall *m_pCall;
+	};
+
+	template <typename t_CIndices, typename... tp_FCalls>
+	struct TCVTableCallsImp;
+
+	template <umint... tp_Indices, typename... tp_FCalls>
+	struct TCVTableCallsImp<NMeta::TCIndices<tp_Indices...>, tp_FCalls...>
+		: TCVTableCall<tp_Indices, tp_FCalls>...
+	{
+		constexpr TCVTableCallsImp(tp_FCalls *...p_Calls)
+			: TCVTableCall<tp_Indices, tp_FCalls>{p_Calls}...
+		{
+		}
+
+		template <umint t_iFunction>
+		mark_artificial inline_always tp_FCalls...[t_iFunction] *f_GetFunction() const
+		{
+			return TCVTableCall<t_iFunction, tp_FCalls...[t_iFunction]>::m_pCall;
+		}
+	};
+
+	template <typename t_CFunctionList>
+	struct TCGetVTableCalls;
+
+	template <typename... tp_CFunctions>
+	struct TCGetVTableCalls<NMeta::TCTypeList<tp_CFunctions...>>
+	{
+		using CType = TCVTableCallsImp
+			<
+				NMeta::TCConsecutiveIndices<sizeof...(tp_CFunctions)>
+				, typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions>::CType>::CType...
+			>
+		;
 	};
 
 	template <typename t_CFOpts>
@@ -41,10 +83,11 @@ namespace NMib::NFunction::NPrivate
 
 		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using CCalls = typename TCGetVTableCalls<typename t_CFOpts::CFunctionList>::CType;
 
 		struct CVTable
 		{
-			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
 			FDelete *m_pDestroy;
@@ -55,12 +98,6 @@ namespace NMib::NFunction::NPrivate
 #ifdef DMibDebuggerHelpers
 			ch8 const *m_pFunctorTypeName;
 #endif
-
-			template <umint t_iFunction>
-			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
-			{
-				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
-			}
 		};
 
 	};
@@ -72,10 +109,11 @@ namespace NMib::NFunction::NPrivate
 
 		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using CCalls = typename TCGetVTableCalls<typename t_CFOpts::CFunctionList>::CType;
 
 		struct CVTable
 		{
-			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
 			FDelete *m_pDestroy;
@@ -86,12 +124,6 @@ namespace NMib::NFunction::NPrivate
 #ifdef DMibDebuggerHelpers
 			ch8 const *m_pFunctorTypeName;
 #endif
-
-			template <umint t_iFunction>
-			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
-			{
-				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
-			}
 		};
 	};
 
@@ -102,10 +134,11 @@ namespace NMib::NFunction::NPrivate
 
 		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using CCalls = typename TCGetVTableCalls<typename t_CFOpts::CFunctionList>::CType;
 
 		struct CVTable
 		{
-			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
 			FDelete *m_pDestroy;
@@ -116,12 +149,6 @@ namespace NMib::NFunction::NPrivate
 #ifdef DMibDebuggerHelpers
 			ch8 const *m_pFunctorTypeName;
 #endif
-
-			template <umint t_iFunction>
-			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
-			{
-				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
-			}
 		};
 	};
 
@@ -132,10 +159,11 @@ namespace NMib::NFunction::NPrivate
 
 		using FDuplicate = void *(void const *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
 		using FDuplicateMove = void *(void *_pImpl, typename t_CFOpts::CImpBase &_Allocator);
+		using CCalls = typename TCGetVTableCalls<typename t_CFOpts::CFunctionList>::CType;
 
 		struct CVTable
 		{
-			void *m_pCalls[t_CFOpts::mc_NumFunctions];
+			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
 			FDelete *m_pDestroy;
@@ -146,12 +174,6 @@ namespace NMib::NFunction::NPrivate
 #ifdef DMibDebuggerHelpers
 			ch8 const *m_pFunctorTypeName;
 #endif
-
-			template <umint t_iFunction>
-			inline_always typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *f_GetFunction() const
-			{
-				return (typename TCFunctionCallDefinition<typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType>::CType *)m_pCalls[t_iFunction];
-			}
 		};
 	};
 }

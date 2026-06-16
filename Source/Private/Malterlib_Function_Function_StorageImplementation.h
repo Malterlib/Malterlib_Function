@@ -692,7 +692,7 @@ namespace NMib::NFunction::NPrivate
 		static constexpr CVTable mc_VTable =
 			{
 				{
-					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+					&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
 				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
@@ -714,7 +714,7 @@ namespace NMib::NFunction::NPrivate
 		static constexpr CVTable mc_VTable =
 			{
 				{
-					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+					&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
 				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
@@ -739,7 +739,7 @@ namespace NMib::NFunction::NPrivate
 		static constexpr CVTable mc_VTable =
 			{
 				{
-					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+					&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
 				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
@@ -763,7 +763,7 @@ namespace NMib::NFunction::NPrivate
 		static constexpr CVTable mc_VTable =
 			{
 				{
-					(void *)&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
+					&TCImpl<t_CFunctor, t_CFOpts>::template TCGetCallImp<tp_Indicies>::CType::fs_Call...
 				}
 				, alignof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)
 				, sizeof(typename TCImpl<t_CFunctor, t_CFOpts>::CImplBase)

@@ -322,13 +322,19 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase const *_pThis) { return _pThis->m_Data.m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase const *_pThis)
+			{
+				 return _pThis->m_Data.m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+			}
 		};
 
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionBase const *_pThis) { return _pThis->m_Data.m_pCall; }
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionBase const *_pThis)
+			{
+				return _pThis->m_Data.m_pCall;
+			}
 		};
 
 		template <umint t_iCall>
@@ -602,7 +608,7 @@ namespace NMib::NFunction::NPrivate
 
 		void const *fp_GetFirstFunctionPointer() const
 		{
-			return reinterpret_cast<void const *>(m_Data.m_pImp->m_pVTable->m_pCalls[0]);
+			return reinterpret_cast<void const *>(m_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<0>());
 		}
 
 		template <typename t_CFunction>
@@ -692,7 +698,10 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionSmallBase const *_pThis) { return _pThis->m_Data.m_pImp->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionSmallBase const *_pThis)
+			{
+				return _pThis->m_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+			}
 		};
 
 		template <umint t_iCall>
@@ -1024,13 +1033,19 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
+			{
+				return _pThis->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+			}
 		};
 
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis) { return _pThis->m_pCall; }
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
+			{
+				return _pThis->m_pCall;
+			}
 		};
 
 		template <umint t_iCall>
@@ -1273,7 +1288,7 @@ namespace NMib::NFunction::NPrivate
 
 		void const *fp_GetFirstFunctionPointer() const
 		{
-			return reinterpret_cast<void const *>(m_pVTable->m_pCalls[0]);
+			return reinterpret_cast<void const *>(m_pVTable->m_Calls.template f_GetFunction<0>());
 		}
 
 		template <typename t_CFunction>
@@ -1343,7 +1358,10 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis) { return _pThis->m_pVTable->template f_GetFunction<t_iCall>(); }
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis)
+			{
+				 return _pThis->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+			}
 		};
 
 		template <umint t_iCall>

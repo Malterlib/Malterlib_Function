@@ -288,9 +288,12 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctionList, umint t_iCall>
-	struct TCGetCallInfo
+	struct TCGetCallInfo;
+
+	template <umint t_iCall, typename... tp_CFunctions>
+	struct TCGetCallInfo<NMeta::TCTypeList<tp_CFunctions...>, t_iCall>
 	{
-		using CFunctionDefinition = TCDetermineFunctionDefinition<NMeta::TCTypeList_Get<t_iCall, t_CFunctionList>>;
+		using CFunctionDefinition = TCDetermineFunctionDefinition<tp_CFunctions...[t_iCall]>;
 		using CType = typename CFunctionDefinition::CType;
 
 		enum
