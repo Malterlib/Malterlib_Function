@@ -95,9 +95,6 @@ namespace NMib::NFunction::NPrivate
 			FDuplicateMove *m_pDuplicateMove;
 			static const uint8 m_pCompareEqual = 0;
 			static const uint8 m_pCompareSpaceship = 0;
-#ifdef DMibDebuggerHelpers
-			ch8 const *m_pFunctorTypeName;
-#endif
 		};
 
 	};
@@ -121,9 +118,6 @@ namespace NMib::NFunction::NPrivate
 			FDuplicateMove *m_pDuplicateMove;
 			FCompareEqual *m_pCompareEqual;
 			static const uint8 m_pCompareSpaceship = 0;
-#ifdef DMibDebuggerHelpers
-			ch8 const *m_pFunctorTypeName;
-#endif
 		};
 	};
 
@@ -146,9 +140,6 @@ namespace NMib::NFunction::NPrivate
 			FDuplicateMove *m_pDuplicateMove;
 			static const uint8 m_pCompareEqual = 0;
 			FCompareSpaceship *m_pCompareSpaceship;
-#ifdef DMibDebuggerHelpers
-			ch8 const *m_pFunctorTypeName;
-#endif
 		};
 	};
 
@@ -171,9 +162,6 @@ namespace NMib::NFunction::NPrivate
 			FDuplicateMove *m_pDuplicateMove;
 			FCompareEqual *m_pCompareEqual;
 			FCompareSpaceship *m_pCompareSpaceship;
-#ifdef DMibDebuggerHelpers
-			ch8 const *m_pFunctorTypeName;
-#endif
 		};
 	};
 }
