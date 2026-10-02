@@ -19,7 +19,7 @@ namespace NMib::NFunction
 }
 
 #ifndef DMibPNoShortCuts
-	using namespace NMib::NFunction;
+using namespace NMib::NFunction;
 #endif
 
 #include "Malterlib_Function_Traits.hpp"

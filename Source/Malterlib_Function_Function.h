@@ -38,7 +38,6 @@ namespace NMib::NFunction
 	{
 	};
 
-
 	/**	\brief Used to specify the qualifiers of a functor invocation
 
 		Specify this tag together with qualifiers to determine how the function
@@ -69,7 +68,7 @@ namespace NMib::NFunction
 	<
 		bool t_AllowAlloc = false
 		/// Set to true to allow the function to allocate memory dynamically
-		, uint32 t_MaxSize = sizeof(void *)*4
+		, uint32 t_MaxSize = sizeof(void *) * 4
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
 		, uint32 t_Alignment = gc_ConstantMax<umint, sizeof(void *), alignof(fp64)>
 		/// The maximum alignment of a type that can be put in the TCFunctionXXXX object
@@ -121,10 +120,12 @@ namespace NMib::NFunction
 
 	namespace NPrivate
 	{
-		template <typename... tp_COptions>
-		struct TCFunctionOptions : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>
+		template <typename ...tp_COptions>
+		struct TCFunctionOptions : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *) * 3>, tp_COptions...>
 		{
-			using CFunctionAllocOptions = typename TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *)*3>, tp_COptions...>::CFunctionAllocOptions;
+			using CFunctionAllocOptions
+				= typename TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<true, sizeof(void *) * 3>, tp_COptions...>::CFunctionAllocOptions
+			;
 			using CImpBase = TCConditional
 				<
 					CFunctionAllocOptions::mc_bSeparateCallPointer
@@ -138,18 +139,11 @@ namespace NMib::NFunction
 	/// General function template tuned for a mix of fast construction and fast calls.
 	template
 	<
-		typename t_CFunction		/// The function definition to contain
-		, typename... tp_COptions	/// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
+		typename t_CFunction /// The function definition to contain
+		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunction
-		: public NPrivate::TCFunctionImplementation
-		<
-			NPrivate::TCFunctionOptions
-			<
-				t_CFunction
-				, tp_COptions...
-			>
-		>
+		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
 	public:
@@ -162,7 +156,6 @@ namespace NMib::NFunction
 		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-
 		~TCFunction()
 		{
 		}
@@ -172,7 +165,7 @@ namespace NMib::NFunction
 		{
 		}
 
-		template <typename... tfp_CParams>
+		template <typename ...tfp_CParams>
 		TCFunction(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
 			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
@@ -183,9 +176,9 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunction(TCFunction &&_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunction &operator =(TCFunction const &_Other) = default;
+		TCFunction &operator = (TCFunction const &_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunction &operator =(TCFunction &&_Other) = default;
+		TCFunction &operator = (TCFunction &&_Other) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -197,7 +190,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunction(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -214,7 +208,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunction &operator = (tf_CFunction &&_Function)
 		{
@@ -257,7 +252,7 @@ namespace NMib::NFunction
 
 	namespace NPrivate
 	{
-		template <typename... tp_COptions>
+		template <typename ...tp_COptions>
 		struct TCFunctionOptionsFastCall : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
 			using CImpBase = NPrivate::TCFunctionBase<TCFunctionOptionsFastCall>;
@@ -268,7 +263,7 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction /// The function definition to contain
-		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
+		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunctionFastCall
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>>
@@ -284,7 +279,6 @@ namespace NMib::NFunction
 		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-
 		~TCFunctionFastCall()
 		{
 		}
@@ -294,7 +288,7 @@ namespace NMib::NFunction
 		{
 		}
 
-		template <typename... tfp_CParams>
+		template <typename ...tfp_CParams>
 		TCFunctionFastCall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
 			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
@@ -305,9 +299,9 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunctionFastCall(TCFunctionFastCall &&_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunctionFastCall &operator =(TCFunctionFastCall const &_Other) = default;
+		TCFunctionFastCall &operator = (TCFunctionFastCall const &_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunctionFastCall &operator =(TCFunctionFastCall &&_Other) = default;
+		TCFunctionFastCall &operator = (TCFunctionFastCall &&_Other) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -319,7 +313,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunctionFastCall(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -336,7 +331,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunctionFastCall &operator = (tf_CFunction &&_Function)
 		{
@@ -353,7 +349,7 @@ namespace NMib::NFunction
 
 	namespace NPrivate
 	{
-		template <typename... tp_COptions>
+		template <typename ...tp_COptions>
 		struct TCFunctionOptionsSmall : public TCFunctionOptionsShared<NMemory::CAllocator_Heap, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
 			using CImpBase = NPrivate::TCFunctionSmallBase<TCFunctionOptionsSmall>;
@@ -364,7 +360,7 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction /// The function definition to contain
-		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
+		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunctionSmall
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>>
@@ -389,7 +385,7 @@ namespace NMib::NFunction
 		{
 		}
 
-		template <typename... tfp_CParams>
+		template <typename ...tfp_CParams>
 		TCFunctionSmall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
 			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
@@ -400,9 +396,9 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunctionSmall(TCFunctionSmall &&_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunctionSmall &operator =(TCFunctionSmall const &_Other) = default;
+		TCFunctionSmall &operator = (TCFunctionSmall const &_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunctionSmall &operator =(TCFunctionSmall &&_Other) = default;
+		TCFunctionSmall &operator = (TCFunctionSmall &&_Other) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -414,7 +410,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunctionSmall(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -431,7 +428,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunctionSmall &operator = (tf_CFunction &&_Function)
 		{
@@ -448,7 +446,7 @@ namespace NMib::NFunction
 
 	namespace NPrivate
 	{
-		template <typename... tp_COptions>
+		template <typename ...tp_COptions>
 		struct TCFunctionOptionsNoAlloc : public TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>
 		{
 			using CFunctionAllocOptions = typename TCFunctionOptionsShared<NMemory::CAllocator_Disable, TCFunctionNoAllocOptions<>, tp_COptions...>::CFunctionAllocOptions;
@@ -466,13 +464,10 @@ namespace NMib::NFunction
 	template
 	<
 		typename t_CFunction /// The function definition to contain
-		, typename... tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
+		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
 	class TCFunctionNoAlloc
-		: public NPrivate::TCFunctionImplementation
-		<
-			NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>
-		>
+		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>>
 		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
 	public:
@@ -499,9 +494,9 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunctionNoAlloc(TCFunctionNoAlloc &&_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunctionNoAlloc &operator =(TCFunctionNoAlloc const &_Other) = default;
+		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc const &_Other) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunctionNoAlloc &operator =(TCFunctionNoAlloc &&_Other) = default;
+		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &&_Other) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -513,7 +508,8 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunctionNoAlloc(tf_CFunction &&_Function)
 			: CSuper(fg_Forward<tf_CFunction>(_Function))
@@ -530,14 +526,14 @@ namespace NMib::NFunction
 				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
 				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
 				, bool
-			> = true ///< @hidden
+			>
+			= true ///< @hidden
 		>
 		TCFunctionNoAlloc &operator = (tf_CFunction &&_Function)
 		{
 			CSuper::operator = (fg_Forward<tf_CFunction>(_Function));
 			return *this;
 		}
-
 	};
 
 	template <typename t_CSignature>
@@ -548,7 +544,7 @@ namespace NMib::NFunction
 
 	namespace NPrivate
 	{
-		template <typename t_CFunction, typename... tp_COptions>
+		template <typename t_CFunction, typename ...tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunction<t_CFunction, tp_COptions...>>
 		{
 			static constexpr bool mc_Value = true;
@@ -566,19 +562,19 @@ namespace NMib::NFunction
 			static constexpr bool mc_Value = true;
 		};
 
-		template <typename t_CFunction, typename... tp_COptions>
+		template <typename t_CFunction, typename ...tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionFastCall<t_CFunction, tp_COptions...>>
 		{
 			static constexpr bool mc_Value = true;
 		};
 
-		template <typename t_CFunction, typename... tp_COptions>
+		template <typename t_CFunction, typename ...tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionNoAlloc<t_CFunction, tp_COptions...>>
 		{
 			static constexpr bool mc_Value = true;
 		};
 
-		template <typename t_CFunction, typename... tp_COptions>
+		template <typename t_CFunction, typename ...tp_COptions>
 		struct TCIsTCFunctionImpl<TCFunctionSmall<t_CFunction, tp_COptions...>>
 		{
 			static constexpr bool mc_Value = true;
@@ -608,5 +604,5 @@ namespace NMib::NFunction
 }
 
 #ifndef DMibPNoShortCuts
-	using namespace NMib::NFunction;
+using namespace NMib::NFunction;
 #endif

@@ -13,7 +13,6 @@ namespace NMib::NFunction::NPrivate
 		: public TCMergedFunctors<tp_CFunctors...>
 		, public t_CFirstFunctor
 	{
-
 		using t_CFirstFunctor::operator ();
 		using TCMergedFunctors<tp_CFunctors...>::operator ();
 
@@ -25,7 +24,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	template<typename t_CFirstFunctor>
+	template <typename t_CFirstFunctor>
 	struct TCMergedFunctors<t_CFirstFunctor> : public t_CFirstFunctor
 	{
 		using t_CFirstFunctor::operator ();

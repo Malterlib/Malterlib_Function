@@ -8,10 +8,9 @@ namespace NMib::NFunction
 	struct COperatorFunctor_Comma
 	{
 		template <typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const
-		-> decltype(fg_Forward<tf_CLeft>(_Left) , fg_Forward<tf_CRight>(_Right))
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CLeft>(_Left), fg_Forward<tf_CRight>(_Right))
 		{
-			return fg_Forward<tf_CLeft>(_Left) , fg_Forward<tf_CRight>(_Right);
+			return fg_Forward<tf_CLeft>(_Left), fg_Forward<tf_CRight>(_Right);
 		}
 	};
 
@@ -19,7 +18,7 @@ namespace NMib::NFunction
 	{
 		template <typename tf_CCondition, typename tf_CLeft, typename tf_CRight>
 		auto operator () (tf_CCondition &&_Condition, tf_CLeft &&_Left, tf_CRight &&_Right) const
-		-> decltype(fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right))
+			-> decltype(fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right))
 		{
 			return fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right);
 		}
@@ -28,8 +27,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_Subscript
 	{
 		template <typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const
-		-> decltype(fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)])
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)])
 		{
 			return fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)];
 		}
@@ -38,8 +36,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_PostfixIncrement
 	{
 		template <typename tf_CRight>
-		auto operator () (tf_CRight &&_Right) const
-		-> decltype(fg_Forward<tf_CRight>(_Right)++)
+		auto operator () (tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CRight>(_Right)++)
 		{
 			return fg_Forward<tf_CRight>(_Right)++;
 		}
@@ -48,15 +45,13 @@ namespace NMib::NFunction
 	struct COperatorFunctor_PostfixDecrement
 	{
 		template <typename tf_CRight>
-		auto operator () (tf_CRight &&_Right) const
-		-> decltype(fg_Forward<tf_CRight>(_Right)--)
+		auto operator () (tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CRight>(_Right)--)
 		{
 			return fg_Forward<tf_CRight>(_Right)--;
 		}
 	};
 
-
-#	define DMibTempImplementFunctionalBinaryOperator(d_Operator, d_Name) \
+#define DMibTempImplementFunctionalBinaryOperator(d_Operator, d_Name) \
 	struct COperatorFunctor_##d_Name\
 	{\
 		template <typename tf_CLeft, typename tf_CRight>\
@@ -66,7 +61,6 @@ namespace NMib::NFunction
 			return fg_Forward<tf_CLeft>(_Left) d_Operator fg_Forward<tf_CRight>(_Right);\
 		}\
 	};
-
 
 	DMibTempImplementFunctionalBinaryOperator(==, Equal);
 	DMibTempImplementFunctionalBinaryOperator(!=, NotEqual);
@@ -110,10 +104,9 @@ namespace NMib::NFunction
 	DMibTempImplementFunctionalBinaryOperator(.*, PointerToMemberRef);
 	DMibTempImplementFunctionalBinaryOperator(->*, PointerToMemberPointer);
 
-#	undef DMibTempImplementFunctionalBinaryOperator
+#undef DMibTempImplementFunctionalBinaryOperator
 
-
-#	define DMibTempImplementFunctionalUnaryOperator(d_Operator, d_Name) \
+#define DMibTempImplementFunctionalUnaryOperator(d_Operator, d_Name) \
 	struct COperatorFunctor_##d_Name\
 	{\
 		template <typename tf_CRight>\
@@ -124,18 +117,18 @@ namespace NMib::NFunction
 		}\
 	};
 
-	DMibTempImplementFunctionalUnaryOperator(! , LogicalNot);
-	DMibTempImplementFunctionalUnaryOperator(& , AddressOf);
-	DMibTempImplementFunctionalUnaryOperator(~ , BitwiseComplement);
-	DMibTempImplementFunctionalUnaryOperator(* , Indirection);
-	DMibTempImplementFunctionalUnaryOperator(+ , UnaryPlus);
-	DMibTempImplementFunctionalUnaryOperator(++ , PrefixIncrement);
-	DMibTempImplementFunctionalUnaryOperator(- , UnaryNegate);
-	DMibTempImplementFunctionalUnaryOperator(-- , PrefixDecrement);
+	DMibTempImplementFunctionalUnaryOperator(!, LogicalNot);
+	DMibTempImplementFunctionalUnaryOperator(&, AddressOf);
+	DMibTempImplementFunctionalUnaryOperator(~, BitwiseComplement);
+	DMibTempImplementFunctionalUnaryOperator(*, Indirection);
+	DMibTempImplementFunctionalUnaryOperator(+, UnaryPlus);
+	DMibTempImplementFunctionalUnaryOperator(++, PrefixIncrement);
+	DMibTempImplementFunctionalUnaryOperator(-, UnaryNegate);
+	DMibTempImplementFunctionalUnaryOperator(--, PrefixDecrement);
 
-#	undef DMibTempImplementFunctionalUnaryOperator
+#undef DMibTempImplementFunctionalUnaryOperator
 }
 
 #ifndef DMibPNoShortCuts
-	using namespace NMib::NFunction;
+using namespace NMib::NFunction;
 #endif
