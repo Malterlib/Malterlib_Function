@@ -36,15 +36,14 @@ namespace NMib::NFunction::NPrivate
 	class TCNullFunctionImpl
 	{
 	public:
-
-		template <typename... tp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params)
+		template <typename ...tp_CParams>
+		[[noreturn]] CReturnReferenceReturn operator () (tp_CParams && ...p_Params)
 		{
 			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
 		}
 
-		template <typename... tp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const
+		template <typename ...tp_CParams>
+		[[noreturn]] CReturnReferenceReturn operator () (tp_CParams && ...p_Params) const
 		{
 			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
 		}
@@ -64,17 +63,16 @@ namespace NMib::NFunction::NPrivate
 	class TCNullFunctionImpl<true>
 	{
 	public:
-
-		template <typename... tp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) noexcept
+		template <typename ...tp_CParams>
+		[[noreturn]] CReturnReferenceReturn operator () (tp_CParams && ...p_Params) noexcept
 		{
 			// Trying to call an empty TCFunction
 			DMibPDebugBreak;
 			fg_NoReturn();
 		}
 
-		template <typename... tp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator ()(tp_CParams &&... p_Params) const noexcept
+		template <typename ...tp_CParams>
+		[[noreturn]] CReturnReferenceReturn operator () (tp_CParams && ...p_Params) const noexcept
 		{
 			// Trying to call an empty TCFunction
 			DMibPDebugBreak;

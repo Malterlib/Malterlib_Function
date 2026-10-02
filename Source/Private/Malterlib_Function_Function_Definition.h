@@ -8,30 +8,25 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_FFunc>
 	struct TCFunctionCallDefinition;
 
-	template <typename t_CReturnType, typename... tp_CParams>
+	template <typename t_CReturnType, typename ...tp_CParams>
 	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...)>
 	{
 		using CType = t_CReturnType (void *_pImpl, tp_CParams...);
 	};
 
-	template <typename t_CReturnType, typename... tp_CParams>
+	template <typename t_CReturnType, typename ...tp_CParams>
 	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...) noexcept>
 	{
 		using CType = t_CReturnType (void *_pImpl, tp_CParams...) noexcept;
 	};
 
-	template
-	<
-		typename t_CFOpts
-		, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare
-		, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare
-	>
+	template <typename t_CFOpts, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare>
 	struct TCFunctionDefinitions;
 
 	template <typename t_CFOpts, umint t_iFunction, typename t_CFunctionList = typename t_CFOpts::CFunctionList>
 	struct TCGetFunctionCallDefinition;
 
-	template <typename t_CFOpts, umint t_iFunction, typename... tp_CFunctions>
+	template <typename t_CFOpts, umint t_iFunction, typename ...tp_CFunctions>
 	struct TCGetFunctionCallDefinition<t_CFOpts, t_iFunction, NMeta::TCTypeList<tp_CFunctions...>>
 	{
 		using CType = typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions...[t_iFunction]>::CType>::CType;
@@ -43,14 +38,14 @@ namespace NMib::NFunction::NPrivate
 		t_FCall *m_pCall;
 	};
 
-	template <typename t_CIndices, typename... tp_FCalls>
+	template <typename t_CIndices, typename ...tp_FCalls>
 	struct TCVTableCallsImp;
 
-	template <umint... tp_Indices, typename... tp_FCalls>
+	template <umint ...tp_Indices, typename ...tp_FCalls>
 	struct TCVTableCallsImp<NMeta::TCIndices<tp_Indices...>, tp_FCalls...>
 		: TCVTableCall<tp_Indices, tp_FCalls>...
 	{
-		constexpr TCVTableCallsImp(tp_FCalls *...p_Calls)
+		constexpr TCVTableCallsImp(tp_FCalls * ...p_Calls)
 			: TCVTableCall<tp_Indices, tp_FCalls>{p_Calls}...
 		{
 		}
@@ -65,7 +60,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctionList>
 	struct TCGetVTableCalls;
 
-	template <typename... tp_CFunctions>
+	template <typename ...tp_CFunctions>
 	struct TCGetVTableCalls<NMeta::TCTypeList<tp_CFunctions...>>
 	{
 		using CType = TCVTableCallsImp
@@ -93,10 +88,9 @@ namespace NMib::NFunction::NPrivate
 			FDelete *m_pDestroy;
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
-			static const uint8 m_pCompareEqual = 0;
-			static const uint8 m_pCompareSpaceship = 0;
+			static uint8 const m_pCompareEqual = 0;
+			static uint8 const m_pCompareSpaceship = 0;
 		};
-
 	};
 
 	template <typename t_CFOpts>
@@ -117,7 +111,7 @@ namespace NMib::NFunction::NPrivate
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
 			FCompareEqual *m_pCompareEqual;
-			static const uint8 m_pCompareSpaceship = 0;
+			static uint8 const m_pCompareSpaceship = 0;
 		};
 	};
 
@@ -138,7 +132,7 @@ namespace NMib::NFunction::NPrivate
 			FDelete *m_pDestroy;
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
-			static const uint8 m_pCompareEqual = 0;
+			static uint8 const m_pCompareEqual = 0;
 			FCompareSpaceship *m_pCompareSpaceship;
 		};
 	};
