@@ -5,8 +5,15 @@
 
 #include <Mib/Type/Traits>
 
-#ifndef DPlatformFamily_Windows
-// You need to parse byte code thunks on Windows to detect virtual function pointers. Leave unimplemented for now
+#if defined(__has_feature)
+#	if __has_feature(ptrauth_calls)
+#		define DMibPFunctionPointerAuthentication
+#	endif
+#endif
+
+// You need to parse byte code thunks on Windows to detect virtual function pointers. Leave unimplemented for now. With pointer
+// authentication (arm64e) a member function pointer to a virtual function points to a thunk too.
+#if !defined(DPlatformFamily_Windows) && !defined(DMibPFunctionPointerAuthentication)
 
 #define DMibCanDetectVirtualMemberFunctions_Dynamic
 

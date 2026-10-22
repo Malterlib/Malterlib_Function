@@ -1,9 +1,9 @@
 // Copyright © Unbroken AB
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-#ifndef DPlatformFamily_Windows
-
 #include "Malterlib_Function_Traits.h"
+
+#ifdef DMibCanDetectVirtualMemberFunctions_Dynamic
 
 namespace NMib::NFunction::NPrivate
 {
