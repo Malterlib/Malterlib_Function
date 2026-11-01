@@ -6,14 +6,14 @@
 namespace NMib::NFunction::NPrivate
 {
 	template
-		<
-			typename t_CFunctor
-			, typename t_CFOpts
-			, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare
-			, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare
-			, bool t_bSupportCopy = t_CFOpts::mc_bSupportCopy
-			, bool t_bSupportMove = t_CFOpts::mc_bSupportMove
-		>
+	<
+		typename t_CFunctor
+		, typename t_CFOpts
+		, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare
+		, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare
+		, bool t_bSupportCopy = t_CFOpts::mc_bSupportCopy
+		, bool t_bSupportMove = t_CFOpts::mc_bSupportMove
+	>
 	class TCImpl
 	{
 	public:
@@ -24,7 +24,13 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers> ;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
 
 		using CAllocator = typename t_CFOpts::CImpBase;
@@ -33,10 +39,12 @@ namespace NMib::NFunction::NPrivate
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -54,22 +62,32 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
+
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -83,6 +101,7 @@ namespace NMib::NFunction::NPrivate
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 			}
 		}
+
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -109,22 +128,32 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
+
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -151,22 +180,32 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
-		using CAllocator = typename t_CFOpts::CImpBase ;
+
+		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
+
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -193,14 +232,22 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
@@ -219,19 +266,28 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
+
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -245,6 +301,7 @@ namespace NMib::NFunction::NPrivate
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 			}
 		}
+
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -271,19 +328,28 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
+
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -310,19 +376,28 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
 		}
+
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -349,14 +424,22 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 	};
@@ -372,18 +455,27 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
@@ -398,6 +490,7 @@ namespace NMib::NFunction::NPrivate
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 			}
 		}
+
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -424,18 +517,27 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
@@ -463,18 +565,27 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
+
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
@@ -502,14 +613,22 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 	};
@@ -525,14 +644,22 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
@@ -548,6 +675,7 @@ namespace NMib::NFunction::NPrivate
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 			}
 		}
+
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -574,14 +702,22 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
@@ -610,14 +746,22 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iFunction>
 		struct TCGetCallImp
 		{
-			using CType = TCCallImpl<CImplBase, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers>;
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
 		};
+
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl)
 		{
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
+
 		static constexpr CNullPtr fs_Duplicate = nullptr;
 		static constexpr CNullPtr fs_DuplicateMove = nullptr;
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
@@ -638,15 +782,10 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunctor, typename t_CFunctionDefinition>
 	struct TCDetermineImpl
 	{
-		using CType = NPrivate::TCImpl
-			<
-				NTraits::TCRemoveQualifiers<t_CFunctor>
-				, typename t_CFunctionDefinition::CFunctionOptions
-			>
-		;
+		using CType = NPrivate::TCImpl<NTraits::TCRemoveQualifiers<t_CFunctor>, typename t_CFunctionDefinition::CFunctionOptions>;
 	};
 
-	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint ...tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, false>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
@@ -665,7 +804,8 @@ namespace NMib::NFunction::NPrivate
 			}
 		;
 	};
-	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
+
+	template <typename t_CFunctor, typename t_CFOpts, umint ...tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, true>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
@@ -687,7 +827,7 @@ namespace NMib::NFunction::NPrivate
 		;
 	};
 
-	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint ...tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, true, false>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
@@ -708,7 +848,7 @@ namespace NMib::NFunction::NPrivate
 		;
 	};
 
-	template <typename t_CFunctor, typename t_CFOpts, umint... tp_Indicies>
+	template <typename t_CFunctor, typename t_CFOpts, umint ...tp_Indicies>
 	struct TCImplVTable<t_CFunctor, t_CFOpts, NMeta::TCIndices<tp_Indicies...>, false, true>
 	{
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;

@@ -28,7 +28,6 @@ Property.MalterlibBoostModules =+ ["function", "describe", "mp11", "bind", "conf
 	}
 }
 
-
 Property
 {
 	MalterlibLibrary_Function: bool = MalterlibLibrary_All
@@ -46,8 +45,7 @@ Property
 Property
 {
 	!!MalterlibEnableInternalTests true
-	
+
 	MalterlibTests =+ "Malterlib_Function"
 	MalterlibTestFiles_Malterlib_Function: [type(CEntity)] = ["Test/*"->MakeAbsolute()]
 }
-

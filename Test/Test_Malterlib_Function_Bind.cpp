@@ -8,7 +8,6 @@
 
 namespace
 {
-
 	using namespace NMib;
 	using namespace NMib::NFunction;
 	using namespace NMib;
@@ -41,10 +40,12 @@ namespace
 				{
 					using type = int;
 				};
+
 				int operator () (int _Test, int _Test2, int _Test3, int _Test4) const
 				{
 					return _Test + _Test2 + _Test3 + _Test4;
 				}
+
 				float operator () (int _Test1) const
 				{
 					return _Test1;
@@ -70,7 +71,7 @@ namespace
 					return 7;
 				}
 
-				NContainer::TCVector<int32> operator() (NContainer::TCVector<int32> const &_Vector)
+				NContainer::TCVector<int32> operator () (NContainer::TCVector<int32> const &_Vector)
 				{
 					return _Vector;
 				}
@@ -78,17 +79,21 @@ namespace
 				void f_UnaryTest()
 				{
 				}
+
 				int f_UnaryTest2()
 				{
 					return 2;
 				}
+
 				void f_BinaryTest(int _x)
 				{
 				}
+
 				int f_BinaryTest2(int _x)
 				{
 					return _x;
 				}
+
 				int f_BinaryTest3(int _x)
 				{
 					return _x;
