@@ -45,8 +45,8 @@ namespace NMib::NFunction::NPrivate
 	struct TCVTableCallsImp<NMeta::TCIndices<tp_Indices...>, tp_FCalls...>
 		: TCVTableCall<tp_Indices, tp_FCalls>...
 	{
-		constexpr TCVTableCallsImp(tp_FCalls * ...p_Calls)
-			: TCVTableCall<tp_Indices, tp_FCalls>{p_Calls}...
+		constexpr TCVTableCallsImp(tp_FCalls * ...p_fCalls)
+			: TCVTableCall<tp_Indices, tp_FCalls>{p_fCalls}...
 		{
 		}
 
