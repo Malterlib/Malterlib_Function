@@ -35,7 +35,7 @@ namespace
 				}
 
 				template <typename t_CType>
-				struct result
+				struct TCResult
 				{
 					using type = int;
 				};

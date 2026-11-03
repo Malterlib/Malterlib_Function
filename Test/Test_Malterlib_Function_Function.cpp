@@ -1348,7 +1348,7 @@ namespace
 
 				DMibTestSuite("Usage Tests")
 				{
-					struct V1
+					struct CFunctor1
 					{
 						void operator () (int) const
 						{
@@ -1360,10 +1360,10 @@ namespace
 						}
 					};
 
-					V1 v1;
+					CFunctor1 v1;
 
 					{
-						using F1 = TCFunction
+						using FFunction1 = TCFunction
 							<
 								int (int)
 								, int (CThisTag &, int)
@@ -1376,7 +1376,7 @@ namespace
 							>
 						;
 
-						F1 f1;
+						FFunction1 f1;
 						f1 = CCallAll();
 						DMibTest(DMibExpr(f1(1)) == DMibExpr(100001));
 						DMibTest(DMibExpr(f1(1, 1)) == DMibExpr(100002));
@@ -1388,54 +1388,54 @@ namespace
 						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1, 1)) == DMibExpr(1000004));
 					}
 					{
-						using F1 = TCFunction<void (int)>;
-						F1 f1;
+						using FFunction1 = TCFunction<void (int)>;
+						FFunction1 f1;
 						DMibTest(DMibExpr(!f1));
-						F1 f2(v1);
+						FFunction1 f2(v1);
 						DMibTest(DMibExpr(!!f2))(ETestFlag_NoValues);
-						F1 f3(f2);
-						F1 f4([](int) -> void {});
+						FFunction1 f3(f2);
+						FFunction1 f4([](int) -> void {});
 					}
 					{
-						using F1 = TCFunction<void (char)>;
-						F1 f1;
-						F1 f2(v1);
+						using FFunction1 = TCFunction<void (char)>;
+						FFunction1 f1;
+						FFunction1 f2(v1);
 					}
 					{
-						using F1 = TCFunction<int ()>;
-						F1 f1;
-						F1 f2(v1);
+						using FFunction1 = TCFunction<int ()>;
+						FFunction1 f1;
+						FFunction1 f2(v1);
 					}
 					{
-						using F1 = TCFunction<void (int), void ()>;
-						F1 f1;
-						F1 f2(v1); // return value ignored. OK? Yes
-						// F1 f3([](int)->void {}); // Fails
-						// Fails: F1 f4([](int)->void {},[]()->void {}); (waiting for TCCombinedFunction support)
+						using FFunction1 = TCFunction<void (int), void ()>;
+						FFunction1 f1;
+						FFunction1 f2(v1); // return value ignored. OK? Yes
+						// FFunction1 f3([](int)->void {}); // Fails
+						// Fails: FFunction1 f4([](int)->void {},[]()->void {}); (waiting for TCCombinedFunction support)
 					}
 					{
-						//using F1 = TCFunction<void (int),void (int)>;  // Fails
-						//F1 f1;
-						//F1 f2(v1);
+						//using FFunction1 = TCFunction<void (int),void (int)>;  // Fails
+						//FFunction1 f1;
+						//FFunction1 f2(v1);
 					}
 					{
-						using F1 = TCFunction<void (int), void ()>;
-						using F2 = TCFunction<void (int)>;
-						F1 f1(v1);
-						F2 f2(f1);
-						// F1 f3(f2);
+						using FFunction1 = TCFunction<void (int), void ()>;
+						using FFunction2 = TCFunction<void (int)>;
+						FFunction1 f1(v1);
+						FFunction2 f2(f1);
+						// FFunction1 f3(f2);
 						//std::function<void(int)> f4 = f1;
 						//std::function<void()> f5 = std::bind(f2,3);
 					}
 
 					// No
 					{
-						using F1 = TCFunction<void (int, int)>;
-						F1 f1;
-						// F1 f2(v1);  // Ignoring extra parameters might be ok?
+						using FFunction1 = TCFunction<void (int, int)>;
+						FFunction1 f1;
+						// FFunction1 f2(v1);  // Ignoring extra parameters might be ok?
 					}
 					{
-						struct V2
+						struct CFunctor2
 						{
 							int operator () ()
 							{
@@ -1447,14 +1447,14 @@ namespace
 								return 3;
 							}
 						} v2;
-						struct V3
+						struct CFunctor3
 						{
 							int operator () ()
 							{
 								return 4;
 							}
 						} v3;
-						struct V4
+						struct CFunctor4
 						{
 							int operator () () const
 							{
@@ -1465,13 +1465,13 @@ namespace
 						v3();
 						v4();
 
-						using F1 = TCFunction<int (CThisTag &), int ()>;
-						F1 f1(v2);
+						using FFunction1 = TCFunction<int (CThisTag &), int ()>;
+						FFunction1 f1(v2);
 						DMibTest(DMibExpr(f1()) == DMibExpr(2));
-						F1 const f2(v2);
+						FFunction1 const f2(v2);
 						DMibTest(DMibExpr(f2()) == DMibExpr(3));
 						int member;
-						F1 f3
+						FFunction1 f3
 							(
 								[member]() -> int
 								{
@@ -1479,15 +1479,15 @@ namespace
 								}
 							)
 						;
-						//F1 f3([member] mutable ()->int { return ++member;});
+						//FFunction1 f3([member] mutable ()->int { return ++member;});
 
 						{
-							// F1 f1(v3); // Cannot compile (const trying to call non-const)
+							// FFunction1 f1(v3); // Cannot compile (const trying to call non-const)
 						}
 						{
-							F1 f1(v4);
+							FFunction1 f1(v4);
 							DMibTest(DMibExpr(f1()) == DMibExpr(5));
-							F1 const f2(v4);
+							FFunction1 const f2(v4);
 							DMibTest(DMibExpr(f2()) == DMibExpr(5));
 						}
 						{
@@ -1507,16 +1507,16 @@ namespace
 								}
 							;
 							int x = 10;
-							//F1 f1(boost::bind(lambda1,x));
-							//F1 f2(std::bind(lambda2,ref(x)));
-							//F1 f3(std::bind(lambda3,cref(x)));
-							//F1 f4(f2,f3);
-							//F1 const f5(f4);
+							//FFunction1 f1(boost::bind(lambda1,x));
+							//FFunction1 f2(std::bind(lambda2,ref(x)));
+							//FFunction1 f3(std::bind(lambda3,cref(x)));
+							//FFunction1 f4(f2,f3);
+							//FFunction1 const f5(f4);
 							//DMibTest(DMibExpr(f4())==DMibExpr(2));
 							//DMibTest(DMibExpr(f5())==DMibExpr(5));
 						}
 						{
-							struct V2
+							struct CFunctor2
 							{
 								void fun(int)
 								{
@@ -1528,11 +1528,11 @@ namespace
 								}
 							}; // v2;
 
-							//using F1 = TCFunction<void (int)>;
-							//F1 f1(boost::bind(&V2::fun,v2));
+							//using FFunction1 = TCFunction<void (int)>;
+							//FFunction1 f1(boost::bind(&CFunctor2::fun,v2));
 						}
 
-						//using F1 = TCFunction<int ()>;
+						//using FFunction1 = TCFunction<int ()>;
 					}
 
 					{

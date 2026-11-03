@@ -10,10 +10,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = false
-		};
+		static constexpr aint mc_IsIndirection = false;
 
 		TCImplBase(TCImplBase const &_Other)
 			: m_Functor(_Other.m_Functor)
@@ -39,10 +36,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = false
-		};
+		static constexpr aint mc_IsIndirection = false;
 
 		TCImplBase(TCImplBase &&_Other)
 			: m_Functor(fg_Move(_Other.m_Functor))
@@ -65,10 +59,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = false
-		};
+		static constexpr aint mc_IsIndirection = false;
 
 		TCImplBase(TCImplBase const &_Other)
 			: m_Functor(_Other.m_Functor)
@@ -91,10 +82,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = false
-		};
+		static constexpr aint mc_IsIndirection = false;
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor)
@@ -113,10 +101,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = true
-		};
+		static constexpr aint mc_IsIndirection = true;
 
 		TCImplBase(TCImplBase const &_Other)
 			: m_pFunctor(fg_Copy(_Other.m_pFunctor))
@@ -142,10 +127,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = true
-		};
+		static constexpr aint mc_IsIndirection = true;
 
 		TCImplBase(TCImplBase &&_Other)
 			: m_pFunctor(fg_Move(_Other.m_pFunctor))
@@ -168,10 +150,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = true
-		};
+		static constexpr aint mc_IsIndirection = true;
 
 		TCImplBase(TCImplBase const &_Other)
 			: m_pFunctor(fg_Copy(_Other.m_pFunctor))
@@ -194,10 +173,7 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		enum
-		{
-			mc_IsIndirection = true
-		};
+		static constexpr aint mc_IsIndirection = true;
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor)

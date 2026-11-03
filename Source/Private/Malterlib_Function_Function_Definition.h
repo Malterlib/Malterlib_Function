@@ -11,13 +11,13 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CReturnType, typename ...tp_CParams>
 	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...)>
 	{
-		using CType = t_CReturnType (void *_pImpl, tp_CParams...);
+		using FType = t_CReturnType (void *_pImpl, tp_CParams...);
 	};
 
 	template <typename t_CReturnType, typename ...tp_CParams>
 	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...) noexcept>
 	{
-		using CType = t_CReturnType (void *_pImpl, tp_CParams...) noexcept;
+		using FType = t_CReturnType (void *_pImpl, tp_CParams...) noexcept;
 	};
 
 	template <typename t_CFOpts, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare>
@@ -29,7 +29,7 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFOpts, umint t_iFunction, typename ...tp_CFunctions>
 	struct TCGetFunctionCallDefinition<t_CFOpts, t_iFunction, NMeta::TCTypeList<tp_CFunctions...>>
 	{
-		using CType = typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions...[t_iFunction]>::CType>::CType;
+		using FType = typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions...[t_iFunction]>::FType>::FType;
 	};
 
 	template <umint t_iFunction, typename t_FCall>
@@ -66,7 +66,7 @@ namespace NMib::NFunction::NPrivate
 		using CType = TCVTableCallsImp
 			<
 				NMeta::TCConsecutiveIndices<sizeof...(tp_CFunctions)>
-				, typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions>::CType>::CType...
+				, typename TCFunctionCallDefinition<typename TCDetermineFunctionDefinition<tp_CFunctions>::FType>::FType...
 			>
 		;
 	};

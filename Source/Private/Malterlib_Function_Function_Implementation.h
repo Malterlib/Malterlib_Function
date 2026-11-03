@@ -19,7 +19,7 @@ namespace NMib::NFunction::NPrivate
 		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
 		using CVTable = typename CFunctionDefinition::CVTable;
-		using CCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType;
+		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
 		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
@@ -58,7 +58,7 @@ namespace NMib::NFunction::NPrivate
 			}
 
 			void *m_pImpl;
-			CCallType0 *m_pCall;
+			FCallType0 *m_pCall;
 			CVTable const *m_pVTable;
 			CData &operator = (CData &&_Other)
 			{
@@ -323,7 +323,7 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionBase const *_pThis)
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionBase const *_pThis)
 			{
 				return _pThis->m_Data.m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
@@ -332,14 +332,14 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionBase const *_pThis)
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionBase const *_pThis)
 			{
 				return _pThis->m_Data.m_pCall;
 			}
 		};
 
 		template <umint t_iCall>
-		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
+		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
@@ -700,14 +700,14 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionSmallBase const *_pThis)
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionSmallBase const *_pThis)
 			{
 				return _pThis->m_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
 		};
 
 		template <umint t_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
@@ -737,11 +737,11 @@ namespace NMib::NFunction::NPrivate
 		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
 		using CVTable = typename CFunctionDefinition::CVTable;
-		using CCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType;
+		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
 		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
-		CCallType0 *m_pCall;
+		FCallType0 *m_pCall;
 		NStorage::TCBitStorePointer<CVTable const, 2> m_pVTable;
 
 		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
@@ -1021,7 +1021,7 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
 			{
 				return _pThis->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
@@ -1030,14 +1030,14 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CDummmy>
 		struct TCCallRet<0, t_CDummmy>
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::CType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
 			{
 				return _pThis->m_pCall;
 			}
 		};
 
 		template <umint t_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
@@ -1065,7 +1065,7 @@ namespace NMib::NFunction::NPrivate
 		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
 		using CVTable = typename CFunctionDefinition::CVTable;
-		using CCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::CCall0>::CType;
+		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
 		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
@@ -1335,14 +1335,14 @@ namespace NMib::NFunction::NPrivate
 		template <umint t_iCall>
 		struct TCCallRet
 		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fs_Get(TCFunctionNoAllocBase const *_pThis)
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionNoAllocBase const *_pThis)
 			{
 				return _pThis->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
 		};
 
 		template <umint t_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::CType *fp_Call() const
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
 		{
 			return TCCallRet<t_iCall>::fs_Get(this);
 		}
@@ -1362,7 +1362,7 @@ namespace NMib::NFunction::NPrivate
 	<
 		umint t_iFunction
 		, typename t_CBase
-		, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::CType
+		, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::FType
 		, int _Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers
 	>
 	struct TCFunctionImplementation0;

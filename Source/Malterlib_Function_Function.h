@@ -105,10 +105,7 @@ namespace NMib::NFunction
 		struct TCIsSelf
 		{
 			using CDecayed = NTraits::TCDecay<t_CType>;
-			enum
-			{
-				mc_Value = NTraits::cIsSame<CDecayed, t_CSelf>
-			};
+			static constexpr aint mc_Value = NTraits::cIsSame<CDecayed, t_CSelf>;
 		};
 	}
 
@@ -225,28 +222,28 @@ namespace NMib::NFunction
 		template <typename t_CTag, typename t_CReturn, typename ...tp_CParams>
 		struct TCAddThisTag<t_CReturn (tp_CParams...), t_CTag>
 		{
-			using CType = t_CReturn (t_CTag, tp_CParams...);
+			using FType = t_CReturn (t_CTag, tp_CParams...);
 		};
 
 		template <typename t_CTag, typename t_CReturn, typename ...tp_CParams>
 		struct TCAddThisTag<t_CReturn (tp_CParams...) noexcept, t_CTag>
 		{
-			using CType = t_CReturn (t_CTag, tp_CParams...) noexcept;
+			using FType = t_CReturn (t_CTag, tp_CParams...) noexcept;
 		};
 	}
 
 	template <typename t_CSignature>
-	struct TCFunctionMutable : public TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>
+	struct TCFunctionMutable : public TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType>
 	{
-		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>::TCFunction;
-		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>::operator =;
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType>::TCFunction;
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType>::operator =;
 	};
 
 	template <typename t_CSignature>
-	struct TCFunctionMovable : public TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>
+	struct TCFunctionMovable : public TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType, CFunctionNoCopyTag>
 	{
-		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>::TCFunction;
-		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>::operator =;
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType, CFunctionNoCopyTag>::TCFunction;
+		using TCFunction<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType, CFunctionNoCopyTag>::operator =;
 	};
 
 	namespace NPrivate
@@ -340,10 +337,10 @@ namespace NMib::NFunction
 	};
 
 	template <typename t_CSignature>
-	using TCFunctionFastCallMutable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+	using TCFunctionFastCallMutable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType>;
 
 	template <typename t_CSignature>
-	using TCFunctionFastCallMovable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
+	using TCFunctionFastCallMovable = TCFunctionFastCall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType, CFunctionNoCopyTag>;
 
 	namespace NPrivate
 	{
@@ -436,10 +433,10 @@ namespace NMib::NFunction
 	};
 
 	template <typename t_CSignature>
-	using TCFunctionSmallMutable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+	using TCFunctionSmallMutable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType>;
 
 	template <typename t_CSignature>
-	using TCFunctionSmallMovable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
+	using TCFunctionSmallMovable = TCFunctionSmall<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType, CFunctionNoCopyTag>;
 
 	namespace NPrivate
 	{
@@ -533,10 +530,10 @@ namespace NMib::NFunction
 	};
 
 	template <typename t_CSignature>
-	using TCFunctionNoAllocMutable = TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType>;
+	using TCFunctionNoAllocMutable = TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType>;
 
 	template <typename t_CSignature>
-	using TCFunctionNoAllocMovable = TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::CType, CFunctionNoCopyTag>;
+	using TCFunctionNoAllocMovable = TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<t_CSignature, CThisTag &>::FType, CFunctionNoCopyTag>;
 
 	namespace NPrivate
 	{
@@ -583,7 +580,7 @@ namespace NMib::NFunction
 		static constexpr umint mc_nCalls = t_CFunction::CFunctionOptions::mc_NumFunctions;
 
 		template <umint t_iCall>
-		using TCCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::CType;
+		using TFCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::FType;
 	};
 
 	extern template struct TCFunction<void ()>;
@@ -591,12 +588,12 @@ namespace NMib::NFunction
 	extern template struct TCFunctionMovable<void ()>;
 
 	extern template struct TCFunctionFastCall<void ()>;
-	extern template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
-	extern template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+	extern template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::FType>;
+	extern template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::FType, CFunctionNoCopyTag>;
 
 	extern template struct TCFunctionNoAlloc<void ()>;
-	extern template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
-	extern template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+	extern template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::FType>;
+	extern template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::FType, CFunctionNoCopyTag>;
 }
 
 #ifndef DMibPNoShortCuts
