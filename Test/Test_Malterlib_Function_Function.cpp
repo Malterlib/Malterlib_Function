@@ -1518,18 +1518,18 @@ namespace
 						{
 							struct CFunctor2
 							{
-								void fun(int)
+								void f_Fun(int)
 								{
 								}
 
-								int fun(void *)
+								int f_Fun(void *)
 								{
 									return 3;
 								}
 							}; // v2;
 
 							//using FFunction1 = TCFunction<void (int)>;
-							//FFunction1 f1(boost::bind(&CFunctor2::fun,v2));
+							//FFunction1 f1(boost::bind(&CFunctor2::f_Fun,v2));
 						}
 
 						//using FFunction1 = TCFunction<int ()>;
