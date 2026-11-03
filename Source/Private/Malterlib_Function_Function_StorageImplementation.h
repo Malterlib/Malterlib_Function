@@ -243,7 +243,7 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -276,7 +276,7 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -337,7 +337,7 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -384,7 +384,7 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
 		{
 			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
@@ -431,8 +431,8 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -466,7 +466,7 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -527,7 +527,7 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -574,7 +574,7 @@ namespace NMib::NFunction::NPrivate
 			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
 		}
 
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -616,8 +616,8 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -646,8 +646,8 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -703,8 +703,8 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)
@@ -746,8 +746,8 @@ namespace NMib::NFunction::NPrivate
 			((CImplBase *)_pImpl)->~CImplBase();
 		}
 
-		static constexpr CNullPtr fs_Duplicate = nullptr;
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming): stands in for the fs_Duplicate function of the interface
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming): stands in for the fs_DuplicateMove function of the interface
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
 		{
 			if constexpr (CImplBase::mc_IsIndirection)

@@ -30,7 +30,7 @@ namespace NMib::NFunction::NPrivate
 		}
 	};
 
-	extern CReturnReference const g_ReturnReference;
+	extern CReturnReference const gc_ReturnReference;
 
 	template <bool t_bNoExcept>
 	struct TCNullFunctionImpl

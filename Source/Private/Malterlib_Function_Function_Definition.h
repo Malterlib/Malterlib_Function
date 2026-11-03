@@ -88,8 +88,8 @@ namespace NMib::NFunction::NPrivate
 			FDelete *m_pDestroy;
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
-			static uint8 const m_pCompareEqual = 0;
-			static uint8 const m_pCompareSpaceship = 0;
+			static uint8 const m_pCompareEqual = 0;     // NOLINT(malterlib-variable-naming): stands in for the m_pCompareEqual member of the other CVTable definitions
+			static uint8 const m_pCompareSpaceship = 0; // NOLINT(malterlib-variable-naming): stands in for the m_pCompareSpaceship member of the other CVTable definitions
 		};
 	};
 
@@ -111,7 +111,7 @@ namespace NMib::NFunction::NPrivate
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
 			FCompareEqual *m_pCompareEqual;
-			static uint8 const m_pCompareSpaceship = 0;
+			static uint8 const m_pCompareSpaceship = 0; // NOLINT(malterlib-variable-naming): stands in for the m_pCompareSpaceship member of the other CVTable definitions
 		};
 	};
 
@@ -132,7 +132,7 @@ namespace NMib::NFunction::NPrivate
 			FDelete *m_pDestroy;
 			FDuplicate *m_pDuplicate;
 			FDuplicateMove *m_pDuplicateMove;
-			static uint8 const m_pCompareEqual = 0;
+			static uint8 const m_pCompareEqual = 0; // NOLINT(malterlib-variable-naming): stands in for the m_pCompareEqual member of the other CVTable definitions
 			FCompareSpaceship *m_pCompareSpaceship;
 		};
 	};

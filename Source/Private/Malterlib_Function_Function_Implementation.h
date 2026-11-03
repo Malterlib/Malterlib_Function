@@ -73,11 +73,11 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		CData m_Data;
+		CData mp_Data;
 
 		template <typename ...tfp_CParams>
 		TCFunctionBase(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
-			: m_Data(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+			: mp_Data(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
 		}
 
@@ -87,26 +87,26 @@ namespace NMib::NFunction::NPrivate
 
 		bool fp_IsDefault() const
 		{
-			return m_Data.m_pImpl == nullptr;
+			return mp_Data.m_pImpl == nullptr;
 		}
 
 		void fp_SetDefault()
 		{
-			m_Data.m_pImpl = nullptr;
-			m_Data.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-			m_Data.m_pVTable = &CNullFunction::CVTable::mc_VTable;
+			mp_Data.m_pImpl = nullptr;
+			mp_Data.m_pCall = &CNullFunction::CCallImp0::fs_Call;
+			mp_Data.m_pVTable = &CNullFunction::CVTable::mc_VTable;
 		}
 
 		void fp_Move(TCFunctionBase &&_Other)
 		{
-			if (_Other.m_Data.m_pImpl)
+			if (_Other.mp_Data.m_pImpl)
 			{
 				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
-					m_Data.m_pImpl = _Other.m_Data.m_pImpl;
-					m_Data.m_pCall = _Other.m_Data.m_pCall;
-					m_Data.m_pVTable = _Other.m_Data.m_pVTable;
-					m_Data = fg_Move(_Other.m_Data);
+					mp_Data.m_pImpl = _Other.mp_Data.m_pImpl;
+					mp_Data.m_pCall = _Other.mp_Data.m_pCall;
+					mp_Data.m_pVTable = _Other.mp_Data.m_pVTable;
+					mp_Data = fg_Move(_Other.mp_Data);
 					_Other.fp_SetDefault();
 				}
 				else
@@ -114,18 +114,18 @@ namespace NMib::NFunction::NPrivate
 					bool bCanSteal = false;
 					if constexpr (CAllocator::mc_CanBeStatic)
 					{
-						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImpl))
-							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						if (!_Other.mp_Data.f_IsStatic(_Other.mp_Data.m_pImpl))
+							bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 					}
 					else
-						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 
 					if (bCanSteal)
 					{
-						m_Data.m_pImpl = _Other.m_Data.m_pImpl;
-						m_Data.m_pCall = _Other.m_Data.m_pCall;
-						m_Data.m_pVTable = _Other.m_Data.m_pVTable;
-						m_Data = fg_Move(_Other.m_Data);
+						mp_Data.m_pImpl = _Other.mp_Data.m_pImpl;
+						mp_Data.m_pCall = _Other.mp_Data.m_pCall;
+						mp_Data.m_pVTable = _Other.mp_Data.m_pVTable;
+						mp_Data = fg_Move(_Other.mp_Data);
 						_Other.fp_SetDefault();
 					}
 					else
@@ -148,10 +148,10 @@ namespace NMib::NFunction::NPrivate
 				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
 					fp_Destroy();
-					m_Data.m_pImpl = _Other.m_Data.m_pImpl;
-					m_Data.m_pCall = _Other.m_Data.m_pCall;
-					m_Data.m_pVTable = _Other.m_Data.m_pVTable;
-					m_Data = fg_Move(_Other.m_Data);
+					mp_Data.m_pImpl = _Other.mp_Data.m_pImpl;
+					mp_Data.m_pCall = _Other.mp_Data.m_pCall;
+					mp_Data.m_pVTable = _Other.mp_Data.m_pVTable;
+					mp_Data = fg_Move(_Other.mp_Data);
 					_Other.fp_SetDefault();
 				}
 				else
@@ -159,19 +159,19 @@ namespace NMib::NFunction::NPrivate
 					bool bCanSteal = false;
 					if constexpr (CAllocator::mc_CanBeStatic)
 					{
-						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImpl))
-							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						if (!_Other.mp_Data.f_IsStatic(_Other.mp_Data.m_pImpl))
+							bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 					}
 					else
-						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 
 					if (bCanSteal)
 					{
 						fp_Destroy();
-						m_Data.m_pImpl = _Other.m_Data.m_pImpl;
-						m_Data.m_pCall = _Other.m_Data.m_pCall;
-						m_Data.m_pVTable = _Other.m_Data.m_pVTable;
-						m_Data = fg_Move(_Other.m_Data);
+						mp_Data.m_pImpl = _Other.mp_Data.m_pImpl;
+						mp_Data.m_pCall = _Other.mp_Data.m_pCall;
+						mp_Data.m_pVTable = _Other.mp_Data.m_pVTable;
+						mp_Data = fg_Move(_Other.mp_Data);
 						_Other.fp_SetDefault();
 					}
 					else
@@ -192,7 +192,7 @@ namespace NMib::NFunction::NPrivate
 		template <typename tf_CObject, typename tf_CParam>
 		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
 		{
-			return fg_ConstructObject<tf_CObject>(m_Data, fg_Forward<tf_CParam>(_Param));
+			return fg_ConstructObject<tf_CObject>(mp_Data, fg_Forward<tf_CParam>(_Param));
 		}
 
 		template <typename tf_CFunction>
@@ -200,14 +200,14 @@ namespace NMib::NFunction::NPrivate
 		{
 			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
-			m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<tf_CFunction>(_Function));
-			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
-			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
+			mp_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(mp_Data, fg_Forward<tf_CFunction>(_Function));
+			mp_Data.m_pCall = CImpl::CCallImp0::fs_Call;
+			mp_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
 
 		void const *fp_GetFirstFunctionPointer() const
 		{
-			return reinterpret_cast<void const *>(m_Data.m_pCall);
+			return reinterpret_cast<void const *>(mp_Data.m_pCall);
 		}
 
 		template <typename tf_CFunction>
@@ -215,20 +215,20 @@ namespace NMib::NFunction::NPrivate
 		{
 			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
-			if (m_Data.f_OnlyOneAlloc())
+			if (mp_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<tf_CFunction>(_Function));
+				mp_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(mp_Data, fg_Forward<tf_CFunction>(_Function));
 			}
 			else
 			{
-				auto *pNew = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<tf_CFunction>(_Function));
+				auto *pNew = fg_ConstructObject<typename CImpl::CImplBase>(mp_Data, fg_Forward<tf_CFunction>(_Function));
 				fp_Destroy();
-				m_Data.m_pImpl = pNew;
+				mp_Data.m_pImpl = pNew;
 			}
-			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
-			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
+			mp_Data.m_pCall = CImpl::CCallImp0::fs_Call;
+			mp_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
 
 		template <bool t_bMove, typename t_CDummy = void>
@@ -246,9 +246,9 @@ namespace NMib::NFunction::NPrivate
 		template <bool tf_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
-			if (_Other.m_Data.m_pImpl)
+			if (_Other.mp_Data.m_pImpl)
 			{
-				if (m_Data.f_OnlyOneAlloc())
+				if (mp_Data.f_OnlyOneAlloc())
 				{
 					fp_Destroy();
 					fp_SetDefault();
@@ -258,7 +258,7 @@ namespace NMib::NFunction::NPrivate
 					else
 						pNew = _Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this);
 
-					m_Data.m_pImpl = pNew;
+					mp_Data.m_pImpl = pNew;
 				}
 				else
 				{
@@ -268,10 +268,10 @@ namespace NMib::NFunction::NPrivate
 					else
 						pNew = _Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this);
 					fp_Destroy();
-					m_Data.m_pImpl = pNew;
+					mp_Data.m_pImpl = pNew;
 				}
-				m_Data.m_pCall = _Other.m_Data.m_pCall;
-				m_Data.m_pVTable = _Other.m_Data.m_pVTable;
+				mp_Data.m_pCall = _Other.mp_Data.m_pCall;
+				mp_Data.m_pVTable = _Other.mp_Data.m_pVTable;
 			}
 			else
 			{
@@ -282,42 +282,42 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl()
 		{
-			return m_Data.m_pImpl;
+			return mp_Data.m_pImpl;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl() const
 		{
-			return m_Data.m_pImpl;
+			return mp_Data.m_pImpl;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctor() const
 		{
-			return m_Data.m_pImpl;
+			return mp_Data.m_pImpl;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctorUnsafe() const
 		{
-			return m_Data.m_pImpl;
+			return mp_Data.m_pImpl;
 		}
 
 		mark_nodebug inline_small CVTable const *fp_VTable() const
 		{
-			return m_Data.m_pVTable;
+			return mp_Data.m_pVTable;
 		}
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return m_Data.m_pVTable->m_pDestroy;
+			return mp_Data.m_pVTable->m_pDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return m_Data.m_pVTable->m_pDuplicate;
+			return mp_Data.m_pVTable->m_pDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return m_Data.m_pVTable->m_pDuplicateMove;
+			return mp_Data.m_pVTable->m_pDuplicateMove;
 		}
 
 		template <umint t_iCall, typename t_CDummmy = void>
@@ -325,7 +325,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionBase const *_pThis)
 			{
-				return _pThis->m_Data.m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+				return _pThis->mp_Data.m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
 		};
 
@@ -334,7 +334,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionBase const *_pThis)
 			{
-				return _pThis->m_Data.m_pCall;
+				return _pThis->mp_Data.m_pCall;
 			}
 		};
 
@@ -346,21 +346,21 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)m_Data.m_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_Data.m_pVTable->m_pCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)m_Data.m_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_Data.m_pVTable->m_pCompareSpaceship;
 		}
 
 		void fp_Destroy()
 		{
-			if (m_Data.m_pImpl)
+			if (mp_Data.m_pImpl)
 			{
-				fp_DestroyCall()(m_Data.m_pImpl);
-				auto &VTable = *m_Data.m_pVTable;
-				m_Data.f_Free(m_Data.m_pImpl, VTable.m_Size);
+				fp_DestroyCall()(mp_Data.m_pImpl);
+				auto &VTable = *mp_Data.m_pVTable;
+				mp_Data.f_Free(mp_Data.m_pImpl, VTable.m_Size);
 			}
 		}
 	};
@@ -388,7 +388,7 @@ namespace NMib::NFunction::NPrivate
 			CVTable const *m_pVTable;
 		};
 
-		static constexpr CImplementationData mc_NullImplementation =
+		static constexpr CImplementationData mcp_NullImplementation =
 			{
 				&TCFunctionSmallBase<t_CFOpts>::CNullFunction::CVTable::mc_VTable
 			}
@@ -398,24 +398,24 @@ namespace NMib::NFunction::NPrivate
 			template <typename ...tfp_CParams>
 			CData(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
 				: CAllocator(fg_Forward<tfp_CParams>(p_Params)...)
-				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+				, m_pImp(const_cast<CImplementationData *>(&mcp_NullImplementation))
 			{
 			}
 
 			CData()
-				: m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+				: m_pImp(const_cast<CImplementationData *>(&mcp_NullImplementation))
 			{
 			}
 
 			CData(CData &&_Other)
 				: CAllocator(fg_Move(static_cast<CAllocator &>(_Other)))
-				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+				, m_pImp(const_cast<CImplementationData *>(&mcp_NullImplementation))
 			{
 			}
 
 			CData(CData const &_Other)
 				: CAllocator(static_cast<CAllocator const &>(_Other))
-				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
+				, m_pImp(const_cast<CImplementationData *>(&mcp_NullImplementation))
 			{
 			}
 
@@ -433,11 +433,11 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		CData m_Data;
+		CData mp_Data;
 
 		template <typename ...tfp_CParams>
 		TCFunctionSmallBase(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
-			: m_Data(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
+			: mp_Data(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
 		{
 		}
 
@@ -447,37 +447,37 @@ namespace NMib::NFunction::NPrivate
 
 		bool fp_IsDefault() const
 		{
-			return m_Data.m_pImp == &mc_NullImplementation;
+			return mp_Data.m_pImp == &mcp_NullImplementation;
 		}
 
 		void fp_SetDefault()
 		{
-			m_Data.m_pImp = const_cast<CImplementationData *>(&mc_NullImplementation);
+			mp_Data.m_pImp = const_cast<CImplementationData *>(&mcp_NullImplementation);
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl()
 		{
-			return m_Data.m_pImp + 1;
+			return mp_Data.m_pImp + 1;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetImpl() const
 		{
-			return m_Data.m_pImp + 1;
+			return mp_Data.m_pImp + 1;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctor() const
 		{
-			return m_Data.m_pImp + 1;
+			return mp_Data.m_pImp + 1;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small void *fp_GetFunctorUnsafe() const
 		{
-			return m_Data.m_pImp + 1;
+			return mp_Data.m_pImp + 1;
 		}
 
 		mark_nodebug inline_small CVTable const *fp_VTable() const
 		{
-			return m_Data.m_pImp->m_pVTable;
+			return mp_Data.m_pImp->m_pVTable;
 		}
 
 		void fp_Destroy()
@@ -485,10 +485,10 @@ namespace NMib::NFunction::NPrivate
 			if (!fp_IsDefault())
 			{
 				fp_DestroyCall()(fp_GetImpl());
-				auto &VTable = *m_Data.m_pImp->m_pVTable;
-				uint8 *pStart = fg_AlignDown((uint8 *)m_Data.m_pImp, VTable.m_Alignment);
+				auto &VTable = *mp_Data.m_pImp->m_pVTable;
+				uint8 *pStart = fg_AlignDown((uint8 *)mp_Data.m_pImp, VTable.m_Alignment);
 				uint8 *pEnd = (uint8 *)fp_GetImpl() + fg_AlignUp(VTable.m_Size, alignof(CImplementationData));
-				m_Data.f_Free(pStart, pEnd - pStart);
+				mp_Data.f_Free(pStart, pEnd - pStart);
 			}
 		}
 
@@ -498,8 +498,8 @@ namespace NMib::NFunction::NPrivate
 			{
 				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
-					m_Data.m_pImp = _Other.m_Data.m_pImp;
-					m_Data = fg_Move(_Other.m_Data);
+					mp_Data.m_pImp = _Other.mp_Data.m_pImp;
+					mp_Data = fg_Move(_Other.mp_Data);
 					_Other.fp_SetDefault();
 				}
 				else
@@ -507,16 +507,16 @@ namespace NMib::NFunction::NPrivate
 					bool bCanSteal = false;
 					if constexpr (CAllocator::mc_CanBeStatic)
 					{
-						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImp))
-							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						if (!_Other.mp_Data.f_IsStatic(_Other.mp_Data.m_pImp))
+							bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 					}
 					else
-						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 
 					if (bCanSteal)
 					{
-						m_Data.m_pImp = _Other.m_Data.m_pImp;
-						m_Data = fg_Move(_Other.m_Data);
+						mp_Data.m_pImp = _Other.mp_Data.m_pImp;
+						mp_Data = fg_Move(_Other.mp_Data);
 						_Other.fp_SetDefault();
 					}
 					else
@@ -539,8 +539,8 @@ namespace NMib::NFunction::NPrivate
 				if constexpr (NTraits::cIsEmpty<CAllocator>)
 				{
 					fp_Destroy();
-					m_Data.m_pImp = _Other.m_Data.m_pImp;
-					m_Data = fg_Move(_Other.m_Data);
+					mp_Data.m_pImp = _Other.mp_Data.m_pImp;
+					mp_Data = fg_Move(_Other.mp_Data);
 					_Other.fp_SetDefault();
 				}
 				else
@@ -548,17 +548,17 @@ namespace NMib::NFunction::NPrivate
 					bool bCanSteal = false;
 					if constexpr (CAllocator::mc_CanBeStatic)
 					{
-						if (!_Other.m_Data.f_IsStatic(_Other.m_Data.m_pImp))
-							bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						if (!_Other.mp_Data.f_IsStatic(_Other.mp_Data.m_pImp))
+							bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 					}
 					else
-						bCanSteal = (CAllocator &)m_Data == (CAllocator &)_Other.m_Data;
+						bCanSteal = (CAllocator &)mp_Data == (CAllocator &)_Other.mp_Data;
 
 					if (bCanSteal)
 					{
 						fp_Destroy();
-						m_Data.m_pImp = _Other.m_Data.m_pImp;
-						m_Data = fg_Move(_Other.m_Data);
+						mp_Data.m_pImp = _Other.mp_Data.m_pImp;
+						mp_Data = fg_Move(_Other.mp_Data);
 						_Other.fp_SetDefault();
 					}
 					else
@@ -591,7 +591,7 @@ namespace NMib::NFunction::NPrivate
 		void *fp_ConstructObject(tf_CParam &&_Param)
 		{
 			using CConstructObject = TCConstructObject<tf_CObject>;
-			CConstructObject *pObject = fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CParam>(_Param));
+			CConstructObject *pObject = fg_ConstructObject<CConstructObject>(mp_Data, fg_Forward<tf_CParam>(_Param));
 			return pObject;
 		}
 
@@ -601,14 +601,14 @@ namespace NMib::NFunction::NPrivate
 			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 			using CConstructObject = TCConstructObject<typename CImpl::CImplBase>;
 
-			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
-			m_Data.m_pImp = pObject - 1;
-			m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
+			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(mp_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
+			mp_Data.m_pImp = pObject - 1;
+			mp_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
 
 		void const *fp_GetFirstFunctionPointer() const
 		{
-			return reinterpret_cast<void const *>(m_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<0>());
+			return reinterpret_cast<void const *>(mp_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<0>());
 		}
 
 		template <typename tf_CFunction>
@@ -617,20 +617,20 @@ namespace NMib::NFunction::NPrivate
 			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 			using CConstructObject = TCConstructObject<typename CImpl::CImplBase>;
 
-			if (m_Data.f_OnlyOneAlloc())
+			if (mp_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
-				m_Data.m_pImp = pObject - 1;
-				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
+				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(mp_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
+				mp_Data.m_pImp = pObject - 1;
+				mp_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 			else
 			{
-				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
+				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(mp_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
 				fp_Destroy();
-				m_Data.m_pImp = pObject - 1;
-				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
+				mp_Data.m_pImp = pObject - 1;
+				mp_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 		}
 
@@ -651,29 +651,29 @@ namespace NMib::NFunction::NPrivate
 		{
 			if (!_Other.fp_IsDefault())
 			{
-				if (m_Data.f_OnlyOneAlloc())
+				if (mp_Data.f_OnlyOneAlloc())
 				{
 					fp_Destroy();
 					fp_SetDefault();
 					CImplementationData *pNew;
 					if constexpr (tf_bMove)
-						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
+						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.mp_Data.m_pImp->m_pVTable->m_Alignment);
 					else
-						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
+						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.mp_Data.m_pImp->m_pVTable->m_Alignment);
 
-					m_Data.m_pImp = pNew - 1;
+					mp_Data.m_pImp = pNew - 1;
 				}
 				else
 				{
 					CImplementationData *pNew;
 					if constexpr (tf_bMove)
-						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
+						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.mp_Data.m_pImp->m_pVTable->m_Alignment);
 					else
-						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
+						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.mp_Data.m_pImp->m_pVTable->m_Alignment);
 					fp_Destroy();
-					m_Data.m_pImp = pNew - 1;
+					mp_Data.m_pImp = pNew - 1;
 				}
-				m_Data.m_pImp->m_pVTable = _Other.m_Data.m_pImp->m_pVTable;
+				mp_Data.m_pImp->m_pVTable = _Other.mp_Data.m_pImp->m_pVTable;
 			}
 			else
 			{
@@ -684,17 +684,17 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return m_Data.m_pImp->m_pVTable->m_pDestroy;
+			return mp_Data.m_pImp->m_pVTable->m_pDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return m_Data.m_pImp->m_pVTable->m_pDuplicate;
+			return mp_Data.m_pImp->m_pVTable->m_pDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return m_Data.m_pImp->m_pVTable->m_pDuplicateMove;
+			return mp_Data.m_pImp->m_pVTable->m_pDuplicateMove;
 		}
 
 		template <umint t_iCall, typename t_CDummmy = void>
@@ -702,7 +702,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionSmallBase const *_pThis)
 			{
-				return _pThis->m_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+				return _pThis->mp_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
 		};
 
@@ -714,12 +714,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)m_Data.m_pImp->m_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_Data.m_pImp->m_pVTable->m_pCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)m_Data.m_pImp->m_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_Data.m_pImp->m_pVTable->m_pCompareSpaceship;
 		}
 
 	public:
@@ -741,14 +741,14 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
-		FCallType0 *m_pCall;
-		NStorage::TCBitStorePointer<CVTable const, 2> m_pVTable;
+		FCallType0 *mp_pCall;
+		NStorage::TCBitStorePointer<CVTable const, 2> mp_pVTable;
 
-		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
+		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 mp_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
 
 		TCFunctionNoAllocBaseSeparateCall()
-			: m_pCall(&CNullFunction::CCallImp0::fs_Call)
-			, m_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
+			: mp_pCall(&CNullFunction::CCallImp0::fs_Call)
+			, mp_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
 		{
 		}
 
@@ -769,18 +769,18 @@ namespace NMib::NFunction::NPrivate
 
 		bool fp_IsDefault() const
 		{
-			return m_pVTable.f_GetBits() == 2;
+			return mp_pVTable.f_GetBits() == 2;
 		}
 
 		void fp_SetDefault()
 		{
-			m_pCall = &CNullFunction::CCallImp0::fs_Call;
-			m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
+			mp_pCall = &CNullFunction::CCallImp0::fs_Call;
+			mp_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 		}
 
 		void fp_Destroy()
 		{
-			if (m_pVTable.f_GetBits() != 2)
+			if (mp_pVTable.f_GetBits() != 2)
 				fp_DestroyCall()(fp_GetImpl());
 		}
 
@@ -799,16 +799,16 @@ namespace NMib::NFunction::NPrivate
 		template <bool tf_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
-			if (_Other.m_pVTable.f_GetBits() != 2)
+			if (_Other.mp_pVTable.f_GetBits() != 2)
 			{
 				fp_Destroy();
 				fp_SetDefault();
 				if constexpr (tf_bMove)
-					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
+					_Other.mp_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
-					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
-				m_pCall = _Other.m_pCall;
-				m_pVTable.f_SetBoth(_Other.m_pVTable);
+					_Other.mp_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
+				mp_pCall = _Other.mp_pCall;
+				mp_pVTable.f_SetBoth(_Other.mp_pVTable);
 			}
 			else
 			{
@@ -835,7 +835,7 @@ namespace NMib::NFunction::NPrivate
 		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
 		{
 			static_assert(sizeof(tf_CObject) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage (internal error)");
-			return new(m_Storage) tf_CObject(fg_Forward<tf_CParam>(_Param));
+			return new(mp_Storage) tf_CObject(fg_Forward<tf_CParam>(_Param));
 		}
 
 		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
@@ -849,10 +849,10 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 
-				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
+				_This.mp_pCall = CImpl::CCallImp0::fs_Call;
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -875,10 +875,10 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 
-				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
+				_This.mp_pCall = CImpl::CCallImp0::fs_Call;
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
@@ -908,13 +908,13 @@ namespace NMib::NFunction::NPrivate
 
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
-				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
+				_This.mp_pCall = &CNullFunction::CCallImp0::fs_Call;
+				_This.mp_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 
-				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
+				_This.mp_pCall = CImpl::CCallImp0::fs_Call;
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -938,19 +938,19 @@ namespace NMib::NFunction::NPrivate
 
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
-				_This.m_pCall = &CNullFunction::CCallImp0::fs_Call;
-				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
+				_This.mp_pCall = &CNullFunction::CCallImp0::fs_Call;
+				_This.mp_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
 
-				_This.m_pCall = CImpl::CCallImp0::fs_Call;
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
+				_This.mp_pCall = CImpl::CCallImp0::fs_Call;
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
 		void const *fp_GetFirstFunctionPointer() const
 		{
-			return reinterpret_cast<void const *>(m_pCall);
+			return reinterpret_cast<void const *>(mp_pCall);
 		}
 
 		template <typename tf_CFunction>
@@ -969,53 +969,53 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl()
 		{
-			return m_Storage;
+			return mp_Storage;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
 		{
-			return (uint8 *)m_Storage;
+			return (uint8 *)mp_Storage;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctor() const
 		{
-			if (m_pVTable.f_GetBits() == 2)
+			if (mp_pVTable.f_GetBits() == 2)
 				return nullptr;
 
 			if constexpr (t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc)
 			{
-				if (m_pVTable.f_GetBits() == 1)
-					return ((NStorage::TCUniquePointer<uint8, CAllocator> *)m_Storage)->f_Get();
+				if (mp_pVTable.f_GetBits() == 1)
+					return ((NStorage::TCUniquePointer<uint8, CAllocator> *)mp_Storage)->f_Get();
 			}
 
-			return (uint8 *)m_Storage;
+			return (uint8 *)mp_Storage;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctorUnsafe() const
 		{
-			DMibFastCheck(m_pVTable.f_GetBits() == 0);
+			DMibFastCheck(mp_pVTable.f_GetBits() == 0);
 
-			return (uint8 *)m_Storage;
+			return (uint8 *)mp_Storage;
 		}
 
 		mark_nodebug inline_small CVTable const *fp_VTable() const
 		{
-			return m_pVTable;
+			return mp_pVTable;
 		}
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return m_pVTable->m_pDestroy;
+			return mp_pVTable->m_pDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return m_pVTable->m_pDuplicate;
+			return mp_pVTable->m_pDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return m_pVTable->m_pDuplicateMove;
+			return mp_pVTable->m_pDuplicateMove;
 		}
 
 		template <umint t_iCall, typename t_CDummmy = void>
@@ -1023,7 +1023,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
 			{
-				return _pThis->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+				return _pThis->mp_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
 		};
 
@@ -1032,7 +1032,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis)
 			{
-				return _pThis->m_pCall;
+				return _pThis->mp_pCall;
 			}
 		};
 
@@ -1044,12 +1044,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_pVTable->m_pCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)m_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_pVTable->m_pCompareSpaceship;
 		}
 	};
 
@@ -1069,12 +1069,12 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CAllocator;
 
 	protected:
-		NStorage::TCBitStorePointer<CVTable const, 2> m_pVTable;
+		NStorage::TCBitStorePointer<CVTable const, 2> mp_pVTable;
 
-		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 m_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
+		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 mp_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
 
 		TCFunctionNoAllocBase()
-			: m_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
+			: mp_pVTable(&CNullFunction::CVTable::mc_VTable, 2)
 		{
 		}
 
@@ -1095,17 +1095,17 @@ namespace NMib::NFunction::NPrivate
 
 		bool fp_IsDefault() const
 		{
-			return m_pVTable.f_GetBits() == 2;
+			return mp_pVTable.f_GetBits() == 2;
 		}
 
 		void fp_SetDefault()
 		{
-			m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
+			mp_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 		}
 
 		void fp_Destroy()
 		{
-			if (m_pVTable.f_GetBits() != 2)
+			if (mp_pVTable.f_GetBits() != 2)
 				fp_DestroyCall()(fp_GetImpl());
 		}
 
@@ -1124,15 +1124,15 @@ namespace NMib::NFunction::NPrivate
 		template <bool tf_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
-			if (_Other.m_pVTable.f_GetBits() != 2)
+			if (_Other.mp_pVTable.f_GetBits() != 2)
 			{
 				fp_Destroy();
 				fp_SetDefault();
 				if constexpr (tf_bMove)
-					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
+					_Other.mp_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
-					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
-				m_pVTable.f_SetBoth(_Other.m_pVTable);
+					_Other.mp_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
+				mp_pVTable.f_SetBoth(_Other.mp_pVTable);
 			}
 			else
 			{
@@ -1159,7 +1159,7 @@ namespace NMib::NFunction::NPrivate
 		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
 		{
 			static_assert(sizeof(tf_CObject) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage (internal error)");
-			return new(m_Storage) tf_CObject(fg_Forward<tf_CParam>(_Param));
+			return new(mp_Storage) tf_CObject(fg_Forward<tf_CParam>(_Param));
 		}
 
 		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
@@ -1173,8 +1173,8 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -1196,8 +1196,8 @@ namespace NMib::NFunction::NPrivate
 				static_assert(sizeof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_MaxSize, "Functor does not fit in storage");
 				static_assert(alignof(typename CImpl::CImplBase) <= t_CFOpts::CFunctionAllocOptions::mc_Alignment, "Functor cannot be correctly aligned");
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
@@ -1228,10 +1228,10 @@ namespace NMib::NFunction::NPrivate
 
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
-				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
+				_This.mp_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 0);
 			}
 		};
 
@@ -1255,16 +1255,16 @@ namespace NMib::NFunction::NPrivate
 
 				// Start by destroying in case of exception in constructor
 				_This.fp_Destroy();
-				_This.m_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
+				_This.mp_pVTable.f_SetBoth(&CNullFunction::CVTable::mc_VTable, 2);
 
-				new(_This.m_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
-				_This.m_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
+				new(_This.mp_Storage) typename CImpl::CImplBase(fg_Forward<tf_CFunction>(_Function));
+				_This.mp_pVTable.f_SetBoth(&CImpl::CVTable::mc_VTable, 1);
 			}
 		};
 
 		void const *fp_GetFirstFunctionPointer() const
 		{
-			return reinterpret_cast<void const *>(m_pVTable->m_Calls.template f_GetFunction<0>());
+			return reinterpret_cast<void const *>(mp_pVTable->m_Calls.template f_GetFunction<0>());
 		}
 
 		template <typename tf_CFunction>
@@ -1283,53 +1283,53 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl()
 		{
-			return m_Storage;
+			return mp_Storage;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const
 		{
-			return (uint8 *)m_Storage;
+			return (uint8 *)mp_Storage;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctor() const
 		{
-			if (m_pVTable.f_GetBits() == 2)
+			if (mp_pVTable.f_GetBits() == 2)
 				return nullptr;
 
 			if constexpr (t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc)
 			{
-				if (m_pVTable.f_GetBits() == 1)
-					return ((NStorage::TCUniquePointer<uint8, CAllocator> *)m_Storage)->f_Get();
+				if (mp_pVTable.f_GetBits() == 1)
+					return ((NStorage::TCUniquePointer<uint8, CAllocator> *)mp_Storage)->f_Get();
 			}
 
-			return (uint8 *)m_Storage;
+			return (uint8 *)mp_Storage;
 		}
 
 		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctorUnsafe() const
 		{
-			DMibFastCheck(m_pVTable.f_GetBits() == 0);
+			DMibFastCheck(mp_pVTable.f_GetBits() == 0);
 
-			return (uint8 *)m_Storage;
+			return (uint8 *)mp_Storage;
 		}
 
 		mark_nodebug inline_small CVTable const *fp_VTable() const
 		{
-			return m_pVTable;
+			return mp_pVTable;
 		}
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return m_pVTable->m_pDestroy;
+			return mp_pVTable->m_pDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return m_pVTable->m_pDuplicate;
+			return mp_pVTable->m_pDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return m_pVTable->m_pDuplicateMove;
+			return mp_pVTable->m_pDuplicateMove;
 		}
 
 		template <umint t_iCall>
@@ -1337,7 +1337,7 @@ namespace NMib::NFunction::NPrivate
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionNoAllocBase const *_pThis)
 			{
-				return _pThis->m_pVTable->m_Calls.template f_GetFunction<t_iCall>();
+				return _pThis->mp_pVTable->m_Calls.template f_GetFunction<t_iCall>();
 			}
 		};
 
@@ -1349,12 +1349,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)m_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_pVTable->m_pCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)m_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_pVTable->m_pCompareSpaceship;
 		}
 	};
 

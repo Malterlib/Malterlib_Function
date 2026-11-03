@@ -20,5 +20,5 @@ namespace NMib::NFunction
 
 namespace NMib::NFunction::NPrivate
 {
-	constexpr CReturnReference const g_ReturnReference;
+	constexpr CReturnReference const gc_ReturnReference;
 }

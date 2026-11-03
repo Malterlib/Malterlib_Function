@@ -56,11 +56,11 @@ namespace
 			};
 
 #ifdef DMibDebug
-			static umint const mc_nTests = 3;
-			static umint const mc_nLoops = 1000;
+			static constexpr umint mc_nTests = 3;
+			static constexpr umint mc_nLoops = 1000;
 #else
-			static umint const mc_nTests = 3;
-			static umint const mc_nLoops = 20000;
+			static constexpr umint mc_nTests = 3;
+			static constexpr umint mc_nLoops = 20000;
 #endif
 
 			template <typename tf_CFunctor>
@@ -69,29 +69,29 @@ namespace
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
 #if defined(DMibDebug) || defined(DMibSanitizerEnabled_Address)
-				int const s_nRecurse = 100;
+				constexpr int c_nRecurse = 100;
 #else
-				int const s_nRecurse = 4000;
+				constexpr int c_nRecurse = 4000;
 #endif
-				tf_CFunctor flr_TestRecursive = [&](int _Value)
+				tf_CFunctor fTestRecursive = [&](int _Value)
 					{
-						if (_Value >= s_nRecurse)
+						if (_Value >= c_nRecurse)
 							return;
 						++g_Test;
-						flr_TestRecursive(_Value + 1);
+						fTestRecursive(_Value + 1);
 					}
 				;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					flr_TestRecursive(0);
+					fTestRecursive(0);
 					g_TestCopy = g_Test;
 					Timer.f_Stop();
 				}
-				Timer /= s_nRecurse;
+				Timer /= c_nRecurse;
 
 				if (NMib::NTest::fg_GroupActive("Performance"))
 					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
@@ -104,11 +104,11 @@ namespace
 				NTime::CPrefCyclesTimeMeasureMin Timer;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						tf_CFunctor Test0 = []()
 							{
@@ -212,11 +212,11 @@ namespace
 				;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test = []()
 							{
@@ -317,11 +317,11 @@ namespace
 				tf_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test = CFunction_Tests::CMoveFunctorBig();
 						Test = CFunction_Tests::CMoveFunctorBig();
@@ -362,11 +362,11 @@ namespace
 				tf_CFunctor Test2;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test2 = Test;
 						Test2 = Test;
@@ -404,11 +404,11 @@ namespace
 				tf_CFunctor Test2;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test2 = Test;
 						Test2 = Test;
@@ -469,11 +469,11 @@ namespace
 				tf_CFunctor Test2;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test2 = fg_Move(Test);
 						Test = fg_Move(Test2);
@@ -536,11 +536,11 @@ namespace
 				tf_CFunctor Test2;
 
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test2 = fg_Move(Test);
 						Test = fg_Move(Test2);
@@ -676,11 +676,11 @@ namespace
 					)
 				;
 				//tf_CFunctor Test = Test1;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test();
 						Test();
@@ -716,11 +716,11 @@ namespace
 						++g_Test;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test();
 						Test();
@@ -757,11 +757,11 @@ namespace
 						g_Test += _Value;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test(1);
 						Test(2);
@@ -797,11 +797,11 @@ namespace
 						g_Test += _Value;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test(1);
 						Test(2);
@@ -838,11 +838,11 @@ namespace
 						g_Test += _Value0 + _Value1;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test(1, 17);
 						Test(2, 18);
@@ -878,11 +878,11 @@ namespace
 						g_Test += _Value0 + _Value1;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test(1, 17);
 						Test(2, 18);
@@ -919,11 +919,11 @@ namespace
 						g_Test += _Value0 + _Value1 + _Value2 + _Value3 + _Value4 + _Value5 + _Value6 + _Value7 + _Value8 + _Value9;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
 						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
@@ -959,11 +959,11 @@ namespace
 						g_Test += _Value0 + _Value1 + _Value2 + _Value3 + _Value4 + _Value5 + _Value6 + _Value7 + _Value8 + _Value9;
 					}
 				;
-				for (umint i = 0; i < mc_nTests; ++i)
+				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
 					Timer.f_Start();
-					for (umint i = 0; i < mc_nLoops; ++i)
+					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
 						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
 						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
@@ -1055,7 +1055,7 @@ namespace
 				struct CTestClass
 				{
 				private:
-					uint32 m_Data[555];
+					uint32 mp_Data[555];
 				};
 
 				CTestClass TestData;
@@ -1194,24 +1194,24 @@ namespace
 						uint8 m_Data[sizeof(void *) * 3];
 						CSizedStruct()
 						{
-							for (umint i = 0; i < sizeof(void *) * 3; ++i)
-								m_Data[i] = i;
+							for (umint iByte = 0; iByte < sizeof(void *) * 3; ++iByte)
+								m_Data[iByte] = iByte;
 						}
 					};
 
 					CSizedStruct Test00;
-					auto fl_Test = [Test00](int const &_Test) -> int
+					auto fTest = [Test00](int const &_Test) -> int
 						{
 							(void)Test00;
 							return 3;
 						}
 					;
 
-					Test = fl_Test;
-					//Test2 = fl_Test;
-					Test3 = fl_Test;
-					Test4 = fl_Test;
-					Test5 = fl_Test;
+					Test = fTest;
+					//Test2 = fTest;
+					Test3 = fTest;
+					Test4 = fTest;
+					Test5 = fTest;
 
 					uint32 TestRes = Test(6);
 					//uint32 TestRes2 = Test2(6);
@@ -1360,7 +1360,7 @@ namespace
 						}
 					};
 
-					CFunctor1 v1;
+					CFunctor1 fFunctor1;
 
 					{
 						using FFunction1 = TCFunction
@@ -1376,63 +1376,63 @@ namespace
 							>
 						;
 
-						FFunction1 f1;
-						f1 = CCallAll();
-						DMibTest(DMibExpr(f1(1)) == DMibExpr(100001));
-						DMibTest(DMibExpr(f1(1, 1)) == DMibExpr(100002));
-						DMibTest(DMibExpr(f1(1, 1, 1)) == DMibExpr(100003));
-						DMibTest(DMibExpr(f1(1, 1, 1, 1)) == DMibExpr(100004));
-						DMibTest(DMibExpr(fg_Const(f1)(1)) == DMibExpr(1000001));
-						DMibTest(DMibExpr(fg_Const(f1)(1, 1)) == DMibExpr(1000002));
-						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1)) == DMibExpr(1000003));
-						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1, 1)) == DMibExpr(1000004));
+						FFunction1 fFunction1;
+						fFunction1 = CCallAll();
+						DMibTest(DMibExpr(fFunction1(1)) == DMibExpr(100001));
+						DMibTest(DMibExpr(fFunction1(1, 1)) == DMibExpr(100002));
+						DMibTest(DMibExpr(fFunction1(1, 1, 1)) == DMibExpr(100003));
+						DMibTest(DMibExpr(fFunction1(1, 1, 1, 1)) == DMibExpr(100004));
+						DMibTest(DMibExpr(fg_Const(fFunction1)(1)) == DMibExpr(1000001));
+						DMibTest(DMibExpr(fg_Const(fFunction1)(1, 1)) == DMibExpr(1000002));
+						DMibTest(DMibExpr(fg_Const(fFunction1)(1, 1, 1)) == DMibExpr(1000003));
+						DMibTest(DMibExpr(fg_Const(fFunction1)(1, 1, 1, 1)) == DMibExpr(1000004));
 					}
 					{
 						using FFunction1 = TCFunction<void (int _Value)>;
-						FFunction1 f1;
-						DMibTest(DMibExpr(!f1));
-						FFunction1 f2(v1);
-						DMibTest(DMibExpr(!!f2))(ETestFlag_NoValues);
-						FFunction1 f3(f2);
-						FFunction1 f4([](int _Value) -> void {});
+						FFunction1 fFunction1;
+						DMibTest(DMibExpr(!fFunction1));
+						FFunction1 fFunction2(fFunctor1);
+						DMibTest(DMibExpr(!!fFunction2))(ETestFlag_NoValues);
+						FFunction1 fFunction3(fFunction2);
+						FFunction1 fFunction4([](int _Value) -> void {});
 					}
 					{
 						using FFunction1 = TCFunction<void (char _Value)>;
-						FFunction1 f1;
-						FFunction1 f2(v1);
+						FFunction1 fFunction1;
+						FFunction1 fFunction2(fFunctor1);
 					}
 					{
 						using FFunction1 = TCFunction<int ()>;
-						FFunction1 f1;
-						FFunction1 f2(v1);
+						FFunction1 fFunction1;
+						FFunction1 fFunction2(fFunctor1);
 					}
 					{
 						using FFunction1 = TCFunction<void (int _Value), void ()>;
-						FFunction1 f1;
-						FFunction1 f2(v1); // return value ignored. OK? Yes
-						// FFunction1 f3([](int)->void {}); // Fails
-						// Fails: FFunction1 f4([](int)->void {},[]()->void {}); (waiting for TCCombinedFunction support)
+						FFunction1 fFunction1;
+						FFunction1 fFunction2(fFunctor1); // return value ignored. OK? Yes
+						// FFunction1 fFunction3([](int)->void {}); // Fails
+						// Fails: FFunction1 fFunction4([](int)->void {},[]()->void {}); (waiting for TCCombinedFunction support)
 					}
 					{
 						//using FFunction1 = TCFunction<void (int),void (int)>;  // Fails
-						//FFunction1 f1;
-						//FFunction1 f2(v1);
+						//FFunction1 fFunction1;
+						//FFunction1 fFunction2(fFunctor1);
 					}
 					{
 						using FFunction1 = TCFunction<void (int _Value), void ()>;
 						using FFunction2 = TCFunction<void (int _Value)>;
-						FFunction1 f1(v1);
-						FFunction2 f2(f1);
-						// FFunction1 f3(f2);
-						//std::function<void(int)> f4 = f1;
-						//std::function<void()> f5 = std::bind(f2,3);
+						FFunction1 fFunction1(fFunctor1);
+						FFunction2 fFunction2(fFunction1);
+						// FFunction1 fFunction3(fFunction2);
+						//std::function<void(int)> fFunction4 = fFunction1;
+						//std::function<void()> fFunction5 = std::bind(fFunction2,3);
 					}
 
 					// No
 					{
 						using FFunction1 = TCFunction<void (int _Value0, int _Value1)>;
-						FFunction1 f1;
-						// FFunction1 f2(v1);  // Ignoring extra parameters might be ok?
+						FFunction1 fFunction1;
+						// FFunction1 fFunction2(fFunctor1);  // Ignoring extra parameters might be ok?
 					}
 					{
 						struct CFunctor2
@@ -1446,74 +1446,74 @@ namespace
 							{
 								return 3;
 							}
-						} v2;
+						} fFunctor2;
 						struct CFunctor3
 						{
 							int operator () ()
 							{
 								return 4;
 							}
-						} v3;
+						} fFunctor3;
 						struct CFunctor4
 						{
 							int operator () () const
 							{
 								return 5;
 							}
-						} v4;
+						} fFunctor4;
 
-						v3();
-						v4();
+						fFunctor3();
+						fFunctor4();
 
 						using FFunction1 = TCFunction<int (CThisTag &_ThisTag), int ()>;
-						FFunction1 f1(v2);
-						DMibTest(DMibExpr(f1()) == DMibExpr(2));
-						FFunction1 const f2(v2);
-						DMibTest(DMibExpr(f2()) == DMibExpr(3));
-						int member;
-						FFunction1 f3
+						FFunction1 fFunction1(fFunctor2);
+						DMibTest(DMibExpr(fFunction1()) == DMibExpr(2));
+						FFunction1 const fFunction2(fFunctor2);
+						DMibTest(DMibExpr(fFunction2()) == DMibExpr(3));
+						int Member;
+						FFunction1 fFunction3
 							(
-								[member]() -> int
+								[Member]() -> int
 								{
-									return member;
+									return Member;
 								}
 							)
 						;
-						//FFunction1 f3([member] mutable ()->int { return ++member;});
+						//FFunction1 fFunction3([Member] mutable ()->int { return ++Member;});
 
 						{
-							// FFunction1 f1(v3); // Cannot compile (const trying to call non-const)
+							// FFunction1 fFunction1(fFunctor3); // Cannot compile (const trying to call non-const)
 						}
 						{
-							FFunction1 f1(v4);
-							DMibTest(DMibExpr(f1()) == DMibExpr(5));
-							FFunction1 const f2(v4);
-							DMibTest(DMibExpr(f2()) == DMibExpr(5));
+							FFunction1 fFunction1(fFunctor4);
+							DMibTest(DMibExpr(fFunction1()) == DMibExpr(5));
+							FFunction1 const fFunction2(fFunctor4);
+							DMibTest(DMibExpr(fFunction2()) == DMibExpr(5));
 						}
 						{
-							auto lambda1 = [](int _Value) -> int
+							auto fLambda1 = [](int _Value) -> int
 								{
 									return 1;
 								}
 							;
-							auto lambda2 = [](int &_Value) -> int
+							auto fLambda2 = [](int &_Value) -> int
 								{
 									return 2;
 								}
 							;
-							auto lambda3 = [](int const &_Value) -> int
+							auto fLambda3 = [](int const &_Value) -> int
 								{
 									return 3;
 								}
 							;
-							int x = 10;
-							//FFunction1 f1(boost::bind(lambda1,x));
-							//FFunction1 f2(std::bind(lambda2,ref(x)));
-							//FFunction1 f3(std::bind(lambda3,cref(x)));
-							//FFunction1 f4(f2,f3);
-							//FFunction1 const f5(f4);
-							//DMibTest(DMibExpr(f4())==DMibExpr(2));
-							//DMibTest(DMibExpr(f5())==DMibExpr(5));
+							int Value = 10;
+							//FFunction1 fFunction1(boost::bind(fLambda1,Value));
+							//FFunction1 fFunction2(std::bind(fLambda2,ref(Value)));
+							//FFunction1 fFunction3(std::bind(fLambda3,cref(Value)));
+							//FFunction1 fFunction4(fFunction2,fFunction3);
+							//FFunction1 const fFunction5(fFunction4);
+							//DMibTest(DMibExpr(fFunction4())==DMibExpr(2));
+							//DMibTest(DMibExpr(fFunction5())==DMibExpr(5));
 						}
 						{
 							struct CFunctor2
@@ -1526,10 +1526,10 @@ namespace
 								{
 									return 3;
 								}
-							}; // v2;
+							}; // fFunctor2;
 
 							//using FFunction1 = TCFunction<void (int)>;
-							//FFunction1 f1(boost::bind(&CFunctor2::f_Fun,v2));
+							//FFunction1 fFunction1(boost::bind(&CFunctor2::f_Fun,fFunctor2));
 						}
 
 						//using FFunction1 = TCFunction<int ()>;
