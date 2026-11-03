@@ -19,8 +19,9 @@ namespace NMib::NFunction
 	|	Index:				!name																		|
 	\*_________________________________________________________________________________________________*/
 	template <typename t_CFunctionMemberPointer>
-	class TCMemberFunctionFunctor
+	struct TCMemberFunctionFunctor
 	{
+	private:
 		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CReturn;
 		using CClass = typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CClass;
 
@@ -109,8 +110,9 @@ namespace NMib::NFunction
 	\*_________________________________________________________________________________________________*/
 
 	template <typename t_CFunctionMemberPointer, typename t_CThis>
-	class TCMemberFunctionBoundFunctor
+	struct TCMemberFunctionBoundFunctor
 	{
+	private:
 		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_CFunctionMemberPointer>::CReturn;
 
 	public:

@@ -113,9 +113,8 @@ namespace
 
 #ifdef DMibCanDetectVirtualMemberFunctions_Dynamic
 
-	class CTraits_Tests : public NMib::NTest::CTest
+	struct CTraits_Tests : public NMib::NTest::CTest
 	{
-	public:
 		void f_DoTests()
 		{
 			DMibTestSuite("IsVirtual")

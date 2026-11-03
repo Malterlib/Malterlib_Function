@@ -25,9 +25,8 @@ namespace
 
 	namespace
 	{
-		class CFunction_Tests : public NTest::CTest
+		struct CFunction_Tests : public NTest::CTest
 		{
-		public:
 			//int m_Test;
 
 			struct CMoveFunctorBig
@@ -1053,8 +1052,9 @@ namespace
 				t_CFunction Test5;
 				Test5 = fg_Move(Test3);
 
-				class CTestClass
+				struct CTestClass
 				{
+				private:
 					uint32 m_Data[555];
 				};
 

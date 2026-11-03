@@ -18,9 +18,8 @@ namespace
 
 	namespace
 	{
-		class CBind_Tests : public NTest::CTest
+		struct CBind_Tests : public NTest::CTest
 		{
-		public:
 			struct CBindFunctor
 			{
 				using result_type = int;
@@ -100,9 +99,8 @@ namespace
 				}
 			};
 
-			class CTestMemberPtr
+			struct CTestMemberPtr
 			{
-			public:
 				int m_Member;
 				CTestMemberPtr()
 					: m_Member(3)

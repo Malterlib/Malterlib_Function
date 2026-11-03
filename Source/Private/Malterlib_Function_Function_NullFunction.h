@@ -12,13 +12,13 @@ namespace NMib::NFunction::NPrivate
 
 	using CReturnReferenceReturn = CReturnReference const &;
 	template <bool t_bNoExcept>
-	class TCNullFunctionImpl;
+	struct TCNullFunctionImpl;
 
 	struct CReturnReference
 	{
 	private:
 		template <bool t_bNoExcept>
-		friend class TCNullFunctionImpl;
+		friend struct TCNullFunctionImpl;
 
 		template <typename t_CBase, typename t_FFunc, int t_Qualifiers>
 		friend struct TCCallImpl;
@@ -33,9 +33,8 @@ namespace NMib::NFunction::NPrivate
 	extern CReturnReference const g_ReturnReference;
 
 	template <bool t_bNoExcept>
-	class TCNullFunctionImpl
+	struct TCNullFunctionImpl
 	{
-	public:
 		template <typename ...tp_CParams>
 		[[noreturn]] CReturnReferenceReturn operator () (tp_CParams && ...p_Params)
 		{
@@ -60,9 +59,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <>
-	class TCNullFunctionImpl<true>
+	struct TCNullFunctionImpl<true>
 	{
-	public:
 		template <typename ...tp_CParams>
 		[[noreturn]] CReturnReferenceReturn operator () (tp_CParams && ...p_Params) noexcept
 		{

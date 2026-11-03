@@ -5,17 +5,17 @@
 
 namespace NMib::NFunction
 {
-	template class TCFunction<void ()>;
+	template struct TCFunction<void ()>;
 	template struct TCFunctionMutable<void ()>;
 	template struct TCFunctionMovable<void ()>;
 
-	template class TCFunctionFastCall<void ()>;
-	template class TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
-	template class TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+	template struct TCFunctionFastCall<void ()>;
+	template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
+	template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
 
-	template class TCFunctionNoAlloc<void ()>;
-	template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
-	template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+	template struct TCFunctionNoAlloc<void ()>;
+	template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
+	template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
 }
 
 namespace NMib::NFunction::NPrivate

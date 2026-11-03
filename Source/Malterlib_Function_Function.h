@@ -142,11 +142,10 @@ namespace NMib::NFunction
 		typename t_CFunction /// The function definition to contain
 		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
-	class TCFunction
+	struct TCFunction
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>>
-		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
+		, private TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-	public:
 		using CFunctionOptions = NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>;
 
 	private:
@@ -265,11 +264,10 @@ namespace NMib::NFunction
 		typename t_CFunction /// The function definition to contain
 		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
-	class TCFunctionFastCall
+	struct TCFunctionFastCall
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>>
-		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
+		, private TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-	public:
 		using CFunctionOptions = NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>;
 
 	private:
@@ -362,11 +360,10 @@ namespace NMib::NFunction
 		typename t_CFunction /// The function definition to contain
 		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
-	class TCFunctionSmall
+	struct TCFunctionSmall
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>>
-		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
+		, private TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-	public:
 		using CFunctionOptions = NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>;
 
 	private:
@@ -466,11 +463,10 @@ namespace NMib::NFunction
 		typename t_CFunction /// The function definition to contain
 		, typename ...tp_COptions /// Arguments. Can be function definition, option (CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag) or allocator
 	>
-	class TCFunctionNoAlloc
+	struct TCFunctionNoAlloc
 		: public NPrivate::TCFunctionImplementation<NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>>
-		, TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
+		, private TCSupportCopyMove<NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportCopy, NPrivate::TCParseFunctionOptions<void, tp_COptions...>::mc_bSupportMove>
 	{
-	public:
 		using CFunctionOptions = NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>;
 
 	private:
@@ -590,17 +586,17 @@ namespace NMib::NFunction
 		using TCCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::CType;
 	};
 
-	extern template class TCFunction<void ()>;
+	extern template struct TCFunction<void ()>;
 	extern template struct TCFunctionMutable<void ()>;
 	extern template struct TCFunctionMovable<void ()>;
 
-	extern template class TCFunctionFastCall<void ()>;
-	extern template class TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
-	extern template class TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+	extern template struct TCFunctionFastCall<void ()>;
+	extern template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
+	extern template struct TCFunctionFastCall<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
 
-	extern template class TCFunctionNoAlloc<void ()>;
-	extern template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
-	extern template class TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
+	extern template struct TCFunctionNoAlloc<void ()>;
+	extern template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType>;
+	extern template struct TCFunctionNoAlloc<typename NPrivate::TCAddThisTag<void (), CThisTag &>::CType, CFunctionNoCopyTag>;
 }
 
 #ifndef DMibPNoShortCuts

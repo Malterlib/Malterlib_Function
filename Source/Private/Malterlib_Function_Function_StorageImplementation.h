@@ -14,9 +14,8 @@ namespace NMib::NFunction::NPrivate
 		, bool t_bSupportCopy = t_CFOpts::mc_bSupportCopy
 		, bool t_bSupportMove = t_CFOpts::mc_bSupportMove
 	>
-	class TCImpl
+	struct TCImpl
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, t_bSupportCopy, t_bSupportMove>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -52,9 +51,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, true, true, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, true, true, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, true, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -118,9 +116,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, false, true, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, false, true, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, true, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -170,9 +167,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, true, true, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, true, true, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, true, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -222,9 +218,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, false, false, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, false, false, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -256,9 +251,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, true, false, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, true, false, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -318,9 +312,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, false, false, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, false, false, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -366,9 +359,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, true, false, true>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, true, false, true>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, true>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -414,9 +406,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, false, true, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, false, true, false>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, true, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -445,71 +436,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, true, true, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, true, true, false>
 	{
-	public:
-		using CImplBase = TCImplBase<t_CFunctor, true, false>;
-		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
-		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
-
-		template <umint t_iFunction>
-		struct TCGetCallImp
-		{
-			using CType = TCCallImpl
-				<
-					CImplBase
-					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
-					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
-				>
-			;
-		};
-
-		using CAllocator = typename t_CFOpts::CImpBase;
-
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
-
-		static constexpr CNullPtr fs_DuplicateMove = nullptr;
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
-	};
-
-	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, false, true, false>
-	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, true, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -552,12 +480,72 @@ namespace NMib::NFunction::NPrivate
 				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
 			}
 		}
+
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
+				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
+			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
+				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
+			}
+		}
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, true, true, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, false, true, false>
 	{
-	public:
+		using CImplBase = TCImplBase<t_CFunctor, true, false>;
+		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
+		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
+
+		template <umint t_iFunction>
+		struct TCGetCallImp
+		{
+			using CType = TCCallImpl
+				<
+					CImplBase
+					, typename TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::CType
+					, TCGetCallInfo<typename t_CFOpts::CFunctionList, t_iFunction>::mc_Qualifiers
+				>
+			;
+		};
+
+		using CAllocator = typename t_CFOpts::CImpBase;
+
+		static void fs_Destroy(void *_pImpl)
+		{
+			((CImplBase *)_pImpl)->~CImplBase();
+		}
+
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
+		{
+			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
+		}
+
+		static constexpr CNullPtr fs_DuplicateMove = nullptr;
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
+		{
+			if constexpr (CImplBase::mc_IsIndirection)
+			{
+				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
+				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
+			}
+			else
+			{
+				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
+				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
+			}
+		}
+	};
+
+	template <typename t_CFunctor, typename t_CFOpts>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, true, true, false>
+	{
 		using CImplBase = TCImplBase<t_CFunctor, true, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -603,9 +591,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, false, false, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, false, false, false>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -634,9 +621,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, true, false, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, true, false, false>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -692,9 +678,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, true, false, false, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, true, false, false, false>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
@@ -736,9 +721,8 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
-	class TCImpl<t_CFunctor, t_CFOpts, false, true, false, false>
+	struct TCImpl<t_CFunctor, t_CFOpts, false, true, false, false>
 	{
-	public:
 		using CImplBase = TCImplBase<t_CFunctor, false, false>;
 		using CVTable = TCImplVTable<t_CFunctor, t_CFOpts>;
 		using CCallImp0 = TCCallImpl<CImplBase, typename t_CFOpts::CCall0, t_CFOpts::mc_Qualifiers0>;
