@@ -12,11 +12,11 @@ namespace NMib::NFunction
 		bool fg_IsVirtualCallImpl(void *_pMemberFunctionPointer);
 	}
 
-	template <typename tf_CMemberFunctionPointer>
-	bool fg_IsVirtualCall(tf_CMemberFunctionPointer _pFunctionPointer)
-		requires (NTraits::cIsMemberFunctionPointer<tf_CMemberFunctionPointer>)
+	template <typename tf_FMemberFunctionPointer>
+	bool fg_IsVirtualCall(tf_FMemberFunctionPointer _fFunctionPointer)
+		requires (NTraits::cIsMemberFunctionPointer<tf_FMemberFunctionPointer>)
 	{
-		return NPrivate::fg_IsVirtualCallImpl((void *)&_pFunctionPointer);
+		return NPrivate::fg_IsVirtualCallImpl((void *)&_fFunctionPointer);
 	}
 }
 

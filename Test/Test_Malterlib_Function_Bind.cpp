@@ -24,12 +24,12 @@ namespace
 			{
 				using result_type = int;
 
-				bool operator == (CBindFunctor const &_Right) const noexcept
+				bool operator == (CBindFunctor const &_fRight) const noexcept
 				{
 					return true;
 				}
 
-				COrdering_Weak operator <=> (CBindFunctor const &_Right) const noexcept
+				COrdering_Weak operator <=> (CBindFunctor const &_fRight) const noexcept
 				{
 					return COrdering_Weak::equivalent;
 				}
@@ -111,50 +111,50 @@ namespace
 			void f_DoMemberPtrTests()
 			{
 				{
-					NStorage::TCUniquePointer<CTestMemberPtr> TestMemberPtr = fg_Construct();
-					auto MemberPtr = &CTestMemberPtr::m_Member;
-					[[maybe_unused]] auto TestInit = TestMemberPtr->*MemberPtr;
+					NStorage::TCUniquePointer<CTestMemberPtr> pTestMemberPtr = fg_Construct();
+					auto pMember = &CTestMemberPtr::m_Member;
+					[[maybe_unused]] auto TestInit = pTestMemberPtr->*pMember;
 				}
 				{
-					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
-					auto MemberPtr = &CBindFunctor::f_BinaryTest2;
-					[[maybe_unused]] auto Result = (TestMemberPtr->*MemberPtr)(2);
+					NStorage::TCUniquePointer<CBindFunctor> pTestMemberPtr = fg_Construct();
+					auto fMemberFunction = &CBindFunctor::f_BinaryTest2;
+					[[maybe_unused]] auto Result = (pTestMemberPtr->*fMemberFunction)(2);
 				}
 				{
-					auto MemberPtr = fg_MemberFunctionFunctor(&CBindFunctor::f_BinaryTest3);
-					CBindFunctor Fununu;
-					[[maybe_unused]] auto Result = MemberPtr(&Fununu, 2);
+					auto fMemberFunction = fg_MemberFunctionFunctor(&CBindFunctor::f_BinaryTest3);
+					CBindFunctor fFununu;
+					[[maybe_unused]] auto Result = fMemberFunction(&fFununu, 2);
 				}
 				{
-					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
-					auto MemberPtr = &CBindFunctor::f_BinaryTest3;
-					[[maybe_unused]] auto Result = (TestMemberPtr->*MemberPtr)(2);
+					NStorage::TCUniquePointer<CBindFunctor> pTestMemberPtr = fg_Construct();
+					auto fMemberFunction = &CBindFunctor::f_BinaryTest3;
+					[[maybe_unused]] auto Result = (pTestMemberPtr->*fMemberFunction)(2);
 				}
 				{
-					NStorage::TCUniquePointer<CBindFunctor> TestMemberPtr = fg_Construct();
-					auto MemberPtr = &CBindFunctor::f_UnaryTest;
-					(TestMemberPtr->*MemberPtr)();
+					NStorage::TCUniquePointer<CBindFunctor> pTestMemberPtr = fg_Construct();
+					auto fMemberFunction = &CBindFunctor::f_UnaryTest;
+					(pTestMemberPtr->*fMemberFunction)();
 				}
 			}
 
 			void f_DoBindTests()
 			{
 				{
-					CBindFunctor Functor;
+					CBindFunctor fFunctor;
 
 					NContainer::TCVector<int32> TestVector;
 					TestVector.f_Insert(5);
 					TestVector.f_Insert(7);
 					TestVector.f_Insert(8);
 
-					auto TestMemFun = fg_MemberFunctionFunctor(&CBindFunctor::f_UnaryTest);
-					TestMemFun(Functor);
+					auto fTestMemFun = fg_MemberFunctionFunctor(&CBindFunctor::f_UnaryTest);
+					fTestMemFun(fFunctor);
 
-					auto TestMemFun3 = fg_MemberFunctionFunctor(&CBindFunctor::f_BinaryTest);
-					TestMemFun3(Functor, 2);
+					auto fTestMemFun3 = fg_MemberFunctionFunctor(&CBindFunctor::f_BinaryTest);
+					fTestMemFun3(fFunctor, 2);
 
-					auto pFunc = &fg_Test;
-					auto TestRef = fg_ConstReference(pFunc);
+					auto fFunc = &fg_Test;
+					auto TestRef = fg_ConstReference(fFunc);
 					TestRef();
 				}
 			}

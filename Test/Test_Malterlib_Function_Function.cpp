@@ -39,13 +39,13 @@ namespace
 					m_Data.f_SetLen(16);
 				}
 
-				CMoveFunctorBig(CMoveFunctorBig &&_Other)
-					: m_Data(fg_Move(_Other.m_Data))
+				CMoveFunctorBig(CMoveFunctorBig &&_fOther)
+					: m_Data(fg_Move(_fOther.m_Data))
 				{
 				}
 
-				CMoveFunctorBig(CMoveFunctorBig const &_Other)
-					: m_Data(_Other.m_Data)
+				CMoveFunctorBig(CMoveFunctorBig const &_fOther)
+					: m_Data(_fOther.m_Data)
 				{
 				}
 
@@ -63,7 +63,7 @@ namespace
 			static constexpr umint mc_nLoops = 20000;
 #endif
 
-			template <typename tf_CFunctor>
+			template <typename tf_FFunctor>
 			static void fs_DoTestRecursive(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
@@ -73,7 +73,7 @@ namespace
 #else
 				constexpr int c_nRecurse = 4000;
 #endif
-				tf_CFunctor fTestRecursive = [&](int _Value)
+				tf_FFunctor fTestRecursive = [&](int _Value)
 					{
 						if (_Value >= c_nRecurse)
 							return;
@@ -82,7 +82,7 @@ namespace
 					}
 				;
 
-				//tf_CFunctor Test = Test1;
+				//tf_FFunctor Test = Test1;
 				for (umint iTest = 0; iTest < mc_nTests; ++iTest)
 				{
 					g_Test = 0;
@@ -444,13 +444,13 @@ namespace
 					m_Data.f_SetLen(512);
 				}
 
-				CMoveFunctor(CMoveFunctor &&_Other)
-					: m_Data(fg_Move(_Other.m_Data))
+				CMoveFunctor(CMoveFunctor &&_fOther)
+					: m_Data(fg_Move(_fOther.m_Data))
 				{
 				}
 
-				CMoveFunctor(CMoveFunctor const &_Other)
-					: m_Data(_Other.m_Data)
+				CMoveFunctor(CMoveFunctor const &_fOther)
+					: m_Data(_fOther.m_Data)
 				{
 				}
 
@@ -511,13 +511,13 @@ namespace
 					m_Data.f_SetLen(512);
 				}
 
-				CMoveFunctorBigMove(CMoveFunctorBigMove &&_Other)
-					: m_Data(fg_Move(_Other.m_Data))
+				CMoveFunctorBigMove(CMoveFunctorBigMove &&_fOther)
+					: m_Data(fg_Move(_fOther.m_Data))
 				{
 				}
 
-				CMoveFunctorBigMove(CMoveFunctorBigMove const &_Other)
-					: m_Data(_Other.m_Data)
+				CMoveFunctorBigMove(CMoveFunctorBigMove const &_fOther)
+					: m_Data(_fOther.m_Data)
 				{
 				}
 
@@ -711,7 +711,7 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = []()
+				auto fTest = []()
 					{
 						++g_Test;
 					}
@@ -722,22 +722,22 @@ namespace
 					Timer.f_Start();
 					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
-						Test();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
+						fTest();
 						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
@@ -792,7 +792,7 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = [](int _Value)
+				auto fTest = [](int _Value)
 					{
 						g_Test += _Value;
 					}
@@ -803,22 +803,22 @@ namespace
 					Timer.f_Start();
 					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
-						Test(1);
-						Test(2);
-						Test(3);
-						Test(4);
-						Test(5);
-						Test(6);
-						Test(7);
-						Test(8);
-						Test(9);
-						Test(10);
-						Test(11);
-						Test(12);
-						Test(13);
-						Test(14);
-						Test(15);
-						Test(16);
+						fTest(1);
+						fTest(2);
+						fTest(3);
+						fTest(4);
+						fTest(5);
+						fTest(6);
+						fTest(7);
+						fTest(8);
+						fTest(9);
+						fTest(10);
+						fTest(11);
+						fTest(12);
+						fTest(13);
+						fTest(14);
+						fTest(15);
+						fTest(16);
 						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
@@ -873,7 +873,7 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = [](int _Value0, int _Value1)
+				auto fTest = [](int _Value0, int _Value1)
 					{
 						g_Test += _Value0 + _Value1;
 					}
@@ -884,22 +884,22 @@ namespace
 					Timer.f_Start();
 					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
-						Test(1, 17);
-						Test(2, 18);
-						Test(3, 19);
-						Test(4, 20);
-						Test(5, 21);
-						Test(6, 22);
-						Test(7, 23);
-						Test(8, 24);
-						Test(9, 25);
-						Test(10, 26);
-						Test(11, 27);
-						Test(12, 28);
-						Test(13, 29);
-						Test(14, 30);
-						Test(15, 31);
-						Test(16, 32);
+						fTest(1, 17);
+						fTest(2, 18);
+						fTest(3, 19);
+						fTest(4, 20);
+						fTest(5, 21);
+						fTest(6, 22);
+						fTest(7, 23);
+						fTest(8, 24);
+						fTest(9, 25);
+						fTest(10, 26);
+						fTest(11, 27);
+						fTest(12, 28);
+						fTest(13, 29);
+						fTest(14, 30);
+						fTest(15, 31);
+						fTest(16, 32);
 						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
@@ -954,7 +954,7 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = [](int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)
+				auto fTest = [](int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)
 					{
 						g_Test += _Value0 + _Value1 + _Value2 + _Value3 + _Value4 + _Value5 + _Value6 + _Value7 + _Value8 + _Value9;
 					}
@@ -965,22 +965,22 @@ namespace
 					Timer.f_Start();
 					for (umint iLoop = 0; iLoop < mc_nLoops; ++iLoop)
 					{
-						Test(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
-						Test(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
-						Test(3, 19, 3, 19, 3, 19, 3, 19, 3, 19);
-						Test(4, 20, 4, 20, 4, 20, 4, 20, 4, 20);
-						Test(5, 21, 5, 21, 5, 21, 5, 21, 5, 21);
-						Test(6, 22, 6, 22, 6, 22, 6, 22, 6, 22);
-						Test(7, 23, 7, 23, 7, 23, 7, 23, 7, 23);
-						Test(8, 24, 8, 24, 8, 24, 8, 24, 8, 24);
-						Test(9, 25, 9, 25, 9, 25, 9, 25, 9, 25);
-						Test(10, 26, 10, 26, 10, 26, 10, 26, 10, 26);
-						Test(11, 27, 11, 27, 11, 27, 11, 27, 11, 27);
-						Test(12, 28, 12, 28, 12, 28, 12, 28, 12, 28);
-						Test(13, 29, 13, 29, 13, 29, 13, 29, 13, 29);
-						Test(14, 30, 14, 30, 14, 30, 14, 30, 14, 30);
-						Test(15, 31, 15, 31, 15, 31, 15, 31, 15, 31);
-						Test(16, 32, 16, 32, 16, 32, 16, 32, 16, 32);
+						fTest(1, 17, 1, 17, 1, 17, 1, 17, 1, 17);
+						fTest(2, 18, 2, 18, 2, 18, 2, 18, 2, 18);
+						fTest(3, 19, 3, 19, 3, 19, 3, 19, 3, 19);
+						fTest(4, 20, 4, 20, 4, 20, 4, 20, 4, 20);
+						fTest(5, 21, 5, 21, 5, 21, 5, 21, 5, 21);
+						fTest(6, 22, 6, 22, 6, 22, 6, 22, 6, 22);
+						fTest(7, 23, 7, 23, 7, 23, 7, 23, 7, 23);
+						fTest(8, 24, 8, 24, 8, 24, 8, 24, 8, 24);
+						fTest(9, 25, 9, 25, 9, 25, 9, 25, 9, 25);
+						fTest(10, 26, 10, 26, 10, 26, 10, 26, 10, 26);
+						fTest(11, 27, 11, 27, 11, 27, 11, 27, 11, 27);
+						fTest(12, 28, 12, 28, 12, 28, 12, 28, 12, 28);
+						fTest(13, 29, 13, 29, 13, 29, 13, 29, 13, 29);
+						fTest(14, 30, 14, 30, 14, 30, 14, 30, 14, 30);
+						fTest(15, 31, 15, 31, 15, 31, 15, 31, 15, 31);
+						fTest(16, 32, 16, 32, 16, 32, 16, 32, 16, 32);
 						g_TestCopy = g_Test;
 					}
 					Timer.f_Stop();
@@ -1091,14 +1091,14 @@ namespace
 				{
 				}
 
-				bool operator == (CFunctorCompare const &_Other) const noexcept
+				bool operator == (CFunctorCompare const &_fOther) const noexcept
 				{
-					return m_Value == _Other.m_Value;
+					return m_Value == _fOther.m_Value;
 				}
 
-				auto operator <=> (CFunctorCompare const &_Other) const noexcept
+				auto operator <=> (CFunctorCompare const &_fOther) const noexcept
 				{
-					return m_Value <=> _Other.m_Value;
+					return m_Value <=> _fOther.m_Value;
 				}
 			};
 
@@ -1113,11 +1113,11 @@ namespace
 			{
 			};
 
-			void f_Capture(std::function<void (CDispatchTypeTag *_pTag)> const &_Function)
+			void f_Capture(std::function<void (CDispatchTypeTag *_pTag)> const &_fFunction)
 			{
-				auto fTest = [_Function]()
+				auto fTest = [_fFunction]()
 					{
-						_Function(nullptr);
+						_fFunction(nullptr);
 					}
 				;
 			}
@@ -1179,15 +1179,15 @@ namespace
 
 				if (0)
 				{
-					TCFunction<int (int _Value)> Test;
-					TCFunctionNoAlloc<int (int _Value)> Test2;
-					TCFunctionSmall<int (int _Value), NMemory::TCAllocator_Static<sizeof(void *) * 3>> Test3;
+					TCFunction<int (int _Value)> fTest;
+					TCFunctionNoAlloc<int (int _Value)> fTest2;
+					TCFunctionSmall<int (int _Value), NMemory::TCAllocator_Static<sizeof(void *) * 3>> fTest3;
 
-					std::function<int (int _Value)> Test4;
-					boost::function<int (int _Value)> Test5;
+					std::function<int (int _Value)> fTest4;
+					boost::function<int (int _Value)> fTest5;
 
-					TCFunction<void ()> TestGlobal(&CFunction_Tests::fs_Test);
-					TCFunction<void ()> TestGlobalRef(CFunction_Tests::fs_Test);
+					TCFunction<void ()> fTestGlobal(&CFunction_Tests::fs_Test);
+					TCFunction<void ()> fTestGlobalRef(CFunction_Tests::fs_Test);
 
 					struct CSizedStruct
 					{
@@ -1200,32 +1200,32 @@ namespace
 					};
 
 					CSizedStruct Test00;
-					auto fTest = [Test00](int const &_Test) -> int
+					auto fTestLambda = [Test00](int const &_Test) -> int
 						{
 							(void)Test00;
 							return 3;
 						}
 					;
 
-					Test = fTest;
-					//Test2 = fTest;
-					Test3 = fTest;
-					Test4 = fTest;
-					Test5 = fTest;
+					fTest = fTestLambda;
+					//fTest2 = fTestLambda;
+					fTest3 = fTestLambda;
+					fTest4 = fTestLambda;
+					fTest5 = fTestLambda;
 
-					uint32 TestRes = Test(6);
-					//uint32 TestRes2 = Test2(6);
-					uint32 TestRes3 = Test3(6);
-					uint32 TestRes4 = Test4(6);
-					uint32 TestRes5 = Test5(6);
+					uint32 TestRes = fTest(6);
+					//uint32 TestRes2 = fTest2(6);
+					uint32 TestRes3 = fTest3(6);
+					uint32 TestRes4 = fTest4(6);
+					uint32 TestRes5 = fTest5(6);
 
-					DMibTrace("sizeof(TCFunction): {}\r\n", sizeof(Test));
-					DMibTrace("sizeof(TCFunctionNoAlloc): {}\r\n", sizeof(Test2));
+					DMibTrace("sizeof(TCFunction): {}\r\n", sizeof(fTest));
+					DMibTrace("sizeof(TCFunctionNoAlloc): {}\r\n", sizeof(fTest2));
 					DMibTrace("sizeof(TCFunctionSmall): {}\r\n", sizeof(TCFunctionSmall<void (int _Value)>));
-					DMibTrace("sizeof(TCFunctionSmall static): {}\r\n", sizeof(Test3));
+					DMibTrace("sizeof(TCFunctionSmall static): {}\r\n", sizeof(fTest3));
 					DMibTrace("sizeof(TCFunctionFastCall): {}\r\n", sizeof(TCFunctionFastCall<void (int _Value)>));
-					DMibTrace("sizeof(std::function): {}\r\n", sizeof(Test4));
-					DMibTrace("sizeof(boost::function): {}\r\n", sizeof(Test5));
+					DMibTrace("sizeof(std::function): {}\r\n", sizeof(fTest4));
+					DMibTrace("sizeof(boost::function): {}\r\n", sizeof(fTest5));
 				}
 
 				DMibTestSuite("Capture")
@@ -1275,68 +1275,68 @@ namespace
 						}
 					};
 
-					TCFunction<int (), int (CThisTag &_ThisTag)> TestAll;
-					TCFunction<int (CThisTag &_ThisTag)> Test;
-					TCFunction<int (CThisTag const &_ThisTag)> TestConst;
+					TCFunction<int (), int (CThisTag &_ThisTag)> fTestAll;
+					TCFunction<int (CThisTag &_ThisTag)> fTest;
+					TCFunction<int (CThisTag const &_ThisTag)> fTestConst;
 
 					{
 						DMibTestPath("All");
-						TestAll = CFunctorAll();
+						fTestAll = CFunctorAll();
 
-						DMibTest(DMibExpr(TestAll()) == DMibExpr(0));
-						DMibTest(DMibExpr(fg_Const(TestAll)()) == DMibExpr(1));
+						DMibTest(DMibExpr(fTestAll()) == DMibExpr(0));
+						DMibTest(DMibExpr(fg_Const(fTestAll)()) == DMibExpr(1));
 
-						Test = CFunctorAll();
-						TestConst = CFunctorAll();
+						fTest = CFunctorAll();
+						fTestConst = CFunctorAll();
 
-						DMibTest(DMibExpr(Test()) == DMibExpr(0));
-						DMibTest(DMibExpr(TestConst()) == DMibExpr(1));
-						DMibTest(DMibExpr(fg_Const(TestConst)()) == DMibExpr(1));
+						DMibTest(DMibExpr(fTest()) == DMibExpr(0));
+						DMibTest(DMibExpr(fTestConst()) == DMibExpr(1));
+						DMibTest(DMibExpr(fg_Const(fTestConst)()) == DMibExpr(1));
 					}
 
 					{
 						DMibTestPath("Const");
 
-						Test = CFunctorConst();
-						TestConst = CFunctorConst();
-						DMibTest(DMibExpr(Test()) == DMibExpr(1));
-						DMibTest(DMibExpr(TestConst()) == DMibExpr(1));
-						DMibTest(DMibExpr(fg_Const(TestConst)()) == DMibExpr(1));
+						fTest = CFunctorConst();
+						fTestConst = CFunctorConst();
+						DMibTest(DMibExpr(fTest()) == DMibExpr(1));
+						DMibTest(DMibExpr(fTestConst()) == DMibExpr(1));
+						DMibTest(DMibExpr(fg_Const(fTestConst)()) == DMibExpr(1));
 					}
 				};
 
 				// Test compares
 				DMibTestSuite("Compare")
 				{
-					TCFunction<void (), CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag> Test1;
-					TCFunction<void (), CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag> Test2;
-					DMibTest(DMibExpr(Test1) == DMibExpr(Test2))(ETestFlag_NoValues);
+					TCFunction<void (), CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag> fTest1;
+					TCFunction<void (), CFunctionSupportEqualityCompareTag, CFunctionSupportOrderedCompareTag> fTest2;
+					DMibTest(DMibExpr(fTest1) == DMibExpr(fTest2))(ETestFlag_NoValues);
 
-					Test1 = CFunction_Tests::CFunctorCompare(2);
+					fTest1 = CFunction_Tests::CFunctorCompare(2);
 
-					DMibTest(DMibExpr(Test1) != DMibExpr(Test2))(ETestFlag_NoValues);
+					DMibTest(DMibExpr(fTest1) != DMibExpr(fTest2))(ETestFlag_NoValues);
 
-					Test2 = CFunction_Tests::CFunctorCompare(2);
+					fTest2 = CFunction_Tests::CFunctorCompare(2);
 
-					DMibTest(DMibExpr(Test1) == DMibExpr(Test2) && DMibExpr(2))(ETestFlag_NoValues);
+					DMibTest(DMibExpr(fTest1) == DMibExpr(fTest2) && DMibExpr(2))(ETestFlag_NoValues);
 
-					Test2 = CFunction_Tests::CFunctorCompare(3);
+					fTest2 = CFunction_Tests::CFunctorCompare(3);
 
-					DMibTest(DMibExpr(Test1) != DMibExpr(Test2) && DMibExpr(2))(ETestFlag_NoValues);
+					DMibTest(DMibExpr(fTest1) != DMibExpr(fTest2) && DMibExpr(2))(ETestFlag_NoValues);
 
-					DMibTest(DMibExpr(Test1) < DMibExpr(Test2))(ETestFlag_NoValues);
-					DMibTest(DMibExpr(Test2) > DMibExpr(Test1))(ETestFlag_NoValues);
+					DMibTest(DMibExpr(fTest1) < DMibExpr(fTest2))(ETestFlag_NoValues);
+					DMibTest(DMibExpr(fTest2) > DMibExpr(fTest1))(ETestFlag_NoValues);
 				};
 
 				DMibTestSuite("Copy and movable compatibility")
 				{
-					TCFunction<void ()> Test;
+					TCFunction<void ()> fTest;
 
-					TCFunction<void (), CFunctionNoCopyTag> TestNoCopy(Test);
-					TCFunction<void (), CFunctionNoMoveTag> TestNoMove(Test);
-					TCFunction<void (), CFunctionNoCopyTag, CFunctionNoMoveTag> TestNoCopyNoMove(Test);
+					TCFunction<void (), CFunctionNoCopyTag> fTestNoCopy(fTest);
+					TCFunction<void (), CFunctionNoMoveTag> fTestNoMove(fTest);
+					TCFunction<void (), CFunctionNoCopyTag, CFunctionNoMoveTag> fTestNoCopyNoMove(fTest);
 
-					TCFunction<void (TCFunction<void (), CFunctionNoCopyTag> &&_fFunction)> Test2;
+					TCFunction<void (TCFunction<void (), CFunctionNoCopyTag> &&_fFunction)> fTest2;
 				};
 
 				DMibTestSuite("Empty function")
@@ -1536,19 +1536,19 @@ namespace
 					}
 
 					{
-						TCFunction<void ()> EmptyFunc;
-						TCFunction<void ()> NonEmptyFunc = []()
+						TCFunction<void ()> fEmptyFunc;
+						TCFunction<void ()> fNonEmptyFunc = []()
 							{
 							}
 						;
 
-						DMibTest(DMibExpr(!EmptyFunc) == DMibExpr(true));
-						DMibTest(DMibExpr(EmptyFunc ? true : false) == DMibExpr(false));
-						DMibTest(DMibExpr(EmptyFunc.f_IsEmpty()) == DMibExpr(true));
+						DMibTest(DMibExpr(!fEmptyFunc) == DMibExpr(true));
+						DMibTest(DMibExpr(fEmptyFunc ? true : false) == DMibExpr(false));
+						DMibTest(DMibExpr(fEmptyFunc.f_IsEmpty()) == DMibExpr(true));
 
-						DMibTest(DMibExpr(!NonEmptyFunc) == DMibExpr(false));
-						DMibTest(DMibExpr(NonEmptyFunc ? true : false) == DMibExpr(true));
-						DMibTest(DMibExpr(NonEmptyFunc.f_IsEmpty()) == DMibExpr(false));
+						DMibTest(DMibExpr(!fNonEmptyFunc) == DMibExpr(false));
+						DMibTest(DMibExpr(fNonEmptyFunc ? true : false) == DMibExpr(true));
+						DMibTest(DMibExpr(fNonEmptyFunc.f_IsEmpty()) == DMibExpr(false));
 					}
 				};
 
@@ -1829,15 +1829,15 @@ namespace
 							delete[] m_pData;
 						}
 
-						CFunctorWithData(CFunctorWithData const &_Other)
-							: m_Value(_Other.m_Value)
+						CFunctorWithData(CFunctorWithData const &_fOther)
+							: m_Value(_fOther.m_Value)
 							, m_pData(new uint8[16])
 						{
 						}
 
-						CFunctorWithData(CFunctorWithData &&_Other)
-							: m_Value(_Other.m_Value)
-							, m_pData(fg_Exchange(_Other.m_pData, nullptr))
+						CFunctorWithData(CFunctorWithData &&_fOther)
+							: m_Value(_fOther.m_Value)
+							, m_pData(fg_Exchange(_fOther.m_pData, nullptr))
 						{
 						}
 
@@ -1852,23 +1852,23 @@ namespace
 						// Default allocator is stateless - always steals
 						{
 							DMibTestPath("MoveConstruct");
-							TCFunction<int32 ()> Source = CFunctorWithData(42);
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							TCFunction<int32 ()> fSource = CFunctorWithData(42);
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							TCFunction<int32 ()> Dest(fg_Move(Source));
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
-							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+							TCFunction<int32 ()> fDest(fg_Move(fSource));
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(fSource)); // Source should be empty after steal
 						}
 
 						{
 							DMibTestPath("MoveAssign");
-							TCFunction<int32 ()> Source = CFunctorWithData(42);
-							TCFunction<int32 ()> Dest;
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							TCFunction<int32 ()> fSource = CFunctorWithData(42);
+							TCFunction<int32 ()> fDest;
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							Dest = fg_Move(Source);
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
-							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+							fDest = fg_Move(fSource);
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(fSource)); // Source should be empty after steal
 						}
 					};
 
@@ -1880,54 +1880,54 @@ namespace
 						{
 							DMibTestPath("MoveConstruct/SameAllocator");
 							// Same allocator instance - should steal
-							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
-							Source = CFunctorWithData(42);
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							CFunctionStateful fSource(CAllocatorConstructTag(), &MemoryManagerA);
+							fSource = CFunctorWithData(42);
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							CFunctionStateful Dest(fg_Move(Source));
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
-							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+							CFunctionStateful fDest(fg_Move(fSource));
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(fSource)); // Source should be empty after steal
 						}
 
 						{
 							DMibTestPath("MoveConstruct/DifferentAllocator");
 							// Different allocator instances (both using same memory manager, but different instances)
-							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
-							Source = CFunctorWithData(42);
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							CFunctionStateful fSource(CAllocatorConstructTag(), &MemoryManagerA);
+							fSource = CFunctorWithData(42);
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
 							// Move construct copies allocator from source, so can always steal
-							CFunctionStateful Dest(fg_Move(Source));
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							CFunctionStateful fDest(fg_Move(fSource));
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
 							// Source should be empty after move
-							DMibTest(!DMibExpr(Source));
+							DMibTest(!DMibExpr(fSource));
 						}
 
 						{
 							DMibTestPath("MoveAssign/SameAllocator");
-							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
-							Source = CFunctorWithData(42);
-							CFunctionStateful Dest(CAllocatorConstructTag(), &MemoryManagerA);
+							CFunctionStateful fSource(CAllocatorConstructTag(), &MemoryManagerA);
+							fSource = CFunctorWithData(42);
+							CFunctionStateful fDest(CAllocatorConstructTag(), &MemoryManagerA);
 
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							Dest = fg_Move(Source);
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
-							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+							fDest = fg_Move(fSource);
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(fSource)); // Source should be empty after steal
 						}
 
 						{
 							DMibTestPath("MoveAssign/DifferentAllocator");
-							CFunctionStateful Source(CAllocatorConstructTag(), &MemoryManagerA);
-							Source = CFunctorWithData(42);
-							CFunctionStateful Dest(CAllocatorConstructTag(), &MemoryManagerB);
+							CFunctionStateful fSource(CAllocatorConstructTag(), &MemoryManagerA);
+							fSource = CFunctorWithData(42);
+							CFunctionStateful fDest(CAllocatorConstructTag(), &MemoryManagerB);
 
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							Dest = fg_Move(Source);
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							fDest = fg_Move(fSource);
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
 							// Source should be empty after move (data was duplicated then source destroyed)
-							DMibTest(!DMibExpr(Source));
+							DMibTest(!DMibExpr(fSource));
 						}
 					};
 
@@ -1969,54 +1969,54 @@ namespace
 						{
 							DMibTestPath("StaticAllocation/MoveConstruct");
 							// Static allocations should NOT be stolen between different function objects
-							CFunctionStatic Source;
-							Source = CSmallFunctor(42);
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							CFunctionStatic fSource;
+							fSource = CSmallFunctor(42);
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
 							// Move construct - since static allocation, should copy
-							CFunctionStatic Dest(fg_Move(Source));
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							CFunctionStatic fDest(fg_Move(fSource));
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
 							// Source is emptied after move even when copying (duplicated then destroyed)
-							DMibTest(!DMibExpr(Source));
+							DMibTest(!DMibExpr(fSource));
 						}
 
 						{
 							DMibTestPath("StaticAllocation/MoveAssign");
-							CFunctionStatic Source;
-							Source = CSmallFunctor(42);
-							CFunctionStatic Dest;
+							CFunctionStatic fSource;
+							fSource = CSmallFunctor(42);
+							CFunctionStatic fDest;
 
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							Dest = fg_Move(Source);
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
+							fDest = fg_Move(fSource);
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
 							// Source is emptied after move even when copying
-							DMibTest(!DMibExpr(Source));
+							DMibTest(!DMibExpr(fSource));
 						}
 
 						{
 							DMibTestPath("HeapOverflow/MoveConstruct");
 							// Large allocation that overflows to heap - should be stolen
-							CFunctionStatic Source;
-							Source = CLargeFunctor(42);
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							CFunctionStatic fSource;
+							fSource = CLargeFunctor(42);
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							CFunctionStatic Dest(fg_Move(Source));
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
-							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+							CFunctionStatic fDest(fg_Move(fSource));
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(fSource)); // Source should be empty after steal
 						}
 
 						{
 							DMibTestPath("HeapOverflow/MoveAssign");
-							CFunctionStatic Source;
-							Source = CLargeFunctor(42);
-							CFunctionStatic Dest;
+							CFunctionStatic fSource;
+							fSource = CLargeFunctor(42);
+							CFunctionStatic fDest;
 
-							DMibTest(DMibExpr(Source()) == DMibExpr(42));
+							DMibTest(DMibExpr(fSource()) == DMibExpr(42));
 
-							Dest = fg_Move(Source);
-							DMibTest(DMibExpr(Dest()) == DMibExpr(42));
-							DMibTest(!DMibExpr(Source)); // Source should be empty after steal
+							fDest = fg_Move(fSource);
+							DMibTest(DMibExpr(fDest()) == DMibExpr(42));
+							DMibTest(!DMibExpr(fSource)); // Source should be empty after steal
 						}
 					};
 				};

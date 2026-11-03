@@ -307,17 +307,17 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return mp_Data.m_pVTable->m_pDestroy;
+			return mp_Data.m_pVTable->m_fDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return mp_Data.m_pVTable->m_pDuplicate;
+			return mp_Data.m_pVTable->m_fDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return mp_Data.m_pVTable->m_pDuplicateMove;
+			return mp_Data.m_pVTable->m_fDuplicateMove;
 		}
 
 		template <umint t_iCall, typename t_CDummmy = void>
@@ -346,12 +346,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)mp_Data.m_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_Data.m_pVTable->m_fCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)mp_Data.m_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_Data.m_pVTable->m_fCompareSpaceship;
 		}
 
 		void fp_Destroy()
@@ -684,17 +684,17 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return mp_Data.m_pImp->m_pVTable->m_pDestroy;
+			return mp_Data.m_pImp->m_pVTable->m_fDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return mp_Data.m_pImp->m_pVTable->m_pDuplicate;
+			return mp_Data.m_pImp->m_pVTable->m_fDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return mp_Data.m_pImp->m_pVTable->m_pDuplicateMove;
+			return mp_Data.m_pImp->m_pVTable->m_fDuplicateMove;
 		}
 
 		template <umint t_iCall, typename t_CDummmy = void>
@@ -714,12 +714,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)mp_Data.m_pImp->m_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_Data.m_pImp->m_pVTable->m_fCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)mp_Data.m_pImp->m_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_Data.m_pImp->m_pVTable->m_fCompareSpaceship;
 		}
 
 	public:
@@ -804,9 +804,9 @@ namespace NMib::NFunction::NPrivate
 				fp_Destroy();
 				fp_SetDefault();
 				if constexpr (tf_bMove)
-					_Other.mp_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
+					_Other.mp_pVTable->m_fDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
-					_Other.mp_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
+					_Other.mp_pVTable->m_fDuplicate(_Other.fp_GetImpl(), *this);
 				mp_pCall = _Other.mp_pCall;
 				mp_pVTable.f_SetBoth(_Other.mp_pVTable);
 			}
@@ -1005,17 +1005,17 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return mp_pVTable->m_pDestroy;
+			return mp_pVTable->m_fDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return mp_pVTable->m_pDuplicate;
+			return mp_pVTable->m_fDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return mp_pVTable->m_pDuplicateMove;
+			return mp_pVTable->m_fDuplicateMove;
 		}
 
 		template <umint t_iCall, typename t_CDummmy = void>
@@ -1044,12 +1044,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)mp_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_pVTable->m_fCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)mp_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_pVTable->m_fCompareSpaceship;
 		}
 	};
 
@@ -1129,9 +1129,9 @@ namespace NMib::NFunction::NPrivate
 				fp_Destroy();
 				fp_SetDefault();
 				if constexpr (tf_bMove)
-					_Other.mp_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
+					_Other.mp_pVTable->m_fDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
-					_Other.mp_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
+					_Other.mp_pVTable->m_fDuplicate(_Other.fp_GetImpl(), *this);
 				mp_pVTable.f_SetBoth(_Other.mp_pVTable);
 			}
 			else
@@ -1319,17 +1319,17 @@ namespace NMib::NFunction::NPrivate
 
 		mark_nodebug FDelete *fp_DestroyCall() const
 		{
-			return mp_pVTable->m_pDestroy;
+			return mp_pVTable->m_fDestroy;
 		}
 
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const
 		{
-			return mp_pVTable->m_pDuplicate;
+			return mp_pVTable->m_fDuplicate;
 		}
 
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const
 		{
-			return mp_pVTable->m_pDuplicateMove;
+			return mp_pVTable->m_fDuplicateMove;
 		}
 
 		template <umint t_iCall>
@@ -1349,12 +1349,12 @@ namespace NMib::NFunction::NPrivate
 
 		FCompareEqual *fp_CompareEqual() const noexcept
 		{
-			return (FCompareEqual *)mp_pVTable->m_pCompareEqual;
+			return (FCompareEqual *)mp_pVTable->m_fCompareEqual;
 		}
 
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept
 		{
-			return (FCompareSpaceship *)mp_pVTable->m_pCompareSpaceship;
+			return (FCompareSpaceship *)mp_pVTable->m_fCompareSpaceship;
 		}
 	};
 

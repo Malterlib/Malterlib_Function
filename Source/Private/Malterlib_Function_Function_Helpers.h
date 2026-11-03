@@ -128,7 +128,7 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename CParent::CAllocator;
 		using CFunctionAllocOptions = typename CParent::CFunctionAllocOptions;
 
-		static constexpr bool mc_bIsNoExcept = NTraits::TCFunctionTraits<t_CFirst>::mc_IsNoExcept;
+		static constexpr bool mc_bIsNoExcept = NTraits::TCFunctionTraits<t_CFirst>::mc_bIsNoExcept;
 		static constexpr bool mc_bSupportEqualityCompare = CParent::mc_bSupportEqualityCompare;
 		static constexpr bool mc_bSupportOrderedCompare = CParent::mc_bSupportOrderedCompare;
 		static constexpr bool mc_bSupportCopy = CParent::mc_bSupportCopy;

@@ -19,9 +19,9 @@
 
 namespace NMib::NFunction
 {
-	template <typename tf_CMemberFunctionPointer>
-	bool fg_IsVirtualCall(tf_CMemberFunctionPointer _pFunctionPointer)
-		requires (NTraits::cIsMemberFunctionPointer<tf_CMemberFunctionPointer>)
+	template <typename tf_FMemberFunctionPointer>
+	bool fg_IsVirtualCall(tf_FMemberFunctionPointer _fFunctionPointer)
+		requires (NTraits::cIsMemberFunctionPointer<tf_FMemberFunctionPointer>)
 	;
 }
 

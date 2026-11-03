@@ -66,7 +66,7 @@ namespace NMib::NFunction
 	*/
 	template
 	<
-		bool t_AllowAlloc = false
+		bool t_bAllowAlloc = false
 		/// Set to true to allow the function to allocate memory dynamically
 		, uint32 t_MaxSize = sizeof(void *) * 4
 		/// The maximum size of the functor object that can be put in the TCFunctionXXXX object
@@ -78,7 +78,7 @@ namespace NMib::NFunction
 	{
 		static constexpr umint mc_MaxSize = (t_MaxSize + t_Alignment - 1) & ~umint(t_Alignment - 1);
 		static constexpr umint mc_Alignment = t_Alignment;
-		static constexpr umint mc_bAllowAlloc = t_AllowAlloc;
+		static constexpr umint mc_bAllowAlloc = t_bAllowAlloc;
 		static constexpr bool mc_bSeparateCallPointer = t_bSeparateCallPointer;
 	};
 }
@@ -168,13 +168,13 @@ namespace NMib::NFunction
 		}
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-		TCFunction(TCFunction const &_Other) = default;
+		TCFunction(TCFunction const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-		TCFunction(TCFunction &&_Other) = default;
+		TCFunction(TCFunction &&_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunction &operator = (TCFunction const &_Other) = default;
+		TCFunction &operator = (TCFunction const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunction &operator = (TCFunction &&_Other) = default;
+		TCFunction &operator = (TCFunction &&_fOther) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -290,13 +290,13 @@ namespace NMib::NFunction
 		}
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-		TCFunctionFastCall(TCFunctionFastCall const &_Other) = default;
+		TCFunctionFastCall(TCFunctionFastCall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-		TCFunctionFastCall(TCFunctionFastCall &&_Other) = default;
+		TCFunctionFastCall(TCFunctionFastCall &&_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunctionFastCall &operator = (TCFunctionFastCall const &_Other) = default;
+		TCFunctionFastCall &operator = (TCFunctionFastCall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunctionFastCall &operator = (TCFunctionFastCall &&_Other) = default;
+		TCFunctionFastCall &operator = (TCFunctionFastCall &&_fOther) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -386,13 +386,13 @@ namespace NMib::NFunction
 		}
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-		TCFunctionSmall(TCFunctionSmall const &_Other) = default;
+		TCFunctionSmall(TCFunctionSmall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-		TCFunctionSmall(TCFunctionSmall &&_Other) = default;
+		TCFunctionSmall(TCFunctionSmall &&_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunctionSmall &operator = (TCFunctionSmall const &_Other) = default;
+		TCFunctionSmall &operator = (TCFunctionSmall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunctionSmall &operator = (TCFunctionSmall &&_Other) = default;
+		TCFunctionSmall &operator = (TCFunctionSmall &&_fOther) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
@@ -483,13 +483,13 @@ namespace NMib::NFunction
 		}
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
-		TCFunctionNoAlloc(TCFunctionNoAlloc const &_Other) = default;
+		TCFunctionNoAlloc(TCFunctionNoAlloc const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
-		TCFunctionNoAlloc(TCFunctionNoAlloc &&_Other) = default;
+		TCFunctionNoAlloc(TCFunctionNoAlloc &&_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
-		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc const &_Other) = default;
+		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
-		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &&_Other) = default;
+		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &&_fOther) = default;
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
