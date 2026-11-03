@@ -8,10 +8,7 @@ namespace NMib::NFunction
 	struct COperatorFunctor_Comma
 	{
 		template <typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CLeft>(_Left), fg_Forward<tf_CRight>(_Right))
-		{
-			return fg_Forward<tf_CLeft>(_Left), fg_Forward<tf_CRight>(_Right);
-		}
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CLeft>(_Left), fg_Forward<tf_CRight>(_Right));
 	};
 
 	struct COperatorFunctor_Conditional
@@ -19,36 +16,25 @@ namespace NMib::NFunction
 		template <typename tf_CCondition, typename tf_CLeft, typename tf_CRight>
 		auto operator () (tf_CCondition &&_Condition, tf_CLeft &&_Left, tf_CRight &&_Right) const
 			-> decltype(fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right))
-		{
-			return fg_Forward<tf_CCondition>(_Condition) ? fg_Forward<tf_CLeft>(_Left) : fg_Forward<tf_CRight>(_Right);
-		}
+		;
 	};
 
 	struct COperatorFunctor_Subscript
 	{
 		template <typename tf_CLeft, typename tf_CRight>
-		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)])
-		{
-			return fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)];
-		}
+		auto operator () (tf_CLeft &&_Left, tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CLeft>(_Left)[fg_Forward<tf_CRight>(_Right)]);
 	};
 
 	struct COperatorFunctor_PostfixIncrement
 	{
 		template <typename tf_CRight>
-		auto operator () (tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CRight>(_Right)++)
-		{
-			return fg_Forward<tf_CRight>(_Right)++;
-		}
+		auto operator () (tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CRight>(_Right)++);
 	};
 
 	struct COperatorFunctor_PostfixDecrement
 	{
 		template <typename tf_CRight>
-		auto operator () (tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CRight>(_Right)--)
-		{
-			return fg_Forward<tf_CRight>(_Right)--;
-		}
+		auto operator () (tf_CRight &&_Right) const -> decltype(fg_Forward<tf_CRight>(_Right)--);
 	};
 
 #define DMibTempImplementFunctionalBinaryOperator(d_Operator, d_Name) \
@@ -132,3 +118,5 @@ namespace NMib::NFunction
 #ifndef DMibPNoShortCuts
 using namespace NMib::NFunction;
 #endif
+
+#include "Malterlib_Function_Operators.hpp"
