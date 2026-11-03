@@ -36,71 +36,71 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &, tp_CParams...)>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params)>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_None;
 
-		using FType = t_CReturn (tp_CParams...);
+		using FType = t_CReturn (tp_CParams ...p_Params);
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &, tp_CParams..., ...)>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params, ...)>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_None;
 
-		using FType = t_CReturn (tp_CParams..., ...);
+		using FType = t_CReturn (tp_CParams ...p_Params, ...);
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &, tp_CParams...)>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params)>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 
-		using FType = t_CReturn (tp_CParams...);
+		using FType = t_CReturn (tp_CParams ...p_Params);
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &, tp_CParams..., ...)>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params, ...)>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 
-		using FType = t_CReturn (tp_CParams..., ...);
+		using FType = t_CReturn (tp_CParams ...p_Params, ...);
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &, tp_CParams...) noexcept>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params) noexcept>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_None;
 
-		using FType = t_CReturn (tp_CParams...) noexcept;
+		using FType = t_CReturn (tp_CParams ...p_Params) noexcept;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &, tp_CParams..., ...) noexcept>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params, ...) noexcept>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_None;
 
-		using FType = t_CReturn (tp_CParams..., ...) noexcept;
+		using FType = t_CReturn (tp_CParams ...p_Params, ...) noexcept;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &, tp_CParams...) noexcept>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params) noexcept>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 
-		using FType = t_CReturn (tp_CParams...) noexcept;
+		using FType = t_CReturn (tp_CParams ...p_Params) noexcept;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
-	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &, tp_CParams..., ...) noexcept>
+	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params, ...) noexcept>
 	{
 		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 
-		using FType = t_CReturn (tp_CParams..., ...) noexcept;
+		using FType = t_CReturn (tp_CParams ...p_Params, ...) noexcept;
 	};
 
-	template <typename t_CFirst, int _FirstQualifiers, typename t_CSecond, int _SecondQualifiers>
-	concept cIsSameFunction = NTraits::cIsSame<t_CFirst, t_CSecond> && _FirstQualifiers == _SecondQualifiers;
+	template <typename t_CFirst, int t_FirstQualifiers, typename t_CSecond, int t_SecondQualifiers>
+	concept cIsSameFunction = NTraits::cIsSame<t_CFirst, t_CSecond> && t_FirstQualifiers == t_SecondQualifiers;
 
 	template <typename t_CIsFunction, typename ...tp_CParams>
 	struct TCParseFunctionOptions;

@@ -84,18 +84,18 @@ namespace
 					return 2;
 				}
 
-				void f_BinaryTest(int _x)
+				void f_BinaryTest(int _Value)
 				{
 				}
 
-				int f_BinaryTest2(int _x)
+				int f_BinaryTest2(int _Value)
 				{
-					return _x;
+					return _Value;
 				}
 
-				int f_BinaryTest3(int _x)
+				int f_BinaryTest3(int _Value)
 				{
-					return _x;
+					return _Value;
 				}
 			};
 

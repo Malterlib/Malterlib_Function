@@ -9,15 +9,15 @@ namespace NMib::NFunction::NPrivate
 	struct TCFunctionCallDefinition;
 
 	template <typename t_CReturnType, typename ...tp_CParams>
-	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...)>
+	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams ...p_Params)>
 	{
-		using FType = t_CReturnType (void *_pImpl, tp_CParams...);
+		using FType = t_CReturnType (void *_pImpl, tp_CParams ...p_Params);
 	};
 
 	template <typename t_CReturnType, typename ...tp_CParams>
-	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams...) noexcept>
+	struct TCFunctionCallDefinition<t_CReturnType (tp_CParams ...p_Params) noexcept>
 	{
-		using FType = t_CReturnType (void *_pImpl, tp_CParams...) noexcept;
+		using FType = t_CReturnType (void *_pImpl, tp_CParams ...p_Params) noexcept;
 	};
 
 	template <typename t_CFOpts, bool t_bSupportEqualityCompare = t_CFOpts::mc_bSupportEqualityCompare, bool t_bSupportOrderedCompare = t_CFOpts::mc_bSupportOrderedCompare>
@@ -50,10 +50,10 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
-		template <umint t_iFunction>
-		mark_artificial inline_always tp_FCalls...[t_iFunction] *f_GetFunction() const
+		template <umint tf_iFunction>
+		mark_artificial inline_always tp_FCalls...[tf_iFunction] *f_GetFunction() const
 		{
-			return TCVTableCall<t_iFunction, tp_FCalls...[t_iFunction]>::m_pCall;
+			return TCVTableCall<tf_iFunction, tp_FCalls...[tf_iFunction]>::m_pCall;
 		}
 	};
 

@@ -29,8 +29,8 @@ namespace NMib::NFunction::NPrivate
 	{
 		using t_CFirstFunctor::operator ();
 
-		TCMergedFunctors(t_CFirstFunctor l1)
-			: t_CFirstFunctor(l1)
+		TCMergedFunctors(t_CFirstFunctor _FirstFunctor)
+			: t_CFirstFunctor(_FirstFunctor)
 		{
 		}
 	};

@@ -63,7 +63,7 @@ namespace
 			static umint const mc_nLoops = 20000;
 #endif
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestRecursive(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
@@ -73,7 +73,7 @@ namespace
 #else
 				int const s_nRecurse = 4000;
 #endif
-				t_CFunctor flr_TestRecursive = [&](int _Value)
+				tf_CFunctor flr_TestRecursive = [&](int _Value)
 					{
 						if (_Value >= s_nRecurse)
 							return;
@@ -82,7 +82,7 @@ namespace
 					}
 				;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -97,95 +97,95 @@ namespace
 					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestCreate(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
 					Timer.f_Start();
 					for (umint i = 0; i < mc_nLoops; ++i)
 					{
-						t_CFunctor Test0 = []()
+						tf_CFunctor Test0 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test1 = []()
+						tf_CFunctor Test1 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test2 = []()
+						tf_CFunctor Test2 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test3 = []()
+						tf_CFunctor Test3 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test4 = []()
+						tf_CFunctor Test4 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test5 = []()
+						tf_CFunctor Test5 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test6 = []()
+						tf_CFunctor Test6 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test7 = []()
+						tf_CFunctor Test7 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test8 = []()
+						tf_CFunctor Test8 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test9 = []()
+						tf_CFunctor Test9 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test10 = []()
+						tf_CFunctor Test10 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test11 = []()
+						tf_CFunctor Test11 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test12 = []()
+						tf_CFunctor Test12 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test13 = []()
+						tf_CFunctor Test13 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test14 = []()
+						tf_CFunctor Test14 = []()
 							{
 								++g_Test;
 							}
 						;
-						t_CFunctor Test15 = []()
+						tf_CFunctor Test15 = []()
 							{
 								++g_Test;
 							}
@@ -200,18 +200,18 @@ namespace
 					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestAssign(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = []()
+				tf_CFunctor Test = []()
 					{
 						++g_Test;
 					}
 				;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -308,15 +308,15 @@ namespace
 					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestAssignBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
 
-				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
+				tf_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -349,19 +349,19 @@ namespace
 					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestCopy(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = []()
+				tf_CFunctor Test = []()
 					{
 						++g_Test;
 					}
 				;
-				t_CFunctor Test2;
+				tf_CFunctor Test2;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -394,16 +394,16 @@ namespace
 					DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestCopyBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
 
-				t_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
-				t_CFunctor Test2;
+				tf_CFunctor Test = CFunction_Tests::CMoveFunctorBig();
+				tf_CFunctor Test2;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -460,15 +460,15 @@ namespace
 				}
 			};
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestMove(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = CFunction_Tests::CMoveFunctor();
-				t_CFunctor Test2;
+				tf_CFunctor Test = CFunction_Tests::CMoveFunctor();
+				tf_CFunctor Test2;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -527,15 +527,15 @@ namespace
 				}
 			};
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestMoveBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = CFunction_Tests::CMoveFunctorBigMove();
-				t_CFunctor Test2;
+				tf_CFunctor Test = CFunction_Tests::CMoveFunctorBigMove();
+				tf_CFunctor Test2;
 
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -592,18 +592,18 @@ namespace
 				}
 			};
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestValidCall(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = CFunction_Tests::CValidCallTest();
-				t_CFunctor Test2 = Test;
-				t_CFunctor Test3;
+				tf_CFunctor Test = CFunction_Tests::CValidCallTest();
+				tf_CFunctor Test2 = Test;
+				tf_CFunctor Test3;
 				Test3 = Test;
-				t_CFunctor TestSource = CFunction_Tests::CValidCallTest();
-				t_CFunctor Test4 = fg_Move(TestSource);
-				t_CFunctor Test5;
+				tf_CFunctor TestSource = CFunction_Tests::CValidCallTest();
+				tf_CFunctor Test4 = fg_Move(TestSource);
+				tf_CFunctor Test5;
 				TestSource = CFunction_Tests::CValidCallTest();
 				Test5 = fg_Move(TestSource);
 
@@ -640,18 +640,18 @@ namespace
 				}
 			};
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTestValidCallBig(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = CFunction_Tests::CValidCallTestBig();
-				t_CFunctor Test2 = Test;
-				t_CFunctor Test3;
+				tf_CFunctor Test = CFunction_Tests::CValidCallTestBig();
+				tf_CFunctor Test2 = Test;
+				tf_CFunctor Test3;
 				Test3 = Test;
-				t_CFunctor TestSource = CFunction_Tests::CValidCallTestBig();
-				t_CFunctor Test4 = fg_Move(TestSource);
-				t_CFunctor Test5;
+				tf_CFunctor TestSource = CFunction_Tests::CValidCallTestBig();
+				tf_CFunctor Test4 = fg_Move(TestSource);
+				tf_CFunctor Test5;
 				TestSource = CFunction_Tests::CValidCallTestBig();
 				Test5 = fg_Move(TestSource);
 
@@ -662,12 +662,12 @@ namespace
 				DMibTest(DMibExpr(Test5()) == DMibExpr(33));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTest(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test
+				tf_CFunctor Test
 					(
 						[]()
 						{
@@ -675,7 +675,7 @@ namespace
 						}
 					)
 				;
-				//t_CFunctor Test = Test1;
+				//tf_CFunctor Test = Test1;
 				for (umint i = 0; i < mc_nTests; ++i)
 				{
 					g_Test = 0;
@@ -747,14 +747,14 @@ namespace
 				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTest1(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = [](int _X)
+				tf_CFunctor Test = [](int _Value)
 					{
-						g_Test += _X;
+						g_Test += _Value;
 					}
 				;
 				for (umint i = 0; i < mc_nTests; ++i)
@@ -792,9 +792,9 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = [](int _X)
+				auto Test = [](int _Value)
 					{
-						g_Test += _X;
+						g_Test += _Value;
 					}
 				;
 				for (umint i = 0; i < mc_nTests; ++i)
@@ -828,14 +828,14 @@ namespace
 				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTest2(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = [](int _0, int _1)
+				tf_CFunctor Test = [](int _Value0, int _Value1)
 					{
-						g_Test += _0 + _1;
+						g_Test += _Value0 + _Value1;
 					}
 				;
 				for (umint i = 0; i < mc_nTests; ++i)
@@ -873,9 +873,9 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = [](int _0, int _1)
+				auto Test = [](int _Value0, int _Value1)
 					{
-						g_Test += _0 + _1;
+						g_Test += _Value0 + _Value1;
 					}
 				;
 				for (umint i = 0; i < mc_nTests; ++i)
@@ -909,14 +909,14 @@ namespace
 				DMibTest(DMibExpr(Timer) / DMibExpr(Timer) <= DMibExpr(1.0));
 			}
 
-			template <typename t_CFunctor>
+			template <typename tf_CFunctor>
 			static void fs_DoTest10(NStr::CStr const &_Name)
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				t_CFunctor Test = [](int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
+				tf_CFunctor Test = [](int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)
 					{
-						g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
+						g_Test += _Value0 + _Value1 + _Value2 + _Value3 + _Value4 + _Value5 + _Value6 + _Value7 + _Value8 + _Value9;
 					}
 				;
 				for (umint i = 0; i < mc_nTests; ++i)
@@ -954,9 +954,9 @@ namespace
 			{
 				DMibTestPath(_Name);
 				NTime::CPrefCyclesTimeMeasureMin Timer;
-				auto Test = [](int _0, int _1, int _2, int _3, int _4, int _5, int _6, int _7, int _8, int _9)
+				auto Test = [](int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)
 					{
-						g_Test += _0 + _1 + _2 + _3 + _4 + _5 + _6 + _7 + _8 + _9;
+						g_Test += _Value0 + _Value1 + _Value2 + _Value3 + _Value4 + _Value5 + _Value6 + _Value7 + _Value8 + _Value9;
 					}
 				;
 				for (umint i = 0; i < mc_nTests; ++i)
@@ -996,19 +996,19 @@ namespace
 
 			struct CTesting
 			{
-				void operator () (int)
+				void operator () (int _Value)
 				{
 				}
 
-				void operator () (float)
+				void operator () (float _Value)
 				{
 				}
 			};
 
-			template <typename t_CFunction>
+			template <typename tf_CFunction>
 			void f_DoFunctionTests()
 			{
-				t_CFunction Test = [&](int const &_Test)
+				tf_CFunction Test = [&](int const &_Test)
 					{
 					}
 				;
@@ -1020,19 +1020,19 @@ namespace
 				;
 
 				Test(4);
-				t_CFunction Test3 = Test;
+				tf_CFunction Test3 = Test;
 				Test3(5);
 				Test3 = Test;
 				Test3(6);
-				t_CFunction Test4(fg_Move(Test));
-				t_CFunction Test5;
+				tf_CFunction Test4(fg_Move(Test));
+				tf_CFunction Test5;
 				Test5 = fg_Move(Test3);
 			}
 
-			template <typename t_CFunction>
+			template <typename tf_CFunction>
 			void f_DoFunctionTestsBig()
 			{
-				t_CFunction Test = [&](int const &_Test)
+				tf_CFunction Test = [&](int const &_Test)
 					{
 					}
 				;
@@ -1044,12 +1044,12 @@ namespace
 				;
 
 				Test(4);
-				t_CFunction Test3 = Test;
+				tf_CFunction Test3 = Test;
 				Test3(5);
 				Test3 = Test;
 				Test3(6);
-				t_CFunction Test4(fg_Move(Test));
-				t_CFunction Test5;
+				tf_CFunction Test4(fg_Move(Test));
+				tf_CFunction Test5;
 				Test5 = fg_Move(Test3);
 
 				struct CTestClass
@@ -1059,23 +1059,23 @@ namespace
 				};
 
 				CTestClass TestData;
-				t_CFunction Test6 = [TestData](int const &_Test)
+				tf_CFunction Test6 = [TestData](int const &_Test)
 					{
 						(void)TestData;
 					}
 				;
-				t_CFunction Test7 = fg_Move(Test6);
-				t_CFunction Test8;
+				tf_CFunction Test7 = fg_Move(Test6);
+				tf_CFunction Test8;
 				Test8 = fg_Move(Test7);
 
 				NContainer::CByteVector Vector;
 				Vector.f_SetLen(100);
-				t_CFunction Test9 = [Vector](int const &_Test)
+				tf_CFunction Test9 = [Vector](int const &_Test)
 					{
 					}
 				;
-				t_CFunction Test10 = fg_Move(Test9);
-				t_CFunction Test11;
+				tf_CFunction Test10 = fg_Move(Test9);
+				tf_CFunction Test11;
 				Test8 = fg_Move(Test10);
 			}
 
@@ -1113,7 +1113,7 @@ namespace
 			{
 			};
 
-			void f_Capture(std::function<void (CDispatchTypeTag *)> const &_Function)
+			void f_Capture(std::function<void (CDispatchTypeTag *_pTag)> const &_Function)
 			{
 				auto fTest = [_Function]()
 					{
@@ -1172,19 +1172,19 @@ namespace
 			{
 				DMibTestSuite("Misc")
 				{
-					f_DoFunctionTestsBig<TCFunction<void (int)>>();
-					f_DoFunctionTests<TCFunctionNoAlloc<void (int)>>();
-					f_DoFunctionTestsBig<TCFunctionSmall<void (int)>>();
+					f_DoFunctionTestsBig<TCFunction<void (int _Value)>>();
+					f_DoFunctionTests<TCFunctionNoAlloc<void (int _Value)>>();
+					f_DoFunctionTestsBig<TCFunctionSmall<void (int _Value)>>();
 				};
 
 				if (0)
 				{
-					TCFunction<int (int)> Test;
-					TCFunctionNoAlloc<int (int)> Test2;
-					TCFunctionSmall<int (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>> Test3;
+					TCFunction<int (int _Value)> Test;
+					TCFunctionNoAlloc<int (int _Value)> Test2;
+					TCFunctionSmall<int (int _Value), NMemory::TCAllocator_Static<sizeof(void *) * 3>> Test3;
 
-					std::function<int (int)> Test4;
-					boost::function<int (int)> Test5;
+					std::function<int (int _Value)> Test4;
+					boost::function<int (int _Value)> Test5;
 
 					TCFunction<void ()> TestGlobal(&CFunction_Tests::fs_Test);
 					TCFunction<void ()> TestGlobalRef(CFunction_Tests::fs_Test);
@@ -1221,9 +1221,9 @@ namespace
 
 					DMibTrace("sizeof(TCFunction): {}\r\n", sizeof(Test));
 					DMibTrace("sizeof(TCFunctionNoAlloc): {}\r\n", sizeof(Test2));
-					DMibTrace("sizeof(TCFunctionSmall): {}\r\n", sizeof(TCFunctionSmall<void (int)>));
+					DMibTrace("sizeof(TCFunctionSmall): {}\r\n", sizeof(TCFunctionSmall<void (int _Value)>));
 					DMibTrace("sizeof(TCFunctionSmall static): {}\r\n", sizeof(Test3));
-					DMibTrace("sizeof(TCFunctionFastCall): {}\r\n", sizeof(TCFunctionFastCall<void (int)>));
+					DMibTrace("sizeof(TCFunctionFastCall): {}\r\n", sizeof(TCFunctionFastCall<void (int _Value)>));
 					DMibTrace("sizeof(std::function): {}\r\n", sizeof(Test4));
 					DMibTrace("sizeof(boost::function): {}\r\n", sizeof(Test5));
 				}
@@ -1235,7 +1235,7 @@ namespace
 						CCounter Counter(Count);
 						f_Capture
 							(
-								[Counter](CDispatchTypeTag *)
+								[Counter](CDispatchTypeTag *_pTag)
 								{
 								}
 							)
@@ -1275,9 +1275,9 @@ namespace
 						}
 					};
 
-					TCFunction<int (), int (CThisTag &)> TestAll;
-					TCFunction<int (CThisTag &)> Test;
-					TCFunction<int (CThisTag const &)> TestConst;
+					TCFunction<int (), int (CThisTag &_ThisTag)> TestAll;
+					TCFunction<int (CThisTag &_ThisTag)> Test;
+					TCFunction<int (CThisTag const &_ThisTag)> TestConst;
 
 					{
 						DMibTestPath("All");
@@ -1336,7 +1336,7 @@ namespace
 					TCFunction<void (), CFunctionNoMoveTag> TestNoMove(Test);
 					TCFunction<void (), CFunctionNoCopyTag, CFunctionNoMoveTag> TestNoCopyNoMove(Test);
 
-					TCFunction<void (TCFunction<void (), CFunctionNoCopyTag> &&)> Test2;
+					TCFunction<void (TCFunction<void (), CFunctionNoCopyTag> &&_fFunction)> Test2;
 				};
 
 				DMibTestSuite("Empty function")
@@ -1350,7 +1350,7 @@ namespace
 				{
 					struct CFunctor1
 					{
-						void operator () (int) const
+						void operator () (int _Value) const
 						{
 						}
 
@@ -1365,14 +1365,14 @@ namespace
 					{
 						using FFunction1 = TCFunction
 							<
-								int (int)
-								, int (CThisTag &, int)
-								, int (int, int)
-								, int (CThisTag &, int, int)
-								, int (int, int, int)
-								, int (CThisTag &, int, int, int)
-								, int (int, int, int, int)
-								, int (CThisTag &, int, int, int, int)
+								int (int _Value)
+								, int (CThisTag &_ThisTag, int _Value)
+								, int (int _Value0, int _Value1)
+								, int (CThisTag &_ThisTag, int _Value0, int _Value1)
+								, int (int _Value0, int _Value1, int _Value2)
+								, int (CThisTag &_ThisTag, int _Value0, int _Value1, int _Value2)
+								, int (int _Value0, int _Value1, int _Value2, int _Value3)
+								, int (CThisTag &_ThisTag, int _Value0, int _Value1, int _Value2, int _Value3)
 							>
 						;
 
@@ -1388,16 +1388,16 @@ namespace
 						DMibTest(DMibExpr(fg_Const(f1)(1, 1, 1, 1)) == DMibExpr(1000004));
 					}
 					{
-						using FFunction1 = TCFunction<void (int)>;
+						using FFunction1 = TCFunction<void (int _Value)>;
 						FFunction1 f1;
 						DMibTest(DMibExpr(!f1));
 						FFunction1 f2(v1);
 						DMibTest(DMibExpr(!!f2))(ETestFlag_NoValues);
 						FFunction1 f3(f2);
-						FFunction1 f4([](int) -> void {});
+						FFunction1 f4([](int _Value) -> void {});
 					}
 					{
-						using FFunction1 = TCFunction<void (char)>;
+						using FFunction1 = TCFunction<void (char _Value)>;
 						FFunction1 f1;
 						FFunction1 f2(v1);
 					}
@@ -1407,7 +1407,7 @@ namespace
 						FFunction1 f2(v1);
 					}
 					{
-						using FFunction1 = TCFunction<void (int), void ()>;
+						using FFunction1 = TCFunction<void (int _Value), void ()>;
 						FFunction1 f1;
 						FFunction1 f2(v1); // return value ignored. OK? Yes
 						// FFunction1 f3([](int)->void {}); // Fails
@@ -1419,8 +1419,8 @@ namespace
 						//FFunction1 f2(v1);
 					}
 					{
-						using FFunction1 = TCFunction<void (int), void ()>;
-						using FFunction2 = TCFunction<void (int)>;
+						using FFunction1 = TCFunction<void (int _Value), void ()>;
+						using FFunction2 = TCFunction<void (int _Value)>;
 						FFunction1 f1(v1);
 						FFunction2 f2(f1);
 						// FFunction1 f3(f2);
@@ -1430,7 +1430,7 @@ namespace
 
 					// No
 					{
-						using FFunction1 = TCFunction<void (int, int)>;
+						using FFunction1 = TCFunction<void (int _Value0, int _Value1)>;
 						FFunction1 f1;
 						// FFunction1 f2(v1);  // Ignoring extra parameters might be ok?
 					}
@@ -1465,7 +1465,7 @@ namespace
 						v3();
 						v4();
 
-						using FFunction1 = TCFunction<int (CThisTag &), int ()>;
+						using FFunction1 = TCFunction<int (CThisTag &_ThisTag), int ()>;
 						FFunction1 f1(v2);
 						DMibTest(DMibExpr(f1()) == DMibExpr(2));
 						FFunction1 const f2(v2);
@@ -1491,17 +1491,17 @@ namespace
 							DMibTest(DMibExpr(f2()) == DMibExpr(5));
 						}
 						{
-							auto lambda1 = [](int) -> int
+							auto lambda1 = [](int _Value) -> int
 								{
 									return 1;
 								}
 							;
-							auto lambda2 = [](int &) -> int
+							auto lambda2 = [](int &_Value) -> int
 								{
 									return 2;
 								}
 							;
-							auto lambda3 = [](int const &) -> int
+							auto lambda3 = [](int const &_Value) -> int
 								{
 									return 3;
 								}
@@ -1518,11 +1518,11 @@ namespace
 						{
 							struct CFunctor2
 							{
-								void f_Fun(int)
+								void f_Fun(int _Value)
 								{
 								}
 
-								int f_Fun(void *)
+								int f_Fun(void *_pValue)
 								{
 									return 3;
 								}
@@ -1659,14 +1659,14 @@ namespace
 
 				DMibTestSuite("Recursive")
 				{
-					CFunction_Tests::fs_DoTestRecursive<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
-					CFunction_Tests::fs_DoTestRecursive<TCFunction<void (int)>>("TCFunction");
-					CFunction_Tests::fs_DoTestRecursive<TCFunctionNSCP<void (int)>>("TCFunctionNSCP");
-					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
-					CFunction_Tests::fs_DoTestRecursive<TCFunctionFastCall<void (int)>>("TCFunctionFastCall");
-					CFunction_Tests::fs_DoTestRecursive<std::function<void (int)>>("std::function");
-					CFunction_Tests::fs_DoTestRecursive<boost::function<void (int)>>("boost::function");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionNoAlloc<void (int _Value)>>("TCFunctionNoAlloc");
+					CFunction_Tests::fs_DoTestRecursive<TCFunction<void (int _Value)>>("TCFunction");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionNSCP<void (int _Value)>>("TCFunctionNSCP");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int _Value)>>("TCFunctionSmall");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionSmall<void (int _Value), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTestRecursive<TCFunctionFastCall<void (int _Value)>>("TCFunctionFastCall");
+					CFunction_Tests::fs_DoTestRecursive<std::function<void (int _Value)>>("std::function");
+					CFunction_Tests::fs_DoTestRecursive<boost::function<void (int _Value)>>("boost::function");
 				};
 
 				DMibTestSuite("Zero param")
@@ -1723,44 +1723,84 @@ namespace
 				DMibTestSuite("One param")
 				{
 					fs_DoTestDirect1("Direct lambda");
-					CFunction_Tests::fs_DoTest1<TCFunctionNoAlloc<void (int)>>("TCFunctionNoAlloc");
-					CFunction_Tests::fs_DoTest1<TCFunction<void (int)>>("TCFunction");
-					CFunction_Tests::fs_DoTest1<TCFunctionNSCP<void (int)>>("TCFunctionNSCP");
-					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
-					CFunction_Tests::fs_DoTest1<TCFunctionFastCall<void (int)>>("TCFunctionFastCall");
-					CFunction_Tests::fs_DoTest1<std::function<void (int)>>("std::function");
-					CFunction_Tests::fs_DoTest1<boost::function<void (int)>>("boost::function");
+					CFunction_Tests::fs_DoTest1<TCFunctionNoAlloc<void (int _Value)>>("TCFunctionNoAlloc");
+					CFunction_Tests::fs_DoTest1<TCFunction<void (int _Value)>>("TCFunction");
+					CFunction_Tests::fs_DoTest1<TCFunctionNSCP<void (int _Value)>>("TCFunctionNSCP");
+					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int _Value)>>("TCFunctionSmall");
+					CFunction_Tests::fs_DoTest1<TCFunctionSmall<void (int _Value), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest1<TCFunctionFastCall<void (int _Value)>>("TCFunctionFastCall");
+					CFunction_Tests::fs_DoTest1<std::function<void (int _Value)>>("std::function");
+					CFunction_Tests::fs_DoTest1<boost::function<void (int _Value)>>("boost::function");
 				};
 
 				DMibTestSuite("Two param")
 				{
 					fs_DoTestDirect2("Direct lambda");
-					CFunction_Tests::fs_DoTest2<TCFunctionNoAlloc<void (int, int)>>("TCFunctionNoAlloc");
-					CFunction_Tests::fs_DoTest2<TCFunction<void (int, int)>>("TCFunction");
-					CFunction_Tests::fs_DoTest2<TCFunctionNSCP<void (int, int)>>("TCFunctionNSCP");
-					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int, int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
-					CFunction_Tests::fs_DoTest2<TCFunctionFastCall<void (int, int)>>("TCFunctionFastCall");
-					CFunction_Tests::fs_DoTest2<std::function<void (int, int)>>("std::function");
-					CFunction_Tests::fs_DoTest2<boost::function<void (int, int)>>("boost::function");
+					CFunction_Tests::fs_DoTest2<TCFunctionNoAlloc<void (int _Value0, int _Value1)>>("TCFunctionNoAlloc");
+					CFunction_Tests::fs_DoTest2<TCFunction<void (int _Value0, int _Value1)>>("TCFunction");
+					CFunction_Tests::fs_DoTest2<TCFunctionNSCP<void (int _Value0, int _Value1)>>("TCFunctionNSCP");
+					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int _Value0, int _Value1)>>("TCFunctionSmall");
+					CFunction_Tests::fs_DoTest2<TCFunctionSmall<void (int _Value0, int _Value1), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>("TCFunctionSmall static");
+					CFunction_Tests::fs_DoTest2<TCFunctionFastCall<void (int _Value0, int _Value1)>>("TCFunctionFastCall");
+					CFunction_Tests::fs_DoTest2<std::function<void (int _Value0, int _Value1)>>("std::function");
+					CFunction_Tests::fs_DoTest2<boost::function<void (int _Value0, int _Value1)>>("boost::function");
 				};
 
 				DMibTestSuite("Ten param")
 				{
 					fs_DoTestDirect10("Direct lambda");
-					CFunction_Tests::fs_DoTest10<TCFunctionNoAlloc<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionNoAlloc");
-					CFunction_Tests::fs_DoTest10<TCFunction<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunction");
-					CFunction_Tests::fs_DoTest10<TCFunctionNSCP<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionNSCP");
-					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionSmall");
-					CFunction_Tests::fs_DoTest10<TCFunctionSmall<void (int, int, int, int, int, int, int, int, int, int), NMemory::TCAllocator_Static<sizeof(void *) * 3>>>
+					CFunction_Tests::fs_DoTest10
+						<
+							TCFunctionNoAlloc<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>
+						>
+						("TCFunctionNoAlloc")
+					;
+					CFunction_Tests
+						::fs_DoTest10<TCFunction<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>>
 						(
-							"TCFunctionSmall static"
+							"TCFunction"
 						)
 					;
-					CFunction_Tests::fs_DoTest10<TCFunctionFastCall<void (int, int, int, int, int, int, int, int, int, int)>>("TCFunctionFastCall");
-					CFunction_Tests::fs_DoTest10<std::function<void (int, int, int, int, int, int, int, int, int, int)>>("std::function");
-					CFunction_Tests::fs_DoTest10<boost::function<void (int, int, int, int, int, int, int, int, int, int)>>("boost::function");
+					CFunction_Tests
+						::fs_DoTest10<TCFunctionNSCP<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>>
+						(
+							"TCFunctionNSCP"
+						)
+					;
+					CFunction_Tests::fs_DoTest10
+						<
+							TCFunctionSmall<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>
+						>
+						("TCFunctionSmall")
+					;
+					CFunction_Tests::fs_DoTest10
+						<
+							TCFunctionSmall
+							<
+								void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)
+								, NMemory::TCAllocator_Static<sizeof(void *) * 3>
+							>
+						>
+						("TCFunctionSmall static")
+					;
+					CFunction_Tests::fs_DoTest10
+						<
+							TCFunctionFastCall<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>
+						>
+						("TCFunctionFastCall")
+					;
+					CFunction_Tests
+						::fs_DoTest10<std::function<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>>
+						(
+							"std::function"
+						)
+					;
+					CFunction_Tests::fs_DoTest10
+						<
+							boost::function<void (int _Value0, int _Value1, int _Value2, int _Value3, int _Value4, int _Value5, int _Value6, int _Value7, int _Value8, int _Value9)>
+						>
+						("boost::function")
+					;
 				};
 
 				DMibTestSuite("Allocator behavior")

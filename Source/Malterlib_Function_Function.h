@@ -109,8 +109,8 @@ namespace NMib::NFunction
 		};
 	}
 
-	template <typename tf_CType>
-	concept cIsTCFunction = NPrivate::TCIsTCFunctionImpl<tf_CType>::mc_Value;
+	template <typename t_CType>
+	concept cIsTCFunction = NPrivate::TCIsTCFunctionImpl<t_CType>::mc_Value;
 
 	template <typename t_CFunction>
 	struct TCFunctionInfo;
@@ -220,15 +220,15 @@ namespace NMib::NFunction
 		struct TCAddThisTag;
 
 		template <typename t_CTag, typename t_CReturn, typename ...tp_CParams>
-		struct TCAddThisTag<t_CReturn (tp_CParams...), t_CTag>
+		struct TCAddThisTag<t_CReturn (tp_CParams ...p_Params), t_CTag>
 		{
-			using FType = t_CReturn (t_CTag, tp_CParams...);
+			using FType = t_CReturn (t_CTag _ThisTag, tp_CParams ...p_Params);
 		};
 
 		template <typename t_CTag, typename t_CReturn, typename ...tp_CParams>
-		struct TCAddThisTag<t_CReturn (tp_CParams...) noexcept, t_CTag>
+		struct TCAddThisTag<t_CReturn (tp_CParams ...p_Params) noexcept, t_CTag>
 		{
-			using FType = t_CReturn (t_CTag, tp_CParams...) noexcept;
+			using FType = t_CReturn (t_CTag _ThisTag, tp_CParams ...p_Params) noexcept;
 		};
 	}
 

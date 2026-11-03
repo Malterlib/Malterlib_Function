@@ -59,16 +59,16 @@ namespace NMib::NFunction
 			return *this;
 		}
 
-		template <typename tf_C0>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor(tf_C0 &&_P0)
-			: mp_pFunction(fg_Forward<tf_C0>(_P0))
+		template <typename tf_CFunctionPointer>
+		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor(tf_CFunctionPointer &&_P0)
+			: mp_pFunction(fg_Forward<tf_CFunctionPointer>(_P0))
 		{
 		}
 
-		template <typename tf_C0>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor &operator = (tf_C0 &&_P0)
+		template <typename tf_CFunctionPointer>
+		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor &operator = (tf_CFunctionPointer &&_P0)
 		{
-			mp_pFunction = fg_Forward<tf_C0>(_P0);
+			mp_pFunction = fg_Forward<tf_CFunctionPointer>(_P0);
 			return *this;
 		}
 
@@ -155,10 +155,10 @@ namespace NMib::NFunction
 			return *this;
 		}
 
-		template <typename tf_C0, typename tf_C1>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionBoundFunctor(tf_C0 &&_P0, tf_C1 &&_P1)
-			: mp_pFunction(fg_Forward<tf_C0>(_P0))
-			, mp_pThis(fg_Forward<tf_C1>(_P1))
+		template <typename tf_CFunctionPointer, typename tf_CThis>
+		mark_artificial mark_nodebug inline_always TCMemberFunctionBoundFunctor(tf_CFunctionPointer &&_P0, tf_CThis &&_P1)
+			: mp_pFunction(fg_Forward<tf_CFunctionPointer>(_P0))
+			, mp_pThis(fg_Forward<tf_CThis>(_P1))
 		{
 		}
 
@@ -193,11 +193,11 @@ namespace NMib::NFunction
 	|																									|
 	|	Index:				!name																		|
 	\*_________________________________________________________________________________________________*/
-	template <typename t_CFunctionPtr>
-	mark_artificial mark_nodebug inline_always auto fg_MemberFunctionFunctor(t_CFunctionPtr _pPtr)
-		-> TCEnableIf<NTraits::TCMemberFunctionPointerTraits<t_CFunctionPtr>::mc_IsMemberFunctionPointer, TCMemberFunctionFunctor<t_CFunctionPtr>>
+	template <typename tf_CFunctionPtr>
+	mark_artificial mark_nodebug inline_always auto fg_MemberFunctionFunctor(tf_CFunctionPtr _pPtr)
+		-> TCEnableIf<NTraits::TCMemberFunctionPointerTraits<tf_CFunctionPtr>::mc_IsMemberFunctionPointer, TCMemberFunctionFunctor<tf_CFunctionPtr>>
 	{
-		return TCMemberFunctionFunctor<t_CFunctionPtr>(_pPtr);
+		return TCMemberFunctionFunctor<tf_CFunctionPtr>(_pPtr);
 	}
 
 	/*¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯*\
@@ -213,11 +213,11 @@ namespace NMib::NFunction
 	|																									|
 	|	Index:				!name																		|
 	\*_________________________________________________________________________________________________*/
-	template <typename t_CFunctionPtr, typename t_CClass>
-	mark_artificial mark_nodebug inline_always auto fg_MemberFunctionFunctor(t_CFunctionPtr _pPtr, t_CClass _pClassPtr)
-		-> TCEnableIf<NTraits::TCMemberFunctionPointerTraits<t_CFunctionPtr>::mc_IsMemberFunctionPointer, TCMemberFunctionBoundFunctor<t_CFunctionPtr, t_CClass>>
+	template <typename tf_CFunctionPtr, typename tf_CClass>
+	mark_artificial mark_nodebug inline_always auto fg_MemberFunctionFunctor(tf_CFunctionPtr _pPtr, tf_CClass _pClassPtr)
+		-> TCEnableIf<NTraits::TCMemberFunctionPointerTraits<tf_CFunctionPtr>::mc_IsMemberFunctionPointer, TCMemberFunctionBoundFunctor<tf_CFunctionPtr, tf_CClass>>
 	{
-		return TCMemberFunctionBoundFunctor<t_CFunctionPtr, t_CClass>(_pPtr, _pClassPtr);
+		return TCMemberFunctionBoundFunctor<tf_CFunctionPtr, tf_CClass>(_pPtr, _pClassPtr);
 	}
 }
 

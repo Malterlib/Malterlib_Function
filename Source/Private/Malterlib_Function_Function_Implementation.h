@@ -26,7 +26,7 @@ namespace NMib::NFunction::NPrivate
 		struct CData : public CAllocator
 		{
 			template <typename ...tfp_CParams>
-			CData(CAllocatorConstructTag const &, tfp_CParams && ...p_Params)
+			CData(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
 				: CAllocator(fg_Forward<tfp_CParams>(p_Params)...)
 				, m_pVTable(&CNullFunction::CVTable::mc_VTable)
 				, m_pImpl(nullptr)
@@ -82,8 +82,8 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionBase() = default;
-		TCFunctionBase(TCFunctionBase const &) = default;
-		TCFunctionBase(TCFunctionBase &&) = default;
+		TCFunctionBase(TCFunctionBase const &_Other) = default;
+		TCFunctionBase(TCFunctionBase &&_Other) = default;
 
 		bool fp_IsDefault() const
 		{
@@ -189,18 +189,18 @@ namespace NMib::NFunction::NPrivate
 			}
 		}
 
-		template <typename t_CObject, typename t_CParam>
-		t_CObject *fp_ConstructObject(t_CParam &&_Param)
+		template <typename tf_CObject, typename tf_CParam>
+		tf_CObject *fp_ConstructObject(tf_CParam &&_Param)
 		{
-			return fg_ConstructObject<t_CObject>(m_Data, fg_Forward<t_CParam>(_Param));
+			return fg_ConstructObject<tf_CObject>(m_Data, fg_Forward<tf_CParam>(_Param));
 		}
 
-		template <typename t_CFunction>
-		void fp_Construct(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Construct(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
-			m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<t_CFunction>(_Function));
+			m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<tf_CFunction>(_Function));
 			m_Data.m_pCall = CImpl::CCallImp0::fs_Call;
 			m_Data.m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
@@ -210,20 +210,20 @@ namespace NMib::NFunction::NPrivate
 			return reinterpret_cast<void const *>(m_Data.m_pCall);
 		}
 
-		template <typename t_CFunction>
-		void fp_Assign(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Assign(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
 			if (m_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<t_CFunction>(_Function));
+				m_Data.m_pImpl = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<tf_CFunction>(_Function));
 			}
 			else
 			{
-				auto *pNew = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<t_CFunction>(_Function));
+				auto *pNew = fg_ConstructObject<typename CImpl::CImplBase>(m_Data, fg_Forward<tf_CFunction>(_Function));
 				fp_Destroy();
 				m_Data.m_pImpl = pNew;
 			}
@@ -243,8 +243,8 @@ namespace NMib::NFunction::NPrivate
 			using CType = TCFunctionBase &&;
 		};
 
-		template <bool t_bMove>
-		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
+		template <bool tf_bMove>
+		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
 			if (_Other.m_Data.m_pImpl)
 			{
@@ -253,7 +253,7 @@ namespace NMib::NFunction::NPrivate
 					fp_Destroy();
 					fp_SetDefault();
 					void *pNew;
-					if constexpr (t_bMove)
+					if constexpr (tf_bMove)
 						pNew = _Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this);
 					else
 						pNew = _Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this);
@@ -263,7 +263,7 @@ namespace NMib::NFunction::NPrivate
 				else
 				{
 					void *pNew;
-					if constexpr (t_bMove)
+					if constexpr (tf_bMove)
 						pNew = _Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this);
 					else
 						pNew = _Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this);
@@ -338,10 +338,10 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		template <umint t_iCall>
-		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
+		template <umint tf_iCall>
+		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const
 		{
-			return TCCallRet<t_iCall>::fs_Get(this);
+			return TCCallRet<tf_iCall>::fs_Get(this);
 		}
 
 		FCompareEqual *fp_CompareEqual() const noexcept
@@ -396,7 +396,7 @@ namespace NMib::NFunction::NPrivate
 		struct CData : public CAllocator
 		{
 			template <typename ...tfp_CParams>
-			CData(CAllocatorConstructTag const &, tfp_CParams && ...p_Params)
+			CData(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
 				: CAllocator(fg_Forward<tfp_CParams>(p_Params)...)
 				, m_pImp(const_cast<CImplementationData *>(&mc_NullImplementation))
 			{
@@ -442,8 +442,8 @@ namespace NMib::NFunction::NPrivate
 		}
 
 		TCFunctionSmallBase() = default;
-		TCFunctionSmallBase(TCFunctionSmallBase const &) = default;
-		TCFunctionSmallBase(TCFunctionSmallBase &&) = default;
+		TCFunctionSmallBase(TCFunctionSmallBase const &_Other) = default;
+		TCFunctionSmallBase(TCFunctionSmallBase &&_Other) = default;
 
 		bool fp_IsDefault() const
 		{
@@ -580,28 +580,28 @@ namespace NMib::NFunction::NPrivate
 		struct TCConstructObject : public CImplementationData
 		{
 			t_CFunctor m_Functor;
-			template <typename t_CFunction>
-			TCConstructObject(t_CFunction &&_Function)
-				: m_Functor(fg_Forward<t_CFunction>(_Function))
+			template <typename tf_CFunction>
+			TCConstructObject(tf_CFunction &&_Function)
+				: m_Functor(fg_Forward<tf_CFunction>(_Function))
 			{
 			}
 		};
 
-		template <typename t_CObject, typename t_CParam>
-		void *fp_ConstructObject(t_CParam &&_Param)
+		template <typename tf_CObject, typename tf_CParam>
+		void *fp_ConstructObject(tf_CParam &&_Param)
 		{
-			using CConstructObject = TCConstructObject<t_CObject>;
-			CConstructObject *pObject = fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CParam>(_Param));
+			using CConstructObject = TCConstructObject<tf_CObject>;
+			CConstructObject *pObject = fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CParam>(_Param));
 			return pObject;
 		}
 
-		template <typename t_CFunction>
-		void fp_Construct(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Construct(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 			using CConstructObject = TCConstructObject<typename CImpl::CImplBase>;
 
-			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
+			CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
 			m_Data.m_pImp = pObject - 1;
 			m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 		}
@@ -611,23 +611,23 @@ namespace NMib::NFunction::NPrivate
 			return reinterpret_cast<void const *>(m_Data.m_pImp->m_pVTable->m_Calls.template f_GetFunction<0>());
 		}
 
-		template <typename t_CFunction>
-		void fp_Assign(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Assign(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 			using CConstructObject = TCConstructObject<typename CImpl::CImplBase>;
 
 			if (m_Data.f_OnlyOneAlloc())
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
+				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
 				m_Data.m_pImp = pObject - 1;
 				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
 			}
 			else
 			{
-				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<t_CFunction>(_Function))->m_Functor);
+				CImplementationData *pObject = (CImplementationData *)(&fg_ConstructObject<CConstructObject>(m_Data, fg_Forward<tf_CFunction>(_Function))->m_Functor);
 				fp_Destroy();
 				m_Data.m_pImp = pObject - 1;
 				m_Data.m_pImp->m_pVTable = &CImpl::CVTable::mc_VTable;
@@ -646,8 +646,8 @@ namespace NMib::NFunction::NPrivate
 			using CType = TCFunctionSmallBase &&;
 		};
 
-		template <bool t_bMove>
-		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
+		template <bool tf_bMove>
+		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
 			if (!_Other.fp_IsDefault())
 			{
@@ -656,7 +656,7 @@ namespace NMib::NFunction::NPrivate
 					fp_Destroy();
 					fp_SetDefault();
 					CImplementationData *pNew;
-					if constexpr (t_bMove)
+					if constexpr (tf_bMove)
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
 					else
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
@@ -666,7 +666,7 @@ namespace NMib::NFunction::NPrivate
 				else
 				{
 					CImplementationData *pNew;
-					if constexpr (t_bMove)
+					if constexpr (tf_bMove)
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateMoveCall()((void *)_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
 					else
 						pNew = fg_AlignUp(((CImplementationData *)_Other.fp_DuplicateCall()(_Other.fp_GetImpl(), *this)) + 1, _Other.m_Data.m_pImp->m_pVTable->m_Alignment);
@@ -706,10 +706,10 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		template <umint t_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
+		template <umint tf_iCall>
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const
 		{
-			return TCCallRet<t_iCall>::fs_Get(this);
+			return TCCallRet<tf_iCall>::fs_Get(this);
 		}
 
 		FCompareEqual *fp_CompareEqual() const noexcept
@@ -752,12 +752,12 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
-		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall const &)
+		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall const &_Other)
 			: TCFunctionNoAllocBaseSeparateCall()
 		{
 		}
 
-		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall &&)
+		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall &&_Other)
 			: TCFunctionNoAllocBaseSeparateCall()
 		{
 		}
@@ -796,14 +796,14 @@ namespace NMib::NFunction::NPrivate
 			using CType = TCFunctionNoAllocBaseSeparateCall &&;
 		};
 
-		template <bool t_bMove>
-		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
+		template <bool tf_bMove>
+		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
 			if (_Other.m_pVTable.f_GetBits() != 2)
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				if constexpr (t_bMove)
+				if constexpr (tf_bMove)
 					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
 					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
@@ -882,16 +882,16 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		template <typename t_CFunction>
-		void fp_Construct(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Construct(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 			TCConstructInternal
 				<
 					(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize) || (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 					, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 				>
-				::fs_Perform(*this, fg_Forward<t_CFunction>(_Function))
+				::fs_Perform(*this, fg_Forward<tf_CFunction>(_Function))
 			;
 		}
 
@@ -953,17 +953,17 @@ namespace NMib::NFunction::NPrivate
 			return reinterpret_cast<void const *>(m_pCall);
 		}
 
-		template <typename t_CFunction>
-		void fp_Assign(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Assign(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
 			TCAssignInternal
 				<
 					(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize) || (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 					, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 				>
-				::fs_Perform(*this, fg_Forward<t_CFunction>(_Function))
+				::fs_Perform(*this, fg_Forward<tf_CFunction>(_Function))
 			;
 		}
 
@@ -1036,10 +1036,10 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		template <umint t_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
+		template <umint tf_iCall>
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const
 		{
-			return TCCallRet<t_iCall>::fs_Get(this);
+			return TCCallRet<tf_iCall>::fs_Get(this);
 		}
 
 		FCompareEqual *fp_CompareEqual() const noexcept
@@ -1078,12 +1078,12 @@ namespace NMib::NFunction::NPrivate
 		{
 		}
 
-		TCFunctionNoAllocBase(TCFunctionNoAllocBase const &)
+		TCFunctionNoAllocBase(TCFunctionNoAllocBase const &_Other)
 			: TCFunctionNoAllocBase()
 		{
 		}
 
-		TCFunctionNoAllocBase(TCFunctionNoAllocBase &&)
+		TCFunctionNoAllocBase(TCFunctionNoAllocBase &&_Other)
 			: TCFunctionNoAllocBase()
 		{
 		}
@@ -1121,14 +1121,14 @@ namespace NMib::NFunction::NPrivate
 			using CType = TCFunctionNoAllocBase &&;
 		};
 
-		template <bool t_bMove>
-		void fp_Duplicate(typename TCGetDuplicateSignature<t_bMove>::CType _Other)
+		template <bool tf_bMove>
+		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other)
 		{
 			if (_Other.m_pVTable.f_GetBits() != 2)
 			{
 				fp_Destroy();
 				fp_SetDefault();
-				if constexpr (t_bMove)
+				if constexpr (tf_bMove)
 					_Other.m_pVTable->m_pDuplicateMove((void *)_Other.fp_GetImpl(), *this);
 				else
 					_Other.m_pVTable->m_pDuplicate(_Other.fp_GetImpl(), *this);
@@ -1201,17 +1201,17 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		template <typename t_CFunction>
-		void fp_Construct(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Construct(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
 			TCConstructInternal
 				<
 					(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize) || (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 					, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 				>
-				::fs_Perform(*this, fg_Forward<t_CFunction>(_Function))
+				::fs_Perform(*this, fg_Forward<tf_CFunction>(_Function))
 			;
 		}
 
@@ -1267,17 +1267,17 @@ namespace NMib::NFunction::NPrivate
 			return reinterpret_cast<void const *>(m_pVTable->m_Calls.template f_GetFunction<0>());
 		}
 
-		template <typename t_CFunction>
-		void fp_Assign(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		void fp_Assign(tf_CFunction &&_Function)
 		{
-			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<t_CFunction>, CFunctionDefinition>::CType;
+			using CImpl = typename TCDetermineImpl<NTraits::TCRemoveReferenceStorable<tf_CFunction>, CFunctionDefinition>::CType;
 
 			TCAssignInternal
 				<
 					(sizeof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_MaxSize) || (alignof(typename CImpl::CImplBase) > t_CFOpts::CFunctionAllocOptions::mc_Alignment)
 					, t_CFOpts::CFunctionAllocOptions::mc_bAllowAlloc
 				>
-				::fs_Perform(*this, fg_Forward<t_CFunction>(_Function))
+				::fs_Perform(*this, fg_Forward<tf_CFunction>(_Function))
 			;
 		}
 
@@ -1341,10 +1341,10 @@ namespace NMib::NFunction::NPrivate
 			}
 		};
 
-		template <umint t_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fp_Call() const
+		template <umint tf_iCall>
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const
 		{
-			return TCCallRet<t_iCall>::fs_Get(this);
+			return TCCallRet<tf_iCall>::fs_Get(this);
 		}
 
 		FCompareEqual *fp_CompareEqual() const noexcept
@@ -1363,12 +1363,12 @@ namespace NMib::NFunction::NPrivate
 		umint t_iFunction
 		, typename t_CBase
 		, typename t_FFunc = typename TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::FType
-		, int _Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers
+		, int t_Qualifiers = TCGetCallInfo<typename t_CBase::CFunctionOptions::CFunctionList, t_iFunction>::mc_Qualifiers
 	>
 	struct TCFunctionImplementation0;
 
 	template <typename t_CBase, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Const>
+	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams ...p_Params), EQualifiers_Const>
 		: public t_CBase
 	{
 		using t_CBase::t_CBase;
@@ -1380,7 +1380,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
+	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams ...p_Params), EQualifiers_None>
 		: public t_CBase
 	{
 		using t_CBase::t_CBase;
@@ -1392,7 +1392,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_Const>
+	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams ...p_Params), EQualifiers_Const>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
@@ -1405,7 +1405,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...), EQualifiers_None>
+	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams ...p_Params), EQualifiers_None>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
@@ -1418,7 +1418,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_Const>
+	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams ...p_Params) noexcept, EQualifiers_Const>
 		: public t_CBase
 	{
 		using t_CBase::t_CBase;
@@ -1430,7 +1430,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_None>
+	struct TCFunctionImplementation0<0, t_CBase, t_CReturn (tp_CParams ...p_Params) noexcept, EQualifiers_None>
 		: public t_CBase
 	{
 		using t_CBase::t_CBase;
@@ -1442,7 +1442,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_Const>
+	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams ...p_Params) noexcept, EQualifiers_Const>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
@@ -1455,7 +1455,7 @@ namespace NMib::NFunction::NPrivate
 	};
 
 	template <typename t_CBase, umint t_iFunction, typename t_CReturn, typename ...tp_CParams>
-	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams...) noexcept, EQualifiers_None>
+	struct TCFunctionImplementation0<t_iFunction, t_CBase, t_CReturn (tp_CParams ...p_Params) noexcept, EQualifiers_None>
 		: public TCFunctionImplementation0<t_iFunction - 1, t_CBase>
 	{
 		using TCFunctionImplementation0<t_iFunction - 1, t_CBase>::TCFunctionImplementation0;
@@ -1534,16 +1534,16 @@ namespace NMib::NFunction::NPrivate
 			return *this;
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation(tf_CFunction &&_Function)
 		{
-			this->fp_Construct(fg_Forward<t_CFunction>(_Function));
+			this->fp_Construct(fg_Forward<tf_CFunction>(_Function));
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation &operator = (t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation &operator = (tf_CFunction &&_Function)
 		{
-			this->fp_Assign(fg_Forward<t_CFunction>(_Function));
+			this->fp_Assign(fg_Forward<tf_CFunction>(_Function));
 			return *this;
 		}
 
@@ -1562,12 +1562,12 @@ namespace NMib::NFunction::NPrivate
 			return this->fp_GetFirstFunctionPointer();
 		}
 
-		TCFunctionImplementation(CNullPtr)
+		TCFunctionImplementation(CNullPtr _pNull)
 		{
 		}
 
 		/// Clears the function object same as if f_Clear was called
-		TCFunctionImplementation &operator = (CNullPtr)
+		TCFunctionImplementation &operator = (CNullPtr _pNull)
 		{
 			f_Clear();
 			return *this;
@@ -1662,16 +1662,16 @@ namespace NMib::NFunction::NPrivate
 			return *this;
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation(tf_CFunction &&_Function)
 		{
-			this->fp_Construct(fg_Forward<t_CFunction>(_Function));
+			this->fp_Construct(fg_Forward<tf_CFunction>(_Function));
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation &operator = (t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation &operator = (tf_CFunction &&_Function)
 		{
-			this->fp_Assign(fg_Forward<t_CFunction>(_Function));
+			this->fp_Assign(fg_Forward<tf_CFunction>(_Function));
 			return *this;
 		}
 
@@ -1681,11 +1681,11 @@ namespace NMib::NFunction::NPrivate
 			this->fp_SetDefault();
 		}
 
-		TCFunctionImplementation(CNullPtr)
+		TCFunctionImplementation(CNullPtr _pNull)
 		{
 		}
 
-		TCFunctionImplementation &operator = (CNullPtr)
+		TCFunctionImplementation &operator = (CNullPtr _pNull)
 		{
 			f_Clear();
 			return *this;
@@ -1792,16 +1792,16 @@ namespace NMib::NFunction::NPrivate
 			return *this;
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation(tf_CFunction &&_Function)
 		{
-			this->fp_Construct(fg_Forward<t_CFunction>(_Function));
+			this->fp_Construct(fg_Forward<tf_CFunction>(_Function));
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation &operator = (t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation &operator = (tf_CFunction &&_Function)
 		{
-			this->fp_Assign(fg_Forward<t_CFunction>(_Function));
+			this->fp_Assign(fg_Forward<tf_CFunction>(_Function));
 			return *this;
 		}
 
@@ -1811,11 +1811,11 @@ namespace NMib::NFunction::NPrivate
 			this->fp_SetDefault();
 		}
 
-		TCFunctionImplementation(CNullPtr)
+		TCFunctionImplementation(CNullPtr _pNull)
 		{
 		}
 
-		TCFunctionImplementation &operator = (CNullPtr)
+		TCFunctionImplementation &operator = (CNullPtr _pNull)
 		{
 			f_Clear();
 			return *this;
@@ -1915,16 +1915,16 @@ namespace NMib::NFunction::NPrivate
 			return *this;
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation(t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation(tf_CFunction &&_Function)
 		{
-			this->fp_Construct(fg_Forward<t_CFunction>(_Function));
+			this->fp_Construct(fg_Forward<tf_CFunction>(_Function));
 		}
 
-		template <typename t_CFunction>
-		TCFunctionImplementation &operator = (t_CFunction &&_Function)
+		template <typename tf_CFunction>
+		TCFunctionImplementation &operator = (tf_CFunction &&_Function)
 		{
-			this->fp_Assign(fg_Forward<t_CFunction>(_Function));
+			this->fp_Assign(fg_Forward<tf_CFunction>(_Function));
 			return *this;
 		}
 
@@ -1934,11 +1934,11 @@ namespace NMib::NFunction::NPrivate
 			this->fp_SetDefault();
 		}
 
-		TCFunctionImplementation(CNullPtr)
+		TCFunctionImplementation(CNullPtr _pNull)
 		{
 		}
 
-		TCFunctionImplementation &operator = (CNullPtr)
+		TCFunctionImplementation &operator = (CNullPtr _pNull)
 		{
 			f_Clear();
 			return *this;
