@@ -24,10 +24,7 @@ namespace NMib::NFunction::NPrivate
 		friend struct TCCallImpl;
 
 		template <typename tf_CReturn>
-		[[noreturn]] operator tf_CReturn && () const
-		{
-			fg_NoReturn();
-		}
+		[[noreturn]] operator tf_CReturn && () const;
 	};
 
 	extern CReturnReference const gc_ReturnReference;
@@ -36,55 +33,25 @@ namespace NMib::NFunction::NPrivate
 	struct TCNullFunctionImpl
 	{
 		template <typename ...tfp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params)
-		{
-			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-		}
-
+		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params);
 		template <typename ...tfp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params) const
-		{
-			DMibErrorBadFunctionCall("Trying to call an empty TCFunction");
-		}
+		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params) const;
 
-		bool operator == (TCNullFunctionImpl const &_Other) const noexcept
-		{
-			return true;
-		}
-
-		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const noexcept
-		{
-			return COrdering_Partial::equivalent;
-		}
+		bool operator == (TCNullFunctionImpl const &_Other) const noexcept;
+		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const noexcept;
 	};
 
 	template <>
 	struct TCNullFunctionImpl<true>
 	{
 		template <typename ...tfp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params) noexcept
-		{
-			// Trying to call an empty TCFunction
-			DMibPDebugBreak;
-			fg_NoReturn();
-		}
-
+		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params) noexcept;
 		template <typename ...tfp_CParams>
-		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params) const noexcept
-		{
-			// Trying to call an empty TCFunction
-			DMibPDebugBreak;
-			fg_NoReturn();
-		}
+		[[noreturn]] CReturnReferenceReturn operator () (tfp_CParams && ...p_Params) const noexcept;
 
-		bool operator == (TCNullFunctionImpl const &_Other) const noexcept
-		{
-			return true;
-		}
-
-		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const noexcept
-		{
-			return COrdering_Partial::equivalent;
-		}
+		bool operator == (TCNullFunctionImpl const &_Other) const noexcept;
+		COrdering_Partial operator <=> (TCNullFunctionImpl const &_Other) const noexcept;
 	};
 }
+
+#include "Malterlib_Function_Function_NullFunction.hpp"

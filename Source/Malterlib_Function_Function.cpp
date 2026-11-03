@@ -21,4 +21,14 @@ namespace NMib::NFunction
 namespace NMib::NFunction::NPrivate
 {
 	constexpr CReturnReference const gc_ReturnReference;
+
+	bool TCNullFunctionImpl<true>::operator == (TCNullFunctionImpl const &_Other) const noexcept
+	{
+		return true;
+	}
+
+	COrdering_Partial TCNullFunctionImpl<true>::operator <=> (TCNullFunctionImpl const &_Other) const noexcept
+	{
+		return COrdering_Partial::equivalent;
+	}
 }

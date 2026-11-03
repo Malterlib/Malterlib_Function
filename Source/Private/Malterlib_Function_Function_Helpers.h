@@ -15,10 +15,7 @@ namespace NMib::NFunction::NPrivate
 		using CType = TCConditional<NTraits::cIsReference<t_CParamType>, t_CParamType, NTraits::TCAddLValueReference<NTraits::TCAddConst<t_CParamType>>>;
 
 		template <typename tf_CType>
-		inline_small static CType fs_Forward(tf_CType &&_Type)
-		{
-			return static_cast<CType>(_Type);
-		}
+		inline_small static CType fs_Forward(tf_CType &&_Type);
 	};
 
 	enum EQualifiers
@@ -314,3 +311,5 @@ namespace NMib::NFunction::NPrivate
 		using CFunctionAllocOptions = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CFunctionAllocOptions>, t_CDefaultAllocOptions, typename CParsedOptions::CFunctionAllocOptions>;
 	};
 }
+
+#include "Malterlib_Function_Function_Helpers.hpp"

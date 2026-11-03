@@ -22,74 +22,33 @@ namespace NMib::NFunction
 	struct TCMemberFunctionFunctor
 	{
 	private:
+		// Declared before the public section, which uses them.
 		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_FFunctionMemberPointer>::CReturn;
 		using CClass = typename NTraits::TCMemberFunctionPointerTraits<t_FFunctionMemberPointer>::CClass;
 
 	public:
-		TCMemberFunctionFunctor(TCMemberFunctionFunctor &_fOther)
-			: mp_fFunction(_fOther.mp_fFunction)
-		{
-		}
-
-		TCMemberFunctionFunctor(TCMemberFunctionFunctor const &_fOther)
-			: mp_fFunction(_fOther.mp_fFunction)
-		{
-		}
-
-		TCMemberFunctionFunctor(TCMemberFunctionFunctor &&_fOther)
-			: mp_fFunction(fg_Move(_fOther.mp_fFunction))
-		{
-		}
-
-		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor &_fOther)
-		{
-			mp_fFunction = _fOther.mp_fFunction;
-			return *this;
-		}
-
-		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor const &_fOther)
-		{
-			mp_fFunction = _fOther.mp_fFunction;
-			return *this;
-		}
-
-		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor &&_fOther)
-		{
-			mp_fFunction = fg_Move(_fOther.mp_fFunction);
-			return *this;
-		}
+		TCMemberFunctionFunctor(TCMemberFunctionFunctor &_fOther);
+		TCMemberFunctionFunctor(TCMemberFunctionFunctor const &_fOther);
+		TCMemberFunctionFunctor(TCMemberFunctionFunctor &&_fOther);
+		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor &_fOther);
+		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor const &_fOther);
+		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor &&_fOther);
 
 		template <typename tf_CFunctionPointer>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor(tf_CFunctionPointer &&_P0)
-			: mp_fFunction(fg_Forward<tf_CFunctionPointer>(_P0))
-		{
-		}
+		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor(tf_CFunctionPointer &&_P0);
 
 		template <typename tf_CFunctionPointer>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor &operator = (tf_CFunctionPointer &&_P0)
-		{
-			mp_fFunction = fg_Forward<tf_CFunctionPointer>(_P0);
-			return *this;
-		}
+		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor &operator = (tf_CFunctionPointer &&_P0);
 
 	public:
 		template <typename ...tfp_CParams>
-		mark_artificial inline_always CReturn operator () (CClass &_Reference, tfp_CParams && ...p_Params) const
-		{
-			return (_Reference.*fg_RemoveQualifiers(mp_fFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
+		mark_artificial inline_always CReturn operator () (CClass &_Reference, tfp_CParams && ...p_Params) const;
 
 		template <typename ...tfp_CParams>
-		mark_artificial inline_always CReturn operator () (CClass const &_Reference, tfp_CParams && ...p_Params) const
-		{
-			return (_Reference.*fg_RemoveQualifiers(mp_fFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
+		mark_artificial inline_always CReturn operator () (CClass const &_Reference, tfp_CParams && ...p_Params) const;
 
 		template <typename tf_CPtr, typename ...tfp_CParams>
-		mark_artificial inline_always CReturn operator () (tf_CPtr &&_Object, tfp_CParams && ...p_Params) const
-		{
-			return (_Object->*fg_RemoveQualifiers(mp_fFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
+		mark_artificial inline_always CReturn operator () (tf_CPtr &&_Object, tfp_CParams && ...p_Params) const;
 
 	private:
 		t_FFunctionMemberPointer mp_fFunction;
@@ -113,67 +72,26 @@ namespace NMib::NFunction
 	struct TCMemberFunctionBoundFunctor
 	{
 	private:
+		// Declared before the public section, which uses it.
 		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_FFunctionMemberPointer>::CReturn;
 
 	public:
-		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &_fOther)
-			: mp_fFunction(_fOther.mp_fFunction)
-			, mp_pThis(_fOther.mp_pThis)
-		{
-		}
-
-		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor const &_fOther)
-			: mp_fFunction(_fOther.mp_fFunction)
-			, mp_pThis(_fOther.mp_pThis)
-		{
-		}
-
-		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &&_fOther)
-			: mp_fFunction(fg_Move(_fOther.mp_fFunction))
-			, mp_pThis(fg_Move(_fOther.mp_pThis))
-		{
-		}
-
-		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &_fOther)
-		{
-			mp_fFunction = _fOther.mp_fFunction;
-			mp_pThis = _fOther.mp_pThis;
-			return *this;
-		}
-
-		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor const &_fOther)
-		{
-			mp_fFunction = _fOther.mp_fFunction;
-			mp_pThis = _fOther.mp_pThis;
-			return *this;
-		}
-
-		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &&_fOther)
-		{
-			mp_fFunction = fg_Move(_fOther.mp_fFunction);
-			mp_pThis = fg_Move(_fOther.mp_pThis);
-			return *this;
-		}
+		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &_fOther);
+		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor const &_fOther);
+		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &&_fOther);
+		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &_fOther);
+		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor const &_fOther);
+		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &&_fOther);
 
 		template <typename tf_CFunctionPointer, typename tf_CThis>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionBoundFunctor(tf_CFunctionPointer &&_P0, tf_CThis &&_P1)
-			: mp_fFunction(fg_Forward<tf_CFunctionPointer>(_P0))
-			, mp_pThis(fg_Forward<tf_CThis>(_P1))
-		{
-		}
+		mark_artificial mark_nodebug inline_always TCMemberFunctionBoundFunctor(tf_CFunctionPointer &&_P0, tf_CThis &&_P1);
 
 	public:
 		template <typename ...tfp_CParams>
-		mark_artificial inline_always CReturn operator () (tfp_CParams && ...p_Params) const
-		{
-			return (const_cast<t_CThis>(mp_pThis)->*fg_RemoveQualifiers(mp_fFunction))(fg_Forward<tfp_CParams>(p_Params)...);
-		}
+		mark_artificial inline_always CReturn operator () (tfp_CParams && ...p_Params) const;
 
 		template <typename ...tfp_CParams>
-		mark_artificial inline_always CReturn operator () (tfp_CParams && ...p_Params)
-		{
-			return (mp_pThis->*mp_fFunction)(fg_Forward<tfp_CParams>(p_Params)...);
-		}
+		mark_artificial inline_always CReturn operator () (tfp_CParams && ...p_Params);
 
 	private:
 		t_FFunctionMemberPointer mp_fFunction;
@@ -196,9 +114,7 @@ namespace NMib::NFunction
 	template <typename tf_FFunctionPtr>
 	mark_artificial mark_nodebug inline_always auto fg_MemberFunctionFunctor(tf_FFunctionPtr _fFunction)
 		-> TCEnableIf<NTraits::TCMemberFunctionPointerTraits<tf_FFunctionPtr>::mc_bIsMemberFunctionPointer, TCMemberFunctionFunctor<tf_FFunctionPtr>>
-	{
-		return TCMemberFunctionFunctor<tf_FFunctionPtr>(_fFunction);
-	}
+	;
 
 	/*¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯*\
 	|	Template Class:																					|
@@ -216,11 +132,11 @@ namespace NMib::NFunction
 	template <typename tf_FFunctionPtr, typename tf_CClass>
 	mark_artificial mark_nodebug inline_always auto fg_MemberFunctionFunctor(tf_FFunctionPtr _fFunction, tf_CClass _pClassPtr)
 		-> TCEnableIf<NTraits::TCMemberFunctionPointerTraits<tf_FFunctionPtr>::mc_bIsMemberFunctionPointer, TCMemberFunctionBoundFunctor<tf_FFunctionPtr, tf_CClass>>
-	{
-		return TCMemberFunctionBoundFunctor<tf_FFunctionPtr, tf_CClass>(_fFunction, _pClassPtr);
-	}
+	;
 }
 
 #ifndef DMibPNoShortCuts
 using namespace NMib::NFunction;
 #endif
+
+#include "Malterlib_Function_Bind_MemberFunction.hpp"

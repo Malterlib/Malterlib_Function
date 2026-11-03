@@ -6,13 +6,11 @@
 namespace NMib::NFunction
 {
 	template <class ...tfp_FToMerge>
-	auto fg_MergeFunctors(tfp_FToMerge && ...p_fToMerge)
-	{
-		using CMergedFunctors = NPrivate::TCMergedFunctors<NTraits::TCDecay<tfp_FToMerge>...>;
-		return CMergedFunctors(fg_Forward<tfp_FToMerge>(p_fToMerge)...);
-	};
+	auto fg_MergeFunctors(tfp_FToMerge && ...p_fToMerge);
 }
 
 #ifndef DMibPNoShortCuts
 using namespace NMib::NFunction;
 #endif
+
+#include "Malterlib_Function_MergeFunctors.hpp"

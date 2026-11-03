@@ -152,20 +152,11 @@ namespace NMib::NFunction
 		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-		~TCFunction()
-		{
-		}
-
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_Default
-		TCFunction()
-		{
-		}
+		~TCFunction();
+		TCFunction();
 
 		template <typename ...tfp_CParams>
-		TCFunction(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
-			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
-		{
-		}
+		TCFunction(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
 		TCFunction(TCFunction const &_fOther) = default;
@@ -176,7 +167,6 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
 		TCFunction &operator = (TCFunction &&_fOther) = default;
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
 		<
 			typename tf_CFunction
@@ -189,12 +179,8 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunction(tf_CFunction &&_Function)
-			: CSuper(fg_Forward<tf_CFunction>(_Function))
-		{
-		}
+		TCFunction(tf_CFunction &&_Function);
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralAssignment
 		template
 		<
 			typename tf_CFunction
@@ -207,11 +193,7 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunction &operator = (tf_CFunction &&_Function)
-		{
-			CSuper::operator = (fg_Forward<tf_CFunction>(_Function));
-			return *this;
-		}
+		TCFunction &operator = (tf_CFunction &&_Function);
 	};
 
 	namespace NPrivate
@@ -274,20 +256,11 @@ namespace NMib::NFunction
 		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-		~TCFunctionFastCall()
-		{
-		}
-
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_Default
-		TCFunctionFastCall()
-		{
-		}
+		~TCFunctionFastCall();
+		TCFunctionFastCall();
 
 		template <typename ...tfp_CParams>
-		TCFunctionFastCall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
-			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
-		{
-		}
+		TCFunctionFastCall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
 		TCFunctionFastCall(TCFunctionFastCall const &_fOther) = default;
@@ -298,7 +271,6 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
 		TCFunctionFastCall &operator = (TCFunctionFastCall &&_fOther) = default;
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
 		<
 			typename tf_CFunction
@@ -311,12 +283,8 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionFastCall(tf_CFunction &&_Function)
-			: CSuper(fg_Forward<tf_CFunction>(_Function))
-		{
-		}
+		TCFunctionFastCall(tf_CFunction &&_Function);
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralAssignment
 		template
 		<
 			typename tf_CFunction
@@ -329,11 +297,7 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionFastCall &operator = (tf_CFunction &&_Function)
-		{
-			CSuper::operator = (fg_Forward<tf_CFunction>(_Function));
-			return *this;
-		}
+		TCFunctionFastCall &operator = (tf_CFunction &&_Function);
 	};
 
 	template <typename t_CSignature>
@@ -370,20 +334,11 @@ namespace NMib::NFunction
 		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-		~TCFunctionSmall()
-		{
-		}
-
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_Default
-		TCFunctionSmall()
-		{
-		}
+		~TCFunctionSmall();
+		TCFunctionSmall();
 
 		template <typename ...tfp_CParams>
-		TCFunctionSmall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params)
-			: CSuper(_Tag, fg_Forward<tfp_CParams>(p_Params)...)
-		{
-		}
+		TCFunctionSmall(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
 		TCFunctionSmall(TCFunctionSmall const &_fOther) = default;
@@ -394,7 +349,6 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
 		TCFunctionSmall &operator = (TCFunctionSmall &&_fOther) = default;
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
 		<
 			typename tf_CFunction
@@ -407,12 +361,8 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionSmall(tf_CFunction &&_Function)
-			: CSuper(fg_Forward<tf_CFunction>(_Function))
-		{
-		}
+		TCFunctionSmall(tf_CFunction &&_Function);
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralAssignment
 		template
 		<
 			typename tf_CFunction
@@ -425,11 +375,7 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionSmall &operator = (tf_CFunction &&_Function)
-		{
-			CSuper::operator = (fg_Forward<tf_CFunction>(_Function));
-			return *this;
-		}
+		TCFunctionSmall &operator = (tf_CFunction &&_Function);
 	};
 
 	template <typename t_CSignature>
@@ -473,14 +419,8 @@ namespace NMib::NFunction
 		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 
 	public:
-		~TCFunctionNoAlloc()
-		{
-		}
-
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_Default
-		TCFunctionNoAlloc()
-		{
-		}
+		~TCFunctionNoAlloc();
+		TCFunctionNoAlloc();
 
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyConstruct
 		TCFunctionNoAlloc(TCFunctionNoAlloc const &_fOther) = default;
@@ -491,7 +431,6 @@ namespace NMib::NFunction
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
 		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc &&_fOther) = default;
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralConstruct
 		template
 		<
 			typename tf_CFunction
@@ -504,12 +443,8 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionNoAlloc(tf_CFunction &&_Function)
-			: CSuper(fg_Forward<tf_CFunction>(_Function))
-		{
-		}
+		TCFunctionNoAlloc(tf_CFunction &&_Function);
 
-		/// \copydoc NMib::NFunction::DoxyInternal_Function_GeneralAssignment
 		template
 		<
 			typename tf_CFunction
@@ -522,11 +457,7 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionNoAlloc &operator = (tf_CFunction &&_Function)
-		{
-			CSuper::operator = (fg_Forward<tf_CFunction>(_Function));
-			return *this;
-		}
+		TCFunctionNoAlloc &operator = (tf_CFunction &&_Function);
 	};
 
 	template <typename t_CSignature>
@@ -599,3 +530,5 @@ namespace NMib::NFunction
 #ifndef DMibPNoShortCuts
 using namespace NMib::NFunction;
 #endif
+
+#include "Malterlib_Function_Function.hpp"

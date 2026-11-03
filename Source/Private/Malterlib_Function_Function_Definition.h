@@ -45,16 +45,10 @@ namespace NMib::NFunction::NPrivate
 	struct TCVTableCallsImp<NMeta::TCIndices<tp_Indices...>, tp_FCalls...>
 		: TCVTableCall<tp_Indices, tp_FCalls>...
 	{
-		constexpr TCVTableCallsImp(tp_FCalls * ...p_fCalls)
-			: TCVTableCall<tp_Indices, tp_FCalls>{p_fCalls}...
-		{
-		}
+		constexpr TCVTableCallsImp(tp_FCalls * ...p_fCalls);
 
 		template <umint tf_iFunction>
-		mark_artificial inline_always tp_FCalls...[tf_iFunction] *f_GetFunction() const
-		{
-			return TCVTableCall<tf_iFunction, tp_FCalls...[tf_iFunction]>::m_pCall;
-		}
+		mark_artificial inline_always tp_FCalls...[tf_iFunction] *f_GetFunction() const;
 	};
 
 	template <typename t_CFunctionList>
@@ -159,3 +153,5 @@ namespace NMib::NFunction::NPrivate
 		};
 	};
 }
+
+#include "Malterlib_Function_Function_Definition.hpp"

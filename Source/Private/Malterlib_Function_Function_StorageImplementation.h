@@ -34,20 +34,9 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -71,48 +60,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
-
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -136,34 +88,10 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
-
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -187,34 +115,10 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -238,16 +142,10 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -271,44 +169,12 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
-
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -332,30 +198,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
-
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -379,30 +226,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(fg_Move(*((CImplBase *)_pImpl)));
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -426,10 +254,7 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
@@ -456,44 +281,12 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
 
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -517,30 +310,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
 
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -564,30 +338,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
-
-		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator)
-		{
-			return _Allocator.template fp_ConstructObject<CImplBase>(*((CImplBase const *)_pImpl));
-		}
+		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
 
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -611,10 +366,7 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
@@ -641,40 +393,12 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
-
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -698,26 +422,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor == *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor == ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -741,26 +450,11 @@ namespace NMib::NFunction::NPrivate
 
 		using CAllocator = typename t_CFOpts::CImpBase;
 
-		static void fs_Destroy(void *_pImpl)
-		{
-			((CImplBase *)_pImpl)->~CImplBase();
-		}
+		static void fs_Destroy(void *_pImpl);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept
-		{
-			if constexpr (CImplBase::mc_IsIndirection)
-			{
-				static_assert(noexcept(*((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor));
-				return *((CImplBase const *)_pImpl0)->m_pFunctor <=> *((CImplBase const *)_pImpl1)->m_pFunctor;
-			}
-			else
-			{
-				static_assert(noexcept(((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor));
-				return ((CImplBase const *)_pImpl0)->m_Functor <=> ((CImplBase const *)_pImpl1)->m_Functor;
-			}
-		}
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFunctionDefinition>
@@ -853,3 +547,5 @@ namespace NMib::NFunction::NPrivate
 		;
 	};
 }
+
+#include "Malterlib_Function_Function_StorageImplementation.hpp"

@@ -1,0 +1,14 @@
+// Copyright © Unbroken AB
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+#pragma once
+
+namespace NMib::NFunction
+{
+	template <class ...tfp_FToMerge>
+	auto fg_MergeFunctors(tfp_FToMerge && ...p_fToMerge)
+	{
+		using CMergedFunctors = NPrivate::TCMergedFunctors<NTraits::TCDecay<tfp_FToMerge>...>;
+		return CMergedFunctors(fg_Forward<tfp_FToMerge>(p_fToMerge)...);
+	}
+}
