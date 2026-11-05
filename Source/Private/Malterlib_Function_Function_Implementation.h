@@ -16,13 +16,12 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend struct TCImpl;
 
-		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
 		using CVTable = typename CFunctionDefinition::CVTable;
 		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
 		using CAllocator = typename t_CFOpts::CAllocator;
 
-	protected:
+	protected: // NOLINT(malterlib-member-order): the protected declarations use CFunctionDefinition, CVTable, FCallType0 and CAllocator
 		struct CData : public CAllocator
 		{
 			template <typename ...tfp_CParams>
@@ -32,14 +31,37 @@ namespace NMib::NFunction::NPrivate
 			CData(CData &&_Other);
 			CData(CData const &_Other);
 
+			CData &operator = (CData &&_Other);
+			CData &operator = (CData const &_Other);
+
 			void *m_pImpl;
 			FCallType0 *m_pCall;
 			CVTable const *m_pVTable;
-			CData &operator = (CData &&_Other);
-			CData &operator = (CData const &_Other);
 		};
 
-		CData mp_Data;
+		template <bool t_bMove, typename t_CDummy = void>
+		struct TCGetDuplicateSignature
+		{
+			using CType = TCFunctionBase const &;
+		};
+
+		template <typename t_CDummy>
+		struct TCGetDuplicateSignature<true, t_CDummy>
+		{
+			using CType = TCFunctionBase &&;
+		};
+
+		template <umint t_iCall, typename t_CDummmy = void>
+		struct TCCallRet
+		{
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionBase const *_pThis);
+		};
+
+		template <typename t_CDummmy>
+		struct TCCallRet<0, t_CDummmy>
+		{
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionBase const *_pThis);
+		};
 
 		template <typename ...tfp_CParams>
 		TCFunctionBase(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
@@ -64,18 +86,6 @@ namespace NMib::NFunction::NPrivate
 		template <typename tf_CFunction>
 		void fp_Assign(tf_CFunction &&_Function);
 
-		template <bool t_bMove, typename t_CDummy = void>
-		struct TCGetDuplicateSignature
-		{
-			using CType = TCFunctionBase const &;
-		};
-
-		template <typename t_CDummy>
-		struct TCGetDuplicateSignature<true, t_CDummy>
-		{
-			using CType = TCFunctionBase &&;
-		};
-
 		template <bool tf_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other);
 
@@ -88,24 +98,17 @@ namespace NMib::NFunction::NPrivate
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const;
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const;
 
-		template <umint t_iCall, typename t_CDummmy = void>
-		struct TCCallRet
-		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionBase const *_pThis);
-		};
-
-		template <typename t_CDummmy>
-		struct TCCallRet<0, t_CDummmy>
-		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionBase const *_pThis);
-		};
-
 		template <umint tf_iCall>
 		inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const;
 
 		FCompareEqual *fp_CompareEqual() const noexcept;
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept;
 		void fp_Destroy();
+
+		CData mp_Data;
+
+	private:
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
 	};
 
 	template <typename t_CFOpts>
@@ -113,29 +116,22 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctionOptions = t_CFOpts;
 
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+
 	private:
 		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend struct TCImpl;
 
-	public:
-		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
-
-	private:
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
 		using CVTable = typename CFunctionDefinition::CVTable;
 		using CAllocator = typename t_CFOpts::CAllocator;
 
-	protected:
+	protected: // NOLINT(malterlib-member-order): the protected declarations use CFunctionDefinition, CVTable and CAllocator
 		struct CImplementationData
 		{
 			CVTable const *m_pVTable;
 		};
 
-		static constexpr CImplementationData mcp_NullImplementation =
-			{
-				&TCFunctionSmallBase<t_CFOpts>::CNullFunction::CVTable::mc_VTable
-			}
-		;
 		struct CData : public CAllocator
 		{
 			template <typename ...tfp_CParams>
@@ -145,12 +141,38 @@ namespace NMib::NFunction::NPrivate
 			CData(CData &&_Other);
 			CData(CData const &_Other);
 
-			CImplementationData *m_pImp;
 			CData &operator = (CData &&_Other);
 			CData &operator = (CData const &_Other);
+
+			CImplementationData *m_pImp;
 		};
 
-		CData mp_Data;
+		template <typename t_CFunctor>
+		struct TCConstructObject : public CImplementationData
+		{
+			template <typename tf_CFunction>
+			TCConstructObject(tf_CFunction &&_Function);
+
+			t_CFunctor m_Functor;
+		};
+
+		template <bool t_bMove, typename t_CDummy = void>
+		struct TCGetDuplicateSignature
+		{
+			using CType = TCFunctionSmallBase const &;
+		};
+
+		template <typename t_CDummy>
+		struct TCGetDuplicateSignature<true, t_CDummy>
+		{
+			using CType = TCFunctionSmallBase &&;
+		};
+
+		template <umint t_iCall, typename t_CDummmy = void>
+		struct TCCallRet
+		{
+			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionSmallBase const *_pThis);
+		};
 
 		template <typename ...tfp_CParams>
 		TCFunctionSmallBase(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
@@ -170,14 +192,6 @@ namespace NMib::NFunction::NPrivate
 		void fp_Move(TCFunctionSmallBase &&_Other);
 		void fp_MoveAssign(TCFunctionSmallBase &&_Other);
 
-		template <typename t_CFunctor>
-		struct TCConstructObject : public CImplementationData
-		{
-			t_CFunctor m_Functor;
-			template <typename tf_CFunction>
-			TCConstructObject(tf_CFunction &&_Function);
-		};
-
 		template <typename tf_CObject, typename tf_CParam>
 		void *fp_ConstructObject(tf_CParam &&_Param);
 
@@ -189,18 +203,6 @@ namespace NMib::NFunction::NPrivate
 		template <typename tf_CFunction>
 		void fp_Assign(tf_CFunction &&_Function);
 
-		template <bool t_bMove, typename t_CDummy = void>
-		struct TCGetDuplicateSignature
-		{
-			using CType = TCFunctionSmallBase const &;
-		};
-
-		template <typename t_CDummy>
-		struct TCGetDuplicateSignature<true, t_CDummy>
-		{
-			using CType = TCFunctionSmallBase &&;
-		};
-
 		template <bool tf_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other);
 
@@ -208,19 +210,19 @@ namespace NMib::NFunction::NPrivate
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const;
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const;
 
-		template <umint t_iCall, typename t_CDummmy = void>
-		struct TCCallRet
-		{
-			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionSmallBase const *_pThis);
-		};
-
 		template <umint tf_iCall>
 		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const;
 
 		FCompareEqual *fp_CompareEqual() const noexcept;
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept;
 
-	public:
+		static constexpr CImplementationData mcp_NullImplementation =
+			{
+				&TCFunctionSmallBase<t_CFOpts>::CNullFunction::CVTable::mc_VTable
+			}
+		;
+
+		CData mp_Data;
 	};
 
 	template <typename t_CFOpts>
@@ -232,26 +234,11 @@ namespace NMib::NFunction::NPrivate
 		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
 		friend struct TCImpl;
 
-		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
 		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
 		using CVTable = typename CFunctionDefinition::CVTable;
 		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
-		using CAllocator = typename t_CFOpts::CAllocator;
 
-	protected:
-		FCallType0 *mp_pCall;
-		NStorage::TCBitStorePointer<CVTable const, 2> mp_pVTable;
-
-		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 mp_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
-
-		TCFunctionNoAllocBaseSeparateCall();
-		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall const &_Other);
-		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall &&_Other);
-		~TCFunctionNoAllocBaseSeparateCall();
-		bool fp_IsDefault() const;
-		void fp_SetDefault();
-		void fp_Destroy();
-
+	protected: // NOLINT(malterlib-member-order): the protected declarations use CFunctionDefinition, CVTable and FCallType0
 		template <bool t_bMove, typename t_CDummy = void>
 		struct TCGetDuplicateSignature
 		{
@@ -263,15 +250,6 @@ namespace NMib::NFunction::NPrivate
 		{
 			using CType = TCFunctionNoAllocBaseSeparateCall &&;
 		};
-
-		template <bool tf_bMove>
-		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other);
-
-		void fp_Move(TCFunctionNoAllocBaseSeparateCall &&_Other);
-		void fp_MoveAssign(TCFunctionNoAllocBaseSeparateCall &&_Other);
-
-		template <typename tf_CObject, typename tf_CParam>
-		tf_CObject *fp_ConstructObject(tf_CParam &&_Param);
 
 		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
 		struct TCConstructInternal
@@ -287,9 +265,6 @@ namespace NMib::NFunction::NPrivate
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function);
 		};
 
-		template <typename tf_CFunction>
-		void fp_Construct(tf_CFunction &&_Function);
-
 		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
 		struct TCAssignInternal
 		{
@@ -303,20 +278,6 @@ namespace NMib::NFunction::NPrivate
 			template <typename tf_CFunction>
 			static void fs_Perform(TCFunctionNoAllocBaseSeparateCall &_This, tf_CFunction &&_Function);
 		};
-
-		void const *fp_GetFirstFunctionPointer() const;
-
-		template <typename tf_CFunction>
-		void fp_Assign(tf_CFunction &&_Function);
-
-		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl();
-		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const;
-		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctor() const;
-		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctorUnsafe() const;
-		mark_nodebug inline_small CVTable const *fp_VTable() const;
-		mark_nodebug FDelete *fp_DestroyCall() const;
-		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const;
-		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const;
 
 		template <umint t_iCall, typename t_CDummmy = void>
 		struct TCCallRet
@@ -330,92 +291,26 @@ namespace NMib::NFunction::NPrivate
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, 0>::FType *fs_Get(TCFunctionNoAllocBaseSeparateCall const *_pThis);
 		};
 
-		template <umint tf_iCall>
-		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const;
+		TCFunctionNoAllocBaseSeparateCall();
+		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall const &_Other);
+		TCFunctionNoAllocBaseSeparateCall(TCFunctionNoAllocBaseSeparateCall &&_Other);
+		~TCFunctionNoAllocBaseSeparateCall();
 
-		FCompareEqual *fp_CompareEqual() const noexcept;
-		FCompareSpaceship *fp_CompareSpaceship() const noexcept;
-	};
-
-	template <typename t_CFOpts>
-	struct TCFunctionNoAllocBase
-	{
-		using CFunctionOptions = t_CFOpts;
-
-	private:
-		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
-		friend struct TCImpl;
-
-		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
-		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
-		using CVTable = typename CFunctionDefinition::CVTable;
-		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
-		using CAllocator = typename t_CFOpts::CAllocator;
-
-	protected:
-		NStorage::TCBitStorePointer<CVTable const, 2> mp_pVTable;
-
-		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 mp_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
-
-		TCFunctionNoAllocBase();
-		TCFunctionNoAllocBase(TCFunctionNoAllocBase const &_Other);
-		TCFunctionNoAllocBase(TCFunctionNoAllocBase &&_Other);
-		~TCFunctionNoAllocBase();
 		bool fp_IsDefault() const;
 		void fp_SetDefault();
 		void fp_Destroy();
 
-		template <bool t_bMove, typename t_CDummy = void>
-		struct TCGetDuplicateSignature
-		{
-			using CType = TCFunctionNoAllocBase const &;
-		};
-
-		template <typename t_CDummy>
-		struct TCGetDuplicateSignature<true, t_CDummy>
-		{
-			using CType = TCFunctionNoAllocBase &&;
-		};
-
 		template <bool tf_bMove>
 		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other);
 
-		void fp_Move(TCFunctionNoAllocBase &&_Other);
-		void fp_MoveAssign(TCFunctionNoAllocBase &&_Other);
+		void fp_Move(TCFunctionNoAllocBaseSeparateCall &&_Other);
+		void fp_MoveAssign(TCFunctionNoAllocBaseSeparateCall &&_Other);
 
 		template <typename tf_CObject, typename tf_CParam>
 		tf_CObject *fp_ConstructObject(tf_CParam &&_Param);
 
-		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
-		struct TCConstructInternal
-		{
-			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
-		};
-
-		template <typename t_CDummy>
-		struct TCConstructInternal<true, true, t_CDummy>
-		{
-			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
-		};
-
 		template <typename tf_CFunction>
 		void fp_Construct(tf_CFunction &&_Function);
-
-		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
-		struct TCAssignInternal
-		{
-			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
-		};
-
-		template <typename t_CDummy>
-		struct TCAssignInternal<true, true, t_CDummy>
-		{
-			template <typename tf_CFunction>
-			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
-		};
 
 		void const *fp_GetFirstFunctionPointer() const;
 
@@ -431,17 +326,130 @@ namespace NMib::NFunction::NPrivate
 		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const;
 		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const;
 
+		template <umint tf_iCall>
+		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const;
+
+		FCompareEqual *fp_CompareEqual() const noexcept;
+		FCompareSpaceship *fp_CompareSpaceship() const noexcept;
+
+		FCallType0 *mp_pCall;
+		NStorage::TCBitStorePointer<CVTable const, 2> mp_pVTable;
+
+		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 mp_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
+
+	private:
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+		using CAllocator = typename t_CFOpts::CAllocator;
+	};
+
+	template <typename t_CFOpts>
+	struct TCFunctionNoAllocBase
+	{
+		using CFunctionOptions = t_CFOpts;
+
+	private:
+		template <typename t_CFunctor2, typename t_CFOpts2, bool t_bSupportEqualityCompare2, bool t_bSupportOrderedCompare2, bool t_bSupportCopy2, bool t_bSupportMove2>
+		friend struct TCImpl;
+
+		using CFunctionDefinition = TCFunctionDefinitions<t_CFOpts>;
+		using CVTable = typename CFunctionDefinition::CVTable;
+
+	protected: // NOLINT(malterlib-member-order): the protected declarations use CFunctionDefinition and CVTable
+		template <bool t_bMove, typename t_CDummy = void>
+		struct TCGetDuplicateSignature
+		{
+			using CType = TCFunctionNoAllocBase const &;
+		};
+
+		template <typename t_CDummy>
+		struct TCGetDuplicateSignature<true, t_CDummy>
+		{
+			using CType = TCFunctionNoAllocBase &&;
+		};
+
+		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
+		struct TCConstructInternal
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
+		};
+
+		template <typename t_CDummy>
+		struct TCConstructInternal<true, true, t_CDummy>
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
+		};
+
+		template <bool t_bMustAlloc, bool t_bAllowAlloc, typename t_CDummy = void>
+		struct TCAssignInternal
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
+		};
+
+		template <typename t_CDummy>
+		struct TCAssignInternal<true, true, t_CDummy>
+		{
+			template <typename tf_CFunction>
+			static void fs_Perform(TCFunctionNoAllocBase &_This, tf_CFunction &&_Function);
+		};
+
 		template <umint t_iCall>
 		struct TCCallRet
 		{
 			mark_artificial mark_nodebug inline_always static typename TCGetFunctionCallDefinition<t_CFOpts, t_iCall>::FType *fs_Get(TCFunctionNoAllocBase const *_pThis);
 		};
 
+		TCFunctionNoAllocBase();
+		TCFunctionNoAllocBase(TCFunctionNoAllocBase const &_Other);
+		TCFunctionNoAllocBase(TCFunctionNoAllocBase &&_Other);
+		~TCFunctionNoAllocBase();
+
+		bool fp_IsDefault() const;
+		void fp_SetDefault();
+		void fp_Destroy();
+
+		template <bool tf_bMove>
+		void fp_Duplicate(typename TCGetDuplicateSignature<tf_bMove>::CType _Other);
+
+		void fp_Move(TCFunctionNoAllocBase &&_Other);
+		void fp_MoveAssign(TCFunctionNoAllocBase &&_Other);
+
+		template <typename tf_CObject, typename tf_CParam>
+		tf_CObject *fp_ConstructObject(tf_CParam &&_Param);
+
+		template <typename tf_CFunction>
+		void fp_Construct(tf_CFunction &&_Function);
+
+		void const *fp_GetFirstFunctionPointer() const;
+
+		template <typename tf_CFunction>
+		void fp_Assign(tf_CFunction &&_Function);
+
+		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl();
+		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetImpl() const;
+		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctor() const;
+		mark_nodebug only_parameters_aliased return_not_aliased inline_small uint8 *fp_GetFunctorUnsafe() const;
+		mark_nodebug inline_small CVTable const *fp_VTable() const;
+		mark_nodebug FDelete *fp_DestroyCall() const;
+		typename CFunctionDefinition::FDuplicate *fp_DuplicateCall() const;
+		typename CFunctionDefinition::FDuplicateMove *fp_DuplicateMoveCall() const;
+
 		template <umint tf_iCall>
 		mark_artificial mark_nodebug inline_always typename TCGetFunctionCallDefinition<t_CFOpts, tf_iCall>::FType *fp_Call() const;
 
 		FCompareEqual *fp_CompareEqual() const noexcept;
 		FCompareSpaceship *fp_CompareSpaceship() const noexcept;
+
+		NStorage::TCBitStorePointer<CVTable const, 2> mp_pVTable;
+
+		alignas(t_CFOpts::CFunctionAllocOptions::mc_Alignment) uint8 mp_Storage[t_CFOpts::CFunctionAllocOptions::mc_MaxSize];
+
+	private:
+		using CNullFunction = TCImpl<TCNullFunctionImpl<CFunctionOptions::mc_bNoExcept>, t_CFOpts>;
+		using FCallType0 = typename TCFunctionCallDefinition<typename t_CFOpts::FCall0>::FType;
+		using CAllocator = typename t_CFOpts::CAllocator;
 	};
 
 	template
@@ -536,11 +544,9 @@ namespace NMib::NFunction::NPrivate
 		// Declared before the public section, which uses it.
 		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions - 1, typename t_CFOpts::CImpBase>;
 
-	public:
-		/// The options available for the function
+	public: // NOLINT(malterlib-member-order): the public declarations use CSuper
+			/// The options available for the function
 		using CFunctionOptions = t_CFOpts;
-
-		using CSuper::operator ();
 
 		~TCFunctionImplementation();
 		TCFunctionImplementation();
@@ -549,21 +555,25 @@ namespace NMib::NFunction::NPrivate
 		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		TCFunctionImplementation(TCFunctionImplementation const &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &&_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation(tf_CFunction &&_Function);
+
+		TCFunctionImplementation(CNullPtr _pNull);
+
+		using CSuper::operator ();
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation &operator = (tf_CFunction &&_Function);
 
 		void f_Clear();
 		void const *f_GetFirstFunctionPointer() const;
-		TCFunctionImplementation(CNullPtr _pNull);
 		TCFunctionImplementation &operator = (CNullPtr _pNull);
 		inline_small bool f_IsEmpty() const;
 		inline_small explicit operator bool () const;
@@ -583,10 +593,8 @@ namespace NMib::NFunction::NPrivate
 		// Declared before the public section, which uses it.
 		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions - 1, typename t_CFOpts::CImpBase>;
 
-	public:
+	public: // NOLINT(malterlib-member-order): the public declarations use CSuper
 		using CFunctionOptions = t_CFOpts;
-
-		using CSuper::operator ();
 
 		~TCFunctionImplementation();
 		TCFunctionImplementation();
@@ -595,20 +603,24 @@ namespace NMib::NFunction::NPrivate
 		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		TCFunctionImplementation(TCFunctionImplementation const &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &&_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation(tf_CFunction &&_Function);
+
+		TCFunctionImplementation(CNullPtr _pNull);
+
+		using CSuper::operator ();
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation &operator = (tf_CFunction &&_Function);
 
 		void f_Clear();
-		TCFunctionImplementation(CNullPtr _pNull);
 		TCFunctionImplementation &operator = (CNullPtr _pNull);
 		inline_small bool f_IsEmpty() const;
 		inline_small explicit operator bool () const;
@@ -630,10 +642,8 @@ namespace NMib::NFunction::NPrivate
 		// Declared before the public section, which uses it.
 		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions - 1, typename t_CFOpts::CImpBase>;
 
-	public:
+	public: // NOLINT(malterlib-member-order): the public declarations use CSuper
 		using CFunctionOptions = t_CFOpts;
-
-		using CSuper::operator ();
 
 		~TCFunctionImplementation();
 		TCFunctionImplementation();
@@ -642,20 +652,24 @@ namespace NMib::NFunction::NPrivate
 		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		TCFunctionImplementation(TCFunctionImplementation const &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &&_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation(tf_CFunction &&_Function);
+
+		TCFunctionImplementation(CNullPtr _pNull);
+
+		using CSuper::operator ();
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation &operator = (tf_CFunction &&_Function);
 
 		void f_Clear();
-		TCFunctionImplementation(CNullPtr _pNull);
 		TCFunctionImplementation &operator = (CNullPtr _pNull);
 		inline_small bool f_IsEmpty() const;
 		inline_small explicit operator bool () const;
@@ -676,10 +690,8 @@ namespace NMib::NFunction::NPrivate
 		// Declared before the public section, which uses it.
 		using CSuper = TCFunctionImplementation0<t_CFOpts::mc_NumFunctions - 1, typename t_CFOpts::CImpBase>;
 
-	public:
+	public: // NOLINT(malterlib-member-order): the public declarations use CSuper
 		using CFunctionOptions = t_CFOpts;
-
-		using CSuper::operator ();
 
 		~TCFunctionImplementation();
 		TCFunctionImplementation();
@@ -688,20 +700,24 @@ namespace NMib::NFunction::NPrivate
 		TCFunctionImplementation(CAllocatorConstructTag const &_Tag, tfp_CParams && ...p_Params);
 
 		TCFunctionImplementation(TCFunctionImplementation const &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
 		TCFunctionImplementation(TCFunctionImplementation &&_Other);
-		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation(tf_CFunction &&_Function);
+
+		TCFunctionImplementation(CNullPtr _pNull);
+
+		using CSuper::operator ();
+
+		TCFunctionImplementation &operator = (TCFunctionImplementation const &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &_Other);
+		TCFunctionImplementation &operator = (TCFunctionImplementation &&_Other);
 
 		template <typename tf_CFunction>
 		TCFunctionImplementation &operator = (tf_CFunction &&_Function);
 
 		void f_Clear();
-		TCFunctionImplementation(CNullPtr _pNull);
 		TCFunctionImplementation &operator = (CNullPtr _pNull);
 		inline_small bool f_IsEmpty() const;
 		inline_small explicit operator bool () const;

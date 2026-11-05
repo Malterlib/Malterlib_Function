@@ -10,13 +10,13 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = false;
-
 		TCImplBase(TCImplBase const &_Other);
 		TCImplBase(TCImplBase &&_Other);
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
+
+		static constexpr aint mc_IsIndirection = false;
 
 		t_CFunctor m_Functor;
 	};
@@ -26,14 +26,14 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = false;
-
 		TCImplBase(TCImplBase &&_Other);
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
 
 		TCImplBase(TCImplBase const &_Other) = delete;
+
+		static constexpr aint mc_IsIndirection = false;
 
 		t_CFunctor m_Functor;
 	};
@@ -43,14 +43,14 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = false;
-
 		TCImplBase(TCImplBase const &_Other);
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
 
 		TCImplBase(TCImplBase &&_Other) = delete;
+
+		static constexpr aint mc_IsIndirection = false;
 
 		t_CFunctor m_Functor;
 	};
@@ -60,13 +60,13 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = false;
-
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
 
 		TCImplBase(TCImplBase &&_Other) = delete;
 		TCImplBase(TCImplBase const &_Other) = delete;
+
+		static constexpr aint mc_IsIndirection = false;
 
 		t_CFunctor m_Functor;
 	};
@@ -76,13 +76,13 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = true;
-
 		TCImplBase(TCImplBase const &_Other);
 		TCImplBase(TCImplBase &&_Other);
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
+
+		static constexpr aint mc_IsIndirection = true;
 
 		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
@@ -92,14 +92,14 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = true;
-
 		TCImplBase(TCImplBase &&_Other);
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
 
 		TCImplBase(TCImplBase const &_Other) = delete;
+
+		static constexpr aint mc_IsIndirection = true;
 
 		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
@@ -109,14 +109,14 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = true;
-
 		TCImplBase(TCImplBase const &_Other);
 
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
 
 		TCImplBase(TCImplBase &&_Other) = delete;
+
+		static constexpr aint mc_IsIndirection = true;
 
 		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};
@@ -126,13 +126,13 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CFunctor = t_CFunctor;
 
-		static constexpr aint mc_IsIndirection = true;
-
 		template <typename tf_CFunctor>
 		TCImplBase(tf_CFunctor &&_Functor);
 
 		TCImplBase(TCImplBase &&_Other) = delete;
 		TCImplBase(TCImplBase const &_Other) = delete;
+
+		static constexpr aint mc_IsIndirection = true;
 
 		NStorage::TCUniquePointer<t_CFunctor, tp_COptions...> m_pFunctor;
 	};

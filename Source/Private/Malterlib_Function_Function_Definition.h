@@ -76,14 +76,15 @@ namespace NMib::NFunction::NPrivate
 
 		struct CVTable
 		{
+			static constexpr FCompareEqual *m_fCompareEqual = nullptr;         // NOLINT(malterlib-variable-naming): stands in for the m_fCompareEqual member of the other CVTables
+			static constexpr FCompareSpaceship *m_fCompareSpaceship = nullptr; // NOLINT(malterlib-variable-naming): stands in for the m_fCompareSpaceship member of the other CVTables
+
 			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
 			FDelete *m_fDestroy;
 			FDuplicate *m_fDuplicate;
 			FDuplicateMove *m_fDuplicateMove;
-			static constexpr FCompareEqual *m_fCompareEqual = nullptr;         // NOLINT(malterlib-variable-naming): stands in for the m_fCompareEqual member of the other CVTables
-			static constexpr FCompareSpaceship *m_fCompareSpaceship = nullptr; // NOLINT(malterlib-variable-naming): stands in for the m_fCompareSpaceship member of the other CVTables
 		};
 	};
 
@@ -98,6 +99,8 @@ namespace NMib::NFunction::NPrivate
 
 		struct CVTable
 		{
+			static constexpr FCompareSpaceship *m_fCompareSpaceship = nullptr; // NOLINT(malterlib-variable-naming): stands in for the m_fCompareSpaceship member of the other CVTables
+
 			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
@@ -105,7 +108,6 @@ namespace NMib::NFunction::NPrivate
 			FDuplicate *m_fDuplicate;
 			FDuplicateMove *m_fDuplicateMove;
 			FCompareEqual *m_fCompareEqual;
-			static constexpr FCompareSpaceship *m_fCompareSpaceship = nullptr; // NOLINT(malterlib-variable-naming): stands in for the m_fCompareSpaceship member of the other CVTables
 		};
 	};
 
@@ -120,13 +122,14 @@ namespace NMib::NFunction::NPrivate
 
 		struct CVTable
 		{
+			static constexpr FCompareEqual *m_fCompareEqual = nullptr; // NOLINT(malterlib-variable-naming): stands in for the m_fCompareEqual member of the other CVTables
+
 			CCalls m_Calls;
 			uint32 m_Alignment;
 			uint32 m_Size;
 			FDelete *m_fDestroy;
 			FDuplicate *m_fDuplicate;
 			FDuplicateMove *m_fDuplicateMove;
-			static constexpr FCompareEqual *m_fCompareEqual = nullptr; // NOLINT(malterlib-variable-naming): stands in for the m_fCompareEqual member of the other CVTables
 			FCompareSpaceship *m_fCompareSpaceship;
 		};
 	};

@@ -26,21 +26,21 @@ namespace NMib::NFunction
 		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_FFunctionMemberPointer>::CReturn;
 		using CClass = typename NTraits::TCMemberFunctionPointerTraits<t_FFunctionMemberPointer>::CClass;
 
-	public:
+	public: // NOLINT(malterlib-member-order): the public declarations use CReturn and CClass
 		TCMemberFunctionFunctor(TCMemberFunctionFunctor &_fOther);
 		TCMemberFunctionFunctor(TCMemberFunctionFunctor const &_fOther);
 		TCMemberFunctionFunctor(TCMemberFunctionFunctor &&_fOther);
+
+		template <typename tf_CFunctionPointer>
+		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor(tf_CFunctionPointer &&_P0);
+
 		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor &_fOther);
 		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor const &_fOther);
 		TCMemberFunctionFunctor &operator = (TCMemberFunctionFunctor &&_fOther);
 
 		template <typename tf_CFunctionPointer>
-		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor(tf_CFunctionPointer &&_P0);
-
-		template <typename tf_CFunctionPointer>
 		mark_artificial mark_nodebug inline_always TCMemberFunctionFunctor &operator = (tf_CFunctionPointer &&_P0);
 
-	public:
 		template <typename ...tfp_CParams>
 		mark_artificial inline_always CReturn operator () (CClass &_Reference, tfp_CParams && ...p_Params) const;
 
@@ -75,18 +75,18 @@ namespace NMib::NFunction
 		// Declared before the public section, which uses it.
 		using CReturn = typename NTraits::TCMemberFunctionPointerTraits<t_FFunctionMemberPointer>::CReturn;
 
-	public:
+	public: // NOLINT(malterlib-member-order): the public declarations use CReturn
 		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &_fOther);
 		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor const &_fOther);
 		TCMemberFunctionBoundFunctor(TCMemberFunctionBoundFunctor &&_fOther);
-		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &_fOther);
-		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor const &_fOther);
-		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &&_fOther);
 
 		template <typename tf_CFunctionPointer, typename tf_CThis>
 		mark_artificial mark_nodebug inline_always TCMemberFunctionBoundFunctor(tf_CFunctionPointer &&_P0, tf_CThis &&_P1);
 
-	public:
+		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &_fOther);
+		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor const &_fOther);
+		TCMemberFunctionBoundFunctor &operator = (TCMemberFunctionBoundFunctor &&_fOther);
+
 		template <typename ...tfp_CParams>
 		mark_artificial inline_always CReturn operator () (tfp_CParams && ...p_Params) const;
 
