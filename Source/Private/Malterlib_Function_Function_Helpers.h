@@ -27,73 +27,73 @@ namespace NMib::NFunction::NPrivate
 	template <typename t_CFunction>
 	struct TCDetermineFunctionDefinition
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_Const;
-
 		using FType = t_CFunction;
+
+		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params)>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_None;
-
 		using FType = t_CReturn (tp_CParams ...p_Params);
+
+		static constexpr aint mc_Qualifiers = EQualifiers_None;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params, ...)>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_None;
-
 		using FType = t_CReturn (tp_CParams ...p_Params, ...);
+
+		static constexpr aint mc_Qualifiers = EQualifiers_None;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params)>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_Const;
-
 		using FType = t_CReturn (tp_CParams ...p_Params);
+
+		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params, ...)>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_Const;
-
 		using FType = t_CReturn (tp_CParams ...p_Params, ...);
+
+		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params) noexcept>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_None;
-
 		using FType = t_CReturn (tp_CParams ...p_Params) noexcept;
+
+		static constexpr aint mc_Qualifiers = EQualifiers_None;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag &_ThisTag, tp_CParams ...p_Params, ...) noexcept>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_None;
-
 		using FType = t_CReturn (tp_CParams ...p_Params, ...) noexcept;
+
+		static constexpr aint mc_Qualifiers = EQualifiers_None;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params) noexcept>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_Const;
-
 		using FType = t_CReturn (tp_CParams ...p_Params) noexcept;
+
+		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 	};
 
 	template <typename t_CReturn, typename ...tp_CParams>
 	struct TCDetermineFunctionDefinition<t_CReturn (CThisTag const &_ThisTag, tp_CParams ...p_Params, ...) noexcept>
 	{
-		static constexpr aint mc_Qualifiers = EQualifiers_Const;
-
 		using FType = t_CReturn (tp_CParams ...p_Params, ...) noexcept;
+
+		static constexpr aint mc_Qualifiers = EQualifiers_Const;
 	};
 
 	template <typename t_CFirst, int t_FirstQualifiers, typename t_CSecond, int t_SecondQualifiers>
@@ -286,13 +286,14 @@ namespace NMib::NFunction::NPrivate
 	{
 		using CParsedOptions = TCParseFunctionOptions<void, tp_COptions...>;
 		using CFunctionList = typename CParsedOptions::CFunctions;
+		using FCall0 = typename TCGetCallInfo<CFunctionList, 0>::FType;
+		using CAllocator = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CAllocator>, t_CDefaultAllocator, typename CParsedOptions::CAllocator>;
+		using CFunctionAllocOptions = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CFunctionAllocOptions>, t_CDefaultAllocOptions, typename CParsedOptions::CFunctionAllocOptions>;
 		// Contracts
 
 		static constexpr aint mc_NumFunctions = NMeta::gc_TypeList_Len<CFunctionList>;
 
 		static_assert(umint(mc_NumFunctions) > 0, "You have to specify at least one function definition");
-
-		using FCall0 = typename TCGetCallInfo<CFunctionList, 0>::FType;
 
 		static constexpr aint mc_Qualifiers0 = TCGetCallInfo<CFunctionList, 0>::mc_Qualifiers;
 
@@ -306,9 +307,6 @@ namespace NMib::NFunction::NPrivate
 		static constexpr bool mc_bNoExcept = CParsedOptions::mc_nNoExcept != 0;
 
 		static_assert(!!CParsedOptions::mc_nNoExcept != !!CParsedOptions::mc_nExcept, "You cannot mix noexcept(true) and noexcept(false) functions");
-
-		using CAllocator = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CAllocator>, t_CDefaultAllocator, typename CParsedOptions::CAllocator>;
-		using CFunctionAllocOptions = TCConditional<NTraits::cIsVoid<typename CParsedOptions::CFunctionAllocOptions>, t_CDefaultAllocOptions, typename CParsedOptions::CFunctionAllocOptions>;
 	};
 }
 

@@ -143,9 +143,9 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
+		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 
 		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
-		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -170,11 +170,11 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
-
-		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
+
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -199,10 +199,10 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
-
-		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
+
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -227,10 +227,10 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
-
-		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static only_parameters_aliased return_not_aliased void *fs_DuplicateMove(void *_pImpl, CAllocator &_Allocator);
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
+
+		static constexpr CNullPtr fs_Duplicate = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -283,10 +283,10 @@ namespace NMib::NFunction::NPrivate
 
 		static void fs_Destroy(void *_pImpl);
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
-
-		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
 		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
+
+		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -312,9 +312,9 @@ namespace NMib::NFunction::NPrivate
 
 		static void fs_Destroy(void *_pImpl);
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -340,9 +340,9 @@ namespace NMib::NFunction::NPrivate
 
 		static void fs_Destroy(void *_pImpl);
 		static only_parameters_aliased return_not_aliased void *fs_Duplicate(void const *_pImpl, CAllocator &_Allocator);
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -394,11 +394,11 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -423,10 +423,10 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
+		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static bool fs_CompareEqual(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFOpts>
@@ -451,10 +451,10 @@ namespace NMib::NFunction::NPrivate
 		using CAllocator = typename t_CFOpts::CImpBase;
 
 		static void fs_Destroy(void *_pImpl);
+		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 
 		static constexpr CNullPtr fs_Duplicate = nullptr;     // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_Duplicate function of the interface
 		static constexpr CNullPtr fs_DuplicateMove = nullptr; // NOLINT(malterlib-variable-naming, malterlib-conceptual-prefix): stands in for the fs_DuplicateMove function of the interface
-		static COrdering_Partial fs_CompareSpaceship(void const *_pImpl0, void const *_pImpl1) noexcept;
 	};
 
 	template <typename t_CFunctor, typename t_CFunctionDefinition>

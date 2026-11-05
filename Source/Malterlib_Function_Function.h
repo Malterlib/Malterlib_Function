@@ -145,13 +145,6 @@ namespace NMib::NFunction
 	{
 		using CFunctionOptions = NPrivate::TCFunctionOptions<t_CFunction, tp_COptions...>;
 
-	private:
-		template <typename t_CFunction0>
-		friend struct TCFunctionInfo;
-
-		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
-
-	public:
 		~TCFunction();
 		TCFunction();
 
@@ -162,6 +155,21 @@ namespace NMib::NFunction
 		TCFunction(TCFunction const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunction(TCFunction &&_fOther) = default;
+
+		template
+		<
+			typename tf_CFunction
+			, TCEnableIf
+			<
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
+				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
+				, bool
+			>
+			= true ///< @hidden
+		>
+		TCFunction(tf_CFunction &&_Function);
+
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
 		TCFunction &operator = (TCFunction const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
@@ -179,21 +187,13 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunction(tf_CFunction &&_Function);
-
-		template
-		<
-			typename tf_CFunction
-			, TCEnableIf
-			<
-				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
-				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
-				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunction>::mc_Value
-				, bool
-			>
-			= true ///< @hidden
-		>
 		TCFunction &operator = (tf_CFunction &&_Function);
+
+	private:
+		template <typename t_CFunction0>
+		friend struct TCFunctionInfo;
+
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 	};
 
 	namespace NPrivate
@@ -249,13 +249,6 @@ namespace NMib::NFunction
 	{
 		using CFunctionOptions = NPrivate::TCFunctionOptionsFastCall<t_CFunction, tp_COptions...>;
 
-	private:
-		template <typename t_CFunction0>
-		friend struct TCFunctionInfo;
-
-		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
-
-	public:
 		~TCFunctionFastCall();
 		TCFunctionFastCall();
 
@@ -266,6 +259,21 @@ namespace NMib::NFunction
 		TCFunctionFastCall(TCFunctionFastCall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunctionFastCall(TCFunctionFastCall &&_fOther) = default;
+
+		template
+		<
+			typename tf_CFunction
+			, TCEnableIf
+			<
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
+				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
+				, bool
+			>
+			= true ///< @hidden
+		>
+		TCFunctionFastCall(tf_CFunction &&_Function);
+
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
 		TCFunctionFastCall &operator = (TCFunctionFastCall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
@@ -283,21 +291,13 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionFastCall(tf_CFunction &&_Function);
-
-		template
-		<
-			typename tf_CFunction
-			, TCEnableIf
-			<
-				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
-				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
-				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionFastCall>::mc_Value
-				, bool
-			>
-			= true ///< @hidden
-		>
 		TCFunctionFastCall &operator = (tf_CFunction &&_Function);
+
+	private:
+		template <typename t_CFunction0>
+		friend struct TCFunctionInfo;
+
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 	};
 
 	template <typename t_CSignature>
@@ -327,13 +327,6 @@ namespace NMib::NFunction
 	{
 		using CFunctionOptions = NPrivate::TCFunctionOptionsSmall<t_CFunction, tp_COptions...>;
 
-	private:
-		template <typename t_CFunction0>
-		friend struct TCFunctionInfo;
-
-		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
-
-	public:
 		~TCFunctionSmall();
 		TCFunctionSmall();
 
@@ -344,6 +337,21 @@ namespace NMib::NFunction
 		TCFunctionSmall(TCFunctionSmall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunctionSmall(TCFunctionSmall &&_fOther) = default;
+
+		template
+		<
+			typename tf_CFunction
+			, TCEnableIf
+			<
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
+				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
+				, bool
+			>
+			= true ///< @hidden
+		>
+		TCFunctionSmall(tf_CFunction &&_Function);
+
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
 		TCFunctionSmall &operator = (TCFunctionSmall const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
@@ -361,21 +369,13 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionSmall(tf_CFunction &&_Function);
-
-		template
-		<
-			typename tf_CFunction
-			, TCEnableIf
-			<
-				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
-				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
-				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionSmall>::mc_Value
-				, bool
-			>
-			= true ///< @hidden
-		>
 		TCFunctionSmall &operator = (tf_CFunction &&_Function);
+
+	private:
+		template <typename t_CFunction0>
+		friend struct TCFunctionInfo;
+
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 	};
 
 	template <typename t_CSignature>
@@ -412,13 +412,6 @@ namespace NMib::NFunction
 	{
 		using CFunctionOptions = NPrivate::TCFunctionOptionsNoAlloc<t_CFunction, tp_COptions...>;
 
-	private:
-		template <typename t_CFunction0>
-		friend struct TCFunctionInfo;
-
-		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
-
-	public:
 		~TCFunctionNoAlloc();
 		TCFunctionNoAlloc();
 
@@ -426,6 +419,21 @@ namespace NMib::NFunction
 		TCFunctionNoAlloc(TCFunctionNoAlloc const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveConstruct
 		TCFunctionNoAlloc(TCFunctionNoAlloc &&_fOther) = default;
+
+		template
+		<
+			typename tf_CFunction
+			, TCEnableIf
+			<
+				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
+				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
+				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
+				, bool
+			>
+			= true ///< @hidden
+		>
+		TCFunctionNoAlloc(tf_CFunction &&_Function);
+
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_CopyAssignment
 		TCFunctionNoAlloc &operator = (TCFunctionNoAlloc const &_fOther) = default;
 		/// \copydoc NMib::NFunction::DoxyInternal_Function_MoveAssignment
@@ -443,21 +451,13 @@ namespace NMib::NFunction
 			>
 			= true ///< @hidden
 		>
-		TCFunctionNoAlloc(tf_CFunction &&_Function);
-
-		template
-		<
-			typename tf_CFunction
-			, TCEnableIf
-			<
-				!NTraits::cIsSame<NTraits::TCRemoveReference<tf_CFunction>, NInternal::CDefault>
-				&& !NTraits::cIsSame<NTraits::TCRemoveReferenceAndQualifiers<tf_CFunction>, NPrivate::CReturnReference>
-				&& !NPrivate::TCIsSelf<tf_CFunction, TCFunctionNoAlloc>::mc_Value
-				, bool
-			>
-			= true ///< @hidden
-		>
 		TCFunctionNoAlloc &operator = (tf_CFunction &&_Function);
+
+	private:
+		template <typename t_CFunction0>
+		friend struct TCFunctionInfo;
+
+		using CSuper = NPrivate::TCFunctionImplementation<CFunctionOptions>;
 	};
 
 	template <typename t_CSignature>
@@ -508,10 +508,10 @@ namespace NMib::NFunction
 	template <typename t_CFunction>
 	struct TCFunctionInfo
 	{
-		static constexpr umint mc_nCalls = t_CFunction::CFunctionOptions::mc_NumFunctions;
-
 		template <umint t_iCall>
 		using TFCallType = typename NPrivate::TCGetCallInfo<typename t_CFunction::CFunctionOptions::CFunctionList, t_iCall>::FType;
+
+		static constexpr umint mc_nCalls = t_CFunction::CFunctionOptions::mc_NumFunctions;
 	};
 
 	extern template struct TCFunction<void ()>;
